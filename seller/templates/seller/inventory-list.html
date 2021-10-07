@@ -1,0 +1,93 @@
+{% extends 'seller-base.html' %}
+{% load static %}
+
+{% block title %} <title>Inventory</title> {% endblock %}
+{% block dash-title %} Inventory{% endblock %}
+{% block search-bar %} 
+<form class="dash-page-search-bar" id='inventory-form' action="{% url 'seller:inventory-search' %}" method="GET">
+    {% csrf_token %}
+        <input type="search" placeholder="Search Inventory (Name)" name="q">
+        <button>
+            <i class="fas fa-search cat-search-icon"></i>
+        </button>
+</form>
+{% endblock %}
+
+{% block dash-content %}
+<div class="pad-2">
+    <div class="row">
+        <p class="dash-second-heading heading-3-black">{{inv_type}} Inventory {{cat_name}}</p>
+        {% if 'subcategory' in request.path %}
+        <a href="{% url 'seller:subcategory-list' name=cat_name %}" class="go-back-btn heading-3-regular-white" type="button">Go Back</a>
+        {% else %}
+        <a href="{% url 'seller:inventory' %}" class="go-back-btn heading-3-regular-white" type="button">Go Back</a>
+        {% endif %}
+    </div>
+    
+    <hr class="simple-hr">
+    <div class="row mb-4">
+        {% if products %}
+        {% for product in products %}
+            <div class="inventory-card">
+                <div class="inv-card-img">
+                    <a href="">
+                        {% if product.image1 %}
+                        <img src="{{product.image1.url}}" alt="">
+                            {% else %}
+                        <img src="{% static 'images/demo image.jpg' %}" alt="">
+                            {% endif %}
+                    </a>
+                    {% if minimum_inventory %}
+                    <div class="min-inv-alert">
+                        <p> <span>{{product.stock}}</span> items</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="inv-card-info text-center">
+                    <a href="">
+                    <p class="body-orange cat-card-head">{{product.product.name|truncatechars:15}}-{{product.color}}-{{product.size.size}}</p>
+                    </a>
+                    <p class="cat-card-cat">{{product.product.category.name}}</p>
+                    <div class="row justify-content-around mt-1 pb-2">
+                        <a href="{% url 'seller:product-update' pk=product.id %}" type="button" class="w-fit">
+                            Edit
+                        </a>
+                        <a href="{% url 'seller:product-delete' pk=product.id %}" type="button" class="w-fit">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div> 
+            {% endfor %}
+            {% else %}
+            <p>Oops, No products to show</p>
+            {% endif %}
+    </div>
+
+    <!-- pagination  -->
+    <div class="col-md-12 text-center">
+        <div class="row d-flex no-gutters justify-content-center mb-5 mt-4 w-fit mx-auto">
+            <div class="pagination">
+              <span class="step-links">
+                  {% if page_obj.has_previous %}
+                      <a href="?page=1" class="btn btn-sm btn-prev">&laquo; first</a>
+                      <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-sm btn-prev">previous</a>
+                  {% endif %}
+  
+                  <span class="current">
+                      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                  </span>
+  
+                  {% if page_obj.has_next %}
+                      <a href="?page={{ page_obj.next_page_number }}" class="btn btn-sm btn-prev">next</a>
+                      <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-sm btn-prev">last &raquo;</a>
+                  {% endif %}
+              </span>
+            </div>
+          </div>
+    </div>
+        
+        <!-- pagination  -->
+</div>
+
+{% endblock %}

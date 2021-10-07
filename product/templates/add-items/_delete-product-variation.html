@@ -1,0 +1,29 @@
+{% extends 'seller-base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} <title>Add Sub-Category</title> {% endblock %}
+{% block dash-title %} Add Items{% endblock %}
+
+
+{% block dash-content %}
+
+<!-- Delete section -->
+<div class="pad-2">
+    <p class="heading-3-black">Delete Product</p>
+    <hr class="simple-hr">
+    <!-- form -->
+    <!-- <form action=""  method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form|crispy}}
+        <input type="submit" class=" mt-3 go-back-btn add-pro-btn heading-3-regular-white">
+    </form> -->
+    <form method="post" style="width:50%;">
+        {% csrf_token %}
+        <p>Are you sure you want to delete "{{ object }}"?</p>
+        <input type="submit" value="Confirm" class=" mt-3 go-back-btn add-pro-btn heading-3-regular-white">
+    </form>
+    
+</div>
+<!-- Delete section -->
+
+{% endblock %}

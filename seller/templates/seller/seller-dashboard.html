@@ -1,0 +1,156 @@
+{% extends 'seller-base.html' %}
+{% load static %}
+
+{% block title %} <title>Dashboard</title> {% endblock %}
+{% block dash-title %} Dashboard{% endblock %}
+
+{% block dash-content %} 
+<section>
+    <p class="heading-2-black seller-dash-heading-sm">Overall Performance</p>
+    <hr class="simple-hr">
+    <div class="row">
+        <div class="seller-stat-card p-0 ms-0">
+            <div class="row h-100 p-0">
+                <div class="icon-side p-0 my-auto">
+                    <img class="hide-el" src="{% static 'assets/background/total sale.svg' %}" alt="">
+                </div>
+                <div class="info-side my-auto">
+                    <p class="heading-2-black info-side-number" style="text-align: center;">$100</p>
+                    <p class="heading-3-black info-side-name">Total Sale</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="seller-stat-card p-0">
+            <div class="row h-100 p-0">
+                <div class="icon-side p-0 my-auto">
+                    <img class="hide-el" src="{% static 'assets/background/return.svg' %}" alt="">
+                </div>
+                <div class="info-side my-auto">
+                    <p class="heading-2-black info-side-number" style="text-align: center;">$100</p>
+                    <p class="heading-3-black info-side-name">Returns</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="seller-stat-card full-seller-stat-card p-0">
+            <div class="row h-100 p-0">
+                <div class="icon-side p-0 my-auto">
+                    <img class="hide-el" src="{% static 'assets/background/net sale.svg' %}" alt="">
+                </div>
+                <div class="info-side my-auto">
+                    <p class="heading-2-black info-side-number" style="text-align: center;">$100</p>
+                    <p class="heading-3-black info-side-name">Net Sale</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="seller-stat-card p-0">
+            <div class="row h-100 p-0">
+                <div class="icon-side p-0 my-auto">
+                    <img class="hide-el" src="{% static 'assets/background/categories.svg' %}" alt="">
+                </div>
+                <div class="info-side my-auto">
+                    <p class="heading-2-black info-side-number" style="text-align: center;">10</p>
+                    <p class="heading-3-black info-side-name">Categories</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="seller-stat-card p-0">
+            <div class="row h-100 p-0">
+                <div class="icon-side p-0 my-auto">
+                    <img class="hide-el" src="{% static 'assets/background/Products.svg' %}" alt="">
+                </div>
+                <div class="info-side my-auto">
+                    <p class="heading-2-black info-side-number" style="text-align: center;">40</p>
+                    <p class="heading-3-black info-side-name">Products</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- graph section -->
+<section class="mt-4 ">
+    <p class="heading-2-black seller-dash-heading-sm">Weekly Revenue</p>
+    <hr class="simple-hr">
+    <div class="seller-chart">
+        
+    </div>
+</section>
+
+<!-- graph section -->
+
+<!-- inventory and order stats -->
+<section class="mt-4 mb-5">
+    <div class="row">
+        <div class="dash-order-stat">
+            <p class="heading-3-black ">Orders</p>
+            <hr class="simple-hr">
+        </div>
+        <div class="dash-inventory-stat ms-5">
+            <p class="heading-3-black">Inventory Alert</p>
+            <hr class="simple-hr">
+            <div class="row mt-2">
+                <p class="w-50">
+                    <a href=" {% url 'seller:inventory' %}">Product 1</a>
+                </p>
+                <p class="w-50 dash-item-alert">1 item remaining</p>
+            </div>
+            <div class="row mt-2">
+                <p class="w-50">
+                    <a href="">Product 1</a>
+                </p>
+                <p class="w-50 dash-item-alert">1 item remaining</p>
+            </div>
+            <div class="row mt-2">
+                <p class="w-50">
+                    <a href="">Product 1</a>
+                </p>
+                <p class="w-50 dash-item-alert">1 item remaining</p>
+            </div>
+            <div class="row mt-2">
+                <p class="w-50">
+                    <a href="">Product 1</a>
+                </p>
+                <p class="w-50 dash-item-alert">1 item remaining</p>
+            </div>
+            <div class="row mt-2">
+                <p class="w-50">
+                    <a href="">Product 1</a>
+                </p>
+                <p class="w-50 dash-item-alert">1 item remaining</p>
+            </div>
+            <div class="row mt-2">
+                <p class="w-50">
+                    <a href="">Product 1</a>
+                </p>
+                <p class="w-50 dash-item-alert">1 item remaining</p>
+            </div>
+            <div class="row mt-2">
+                <p class="w-50">
+                    <a href="">Product 1</a>
+                </p>
+                <p class="w-50 dash-item-alert">1 item remaining</p>
+            </div>
+            <div class="row mt-2">
+                <p class="w-50">
+                    <a href="">Product 1</a>
+                </p>
+                <p class="w-50 dash-item-alert">1 item remaining</p>
+            </div>
+            
+            <p class="dash-item-alert pe-3 pt-3">
+                <a href="">
+                    See All
+                </a>
+            </p>
+            
+        </div>
+    </div>
+</section>
+<!-- inventory and order stats -->
+
+
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<style>
+    input {
+        margin-bottom: 0px !important;
+    }
+
+    .btn {
+        height: 50% !important;
+    }
+
+    hr {
+        margin: 10px 0 !important;
+        border: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .input-box {
+        padding-top: 20px !important;
+        padding-bottom: 10px !important;
+    }
+
+    .register-form {
+        padding: 40px 60px 50px 50px !important;
+    }
+</style>
+<div class="mx-auto">
+    <main class="login-bg">
+        <!-- Register Area Start -->
+        <div class="register-form-area">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xl-4 col-lg-4">
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}
+                                style="list-style-type: none !important; color:red !important;">
+                                {{ message }}
+                                </li>
+                                {% endfor %}
+                        </ul>
+                        {% endif %}
+                        <form method="post" action="{% url 'gnm_users:signup' %}">{% csrf_token %}
+                            
+                            <div class="register-form text-center">
+                                <!-- Login Heading -->
+                                <div class="register-heading">
+                                    <span>Sign Up</span>
+                                    <p>Create your account to get full access</p>
+
+                                </div>
+                                <hr>
+                                <!--{{ form|crispy }}-->
+                                <!-- Single Input Fields -->
+                                <div class="input-box">
+                                    <div class="single-input-fields">
+                                        <label>Name</label>
+                                        {{user_creation_form.first_name}}
+                                        {{user_creation_form.first_name.errors}}
+                                        <!-- <input type="text" placeholder="Username / Email address"> -->
+                                    </div>
+                                    <div class="single-input-fields">
+                                        <label>Email Address</label>
+                                        <!-- <input type="text" placeholder="Username / Email address"> -->
+                                        {{user_creation_form.email}}
+                                        {{user_creation_form.email.errors}}
+                                    </div>
+                                    <div class="single-input-fields">
+                                        <label>Mobile Number</label>
+                                        <!-- <input type="text" placeholder="Username / Email address"> -->
+                                        {{appuserform.mobile}}
+                                        {{appuserform.mobile.errors}}
+                                    </div>
+                                    <div class="single-input-fields">
+                                        <label>Password</label>
+                                        <!-- <input type="text" placeholder="Username / Email address"> -->
+                                        {{user_creation_form.password1}}
+                                        {{user_creation_form.password1.errors}}
+                                    </div>
+                                    <div class="single-input-fields">
+                                        <label>Confirm Password</label>
+                                        <!-- <input type="text" placeholder="Username / Email address"> -->
+                                        {{user_creation_form.password2}}
+                                        {{user_creation_form.password2.errors}}
+                                    </div>
+                                    <div class="single-input-fields">
+                                        <label>Address</label>
+                                        <!-- <input type="text" placeholder="Username / Email address"> -->
+                                        {{appuserform.address}}
+                                        {{appuserform.address.errors}}
+                                    </div>
+                                    <div class="single-input-fields">
+                                        <label>City</label>
+                                        <!-- <input type="text" placeholder="Username / Email address"> -->
+                                        {{appuserform.city}}
+                                        {{appuserform.city.errors}}
+                                    </div>
+                                    <div class="single-input-fields">
+                                        <label>Pin Code</label>
+                                        <!-- <input type="text" placeholder="Username / Email address"> -->
+                                        {{appuserform.pincode}}
+                                        {{appuserform.pincode.errors}}
+                                    </div>
+                                    <div class="single-input-fields">
+                                        <button class="btn submit-btn3">Sign Up</button>
+                                    </div>
+                                    <!-- form Footer -->
+                                    <div class="register-footer">
+
+                                        <p> <small>Already have an account? <a href="{% url 'gnm_users:signin' %}"> Login</a>
+                                                here</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Register Area End -->
+    </main>
+</div>
+{% endblock content %}

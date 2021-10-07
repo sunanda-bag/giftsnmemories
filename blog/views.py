@@ -1,3 +1,11 @@
 from django.shortcuts import render
+from django.views import generic
 
-# Create your views here.
+
+# class BlogListView(generic.View):
+#     def get(self, *args, **kwargs):
+#         return render(self.request, 'blogging/blog-list.html')
+
+# class BlogDetailView(generic.View):
+#     def get(self, *args, **kwargs):
+#         return render(self.request, 'blogging/blog-detail.html')

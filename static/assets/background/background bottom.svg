@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="745.103" viewBox="0 0 1920 745.103">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ffd202"/>
+      <stop offset="1" stop-color="#fe8d01"/>
+    </linearGradient>
+  </defs>
+  <path id="Subtraction_2" data-name="Subtraction 2" class="cls-1" d="M3088-1086.9h0c-145.735-83.349-300.042-147.546-458.634-190.808-40.167-10.957-81.173-20.709-121.879-28.986-41.029-8.342-82.86-15.41-124.332-21.008-41.823-5.645-84.406-9.946-126.568-12.785-42.541-2.864-85.8-4.316-128.585-4.316s-86.045,1.452-128.585,4.316c-42.162,2.839-84.745,7.14-126.568,12.785-41.466,5.6-83.3,12.665-124.332,21.008-40.71,8.278-81.716,18.029-121.879,28.985-158.59,43.261-312.9,107.458-458.635,190.807V-1832H3088v745.1Z" transform="translate(3088 -1086.897) rotate(180)"/>
+</svg>

@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} 
+<title>
+    {% if request.path == '/product/men/' %}
+    Men
+    {% elif request.path == '/product/women/' %}
+    Women
+    {% elif request.path == '/product/all-category/' %}
+    All-Categories
+    {% else %}
+    Products
+    {% endif %}
+</title>  
+{% endblock %}
+{% block stylesheets %} 
+    <link rel="stylesheet" href="{% static 'css/product.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block bread-page %}
+{% if request.path == '/product/men/' %}
+<p class="bread-page body-white">ForHim</p>
+{% elif request.path == '/product/women/' %}
+<p class="bread-page body-white">ForHer</p>
+{% elif request.path == '/product/all-category/' %}
+<p class="bread-page body-white">All-Categories</p>
+{% else %}
+<p class="bread-page body-white">Products</p>
+{% endif %}
+
+{% endblock %}
+
+{% block bread-head %} 
+{% if request.path == '/product/men/' %}
+<p class="bread-head heading-2-white">#ForHim</p>
+{% elif request.path == '/product/women/' %}
+<p class="bread-head heading-2-white">#ForHer</p>
+{% elif request.path == '/product/all-category/' %}
+<p class="bread-head heading-2-white">#All-Categories</p>
+{% else %}
+<p class="bread-head heading-2-white">#Products</p>
+{% endif %}
+{% endblock %}
+
+
+{% block content %}  
+
+<div class="row">
+    <div class="filter-section">
+        <!-- filter form -->
+        <div class="cat-filter">
+            {% include 'product/category-filter.html' %}
+        </div>
+        <!-- filter form -->
+        <img class="filter-splash" src="{% static 'assets/background/filter splash.svg' %}" alt="">
+    </div>
+    <div class="product-section">
+        <div class="sort mt-2">
+            <div class="row cat-filter-sort-row">
+                <div class="filter-row-sm">
+                    <button class="navbar-toggler filter-toggl" type="button" data-bs-toggle="collapse" data-bs-target="#categoryFilter" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="row">
+                            <i class="fas fa-filter w-fit my-auto"></i>
+                            <p class="w-fit my-auto">Filter</p>
+                        </span>
+                    </button>
+                    <div class="filter-sm collapse navbar-collapse" id="categoryFilter">
+                        <!-- filter header for mobile -->
+                        <div class="navbar-collapse-header">
+                            <div class="row">
+                            <div class="col-6 collapse-brand">
+                                <a class="brand-nav" href="{% url 'index' %}">
+                                <p class="logo-title filter-heading-sm">Filter</p>
+                                </a>
+                            </div>
+                            <div class="col-6 collapse-close ">
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#categoryFilter" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                                <span></span>
+                                <span></span>
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- filter header for mobile -->
+
+                        <!-- filter form -->
+                        <div class="cat-filter-sm">
+                            {% include 'product/category-filter.html' %}
+                        </div>
+                        <!-- filter form -->
+
+                    </div>
+                    
+                </div>
+                <div class="row sort-row">
+                    <p class="my-auto" style="width: fit-content;">Sort By:</p>
+                <form id="sort-form" action="{% url 'product:sort-category' %}" method="POST">
+                    {% csrf_token %}
+                    <select class="sort-input" name="sort-option" id="sort-product">
+                        <option value="none" selected>None</option>
+                        <option value="low">Price: low to high</option>
+                        <option value="high">Price: high to low</option>
+                    </select>
+                </form>
+                {% if sorted %}
+                <p>Sorted: {{sorted}}</p>
+                {% endif %}
+                </div>
+                
+                
+                <script>
+                    $(document).ready(function(){
+                        $("#sort-product").change(function(){
+                            console.log($(this).val());
+                            $("#sort-form").submit();
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="row category-cards">
+            {% if page_obj %}
+            {% for product in page_obj %}
+            <div class="product-card">
+                <div class="pr-card-img">
+                    <a class="card-img-btn" href="{% url 'product:product-page' slug=product.slug %}">
+                        {% if product.image1 %}
+                        <img class="product-img" src="{{product.image1.url}}" alt="">
+                        {% else %}
+                        <img class="product-img" src="{% static 'images/demo image.jpg' %}" alt="">
+                        {% endif %}
+                        
+                    </a>
+                    <div class="card-add-row">
+                        <form action="{% url 'order:add-to-cart' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="product-id" value="{{product.id}}">
+                            <button type="submit" class="cart-add-icon" style="background:var(--dark-orange);border:none;">
+                                <div class="row justify-content-center card-icons-bar">
+                                    <i class="fas fa-plus card-icon"></i>
+                                    <i class="fas fa-shopping-cart card-icon"></i>
+                                </div>
+                            </button>
+                        </form>
+                        <!-- <a class="cart-add-icon" href="" >
+                            <div class="row justify-content-center card-icons-bar">
+                                <i class="fas fa-plus card-icon"></i>
+                                <i class="fas fa-shopping-cart card-icon"></i>
+                            </div>
+                        </a> -->
+                        <form action="{% url 'order:add-to-wishlist' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="product-id" value="{{product.id}}">
+                            <button type="submit" class="wish-add-icon" style="background:var(--dark-orange);border:none;">
+                                <div class="row justify-content-center card-icons-bar" >
+                                    <i class="fas fa-plus card-icon"></i>
+                                    <i class="fas fa-heart card-icon ms-1"></i>
+                                </div>
+                            </button>
+                        </form>
+                        <!-- <a class="wish-add-icon" href="" >
+                        <div class="row justify-content-center card-icons-bar">
+                            <i class="fas fa-plus card-icon"></i>
+                            <i class="fas fa-heart card-icon ms-1"></i>
+                        </div>
+                        </a> -->
+                    </div>
+                    {% if product.product.onSale %}
+                    <div class="card-sale-info text-center">
+                        <p class="heading-3-white cardsale-info">Sale</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="text-center">
+                    <a href="{% url 'product:product-page' slug=product.slug %}"><p class="heading-3-black card-heading-sm">{{product.product}}</p></a> 
+                    <p class="body-black product-info card-cat-sm" >{{product.product.category}} ( {{product.color.name}}-{{product.size.size}} )</p>
+                    <p class="heading-3-black product-info card-heading-sm" >${{product.discountPrice}}</p>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h3 class="mt-4">Oops!! No products Found.</h3>
+            {% endif %}
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                
+                {% if not no_pagination %}
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% endif %}
+        
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        <!-- pagination -->
+
+
+    </div>
+        
+</div>
+
+{% endblock content %}

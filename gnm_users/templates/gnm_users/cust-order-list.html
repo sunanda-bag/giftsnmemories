@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} <title>My Orders</title>  {% endblock %}
+{% block stylesheets %} 
+<link rel="stylesheet" href="{% static 'css/cust-account.css' %}">
+{% endblock %}
+
+{% block bread-page %}
+<a class="bread-page body-white" href="{% url 'gnm_users:cust-account' %}">My Account</a>
+<i class="fas fa-chevron-right right-chev"></i>
+<p class="bread-page body-white">My Orders</p>
+{% endblock %}
+
+{% block bread-head %} 
+<p class="bread-head heading-2-white">#My Orders</p>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <section class="wishlist content-box cust-acc-content-box cust-order-all-section p-3">
+            
+            <div class="mt-1">
+                <p class="heading-2-black cust-acc-heading">All Orders</p>
+                <hr class="simple-hr">
+                <table class="account-pg-all-orders mt-3">
+                    <tr>
+                        <th>Order No.</th>
+                        <th class="table-sm">Order Date</th>
+                        <th class="table-sm">Order Price</th>
+                        <th>Status</th>
+                        <th>Return/Refund</th>
+                    </tr>
+                    
+                    {% for order in orders %}
+                    <tr>
+                        <td> <a href="{% url 'gnm_users:cust-order-detail' pk=order.id %}">#{{order.id}}</a> </td>
+                        <td class="table-sm">{{order.orderDate|date:"Y-m-d"}}</td>
+                        <td class="table-sm">${{order.price}}</td>
+                        {% if order.delivered %}
+                        <td>Delivered</td>
+                        {% else %}
+                        <td>Processing</td>
+                        {% endif %}
+                        <td><a href="">Request Return</a></td>
+                    </tr>
+                    {% endfor %}
+                    
+                </table>
+
+                <!-- pagination  -->
+                <div class="col-md-12 text-center">
+                    <div class="row d-flex no-gutters justify-content-center mb-5 mt-4 w-fit mx-auto">
+                        <div class="pagination">
+                        <span class="step-links">
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1" class="btn btn-sm btn-prev">&laquo; first</a>
+                                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-sm btn-prev">previous</a>
+                            {% endif %}
+            
+                            <span class="current">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+            
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-sm btn-prev">next</a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-sm btn-prev">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                        </div>
+                    </div>
+                </div>      
+                <!-- pagination  -->
+
+                <div class="col-md-6 mt-4">
+                    <a href="{% url 'gnm_users:cust-account' %}" type="button" class="simple-btn go-to-acc-btn account-edit-btn">
+                        Go To Account
+                    </a>
+                </div>
+            </div>
+
+            
+        </section>
+    </div>
+
+{% endblock %}

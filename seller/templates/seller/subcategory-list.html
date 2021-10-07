@@ -1,0 +1,46 @@
+{% extends 'seller-base.html' %}
+{% load static %}
+
+{% block title %} <title>{{category}} Subcategories</title> {% endblock %}
+{% block dash-title %} Inventory{% endblock %}
+
+
+{% block dash-content %}
+<style>
+    .cat-card{
+        margin-top:1.5rem;
+        margin-left:1rem !important;
+        margin-right:1rem !important;
+    }
+</style>
+    <!-- all category section -->
+    <div class="category-inv pad-2 mb-5">
+        <div class="row">
+            <p class="dash-second-heading heading-3-black">All {{category}} Subcategories</p>
+            <a href="{% url 'seller:inventory' %}" class="go-back-btn heading-3-regular-white" type="button">Go Back</a>
+        </div>
+        <hr class="simple-hr">
+        <div class="row">
+            {% if subcategories %}
+            {% for category in subcategories %}
+            <div class="cat-card">
+                <div>
+                    <a href="{% url 'seller:subcategory-products' pk=category.pk %}">
+                        <img src="{{category.image.url}}" alt="">
+                    </a>
+                </div>
+                <div class="text-center cat-card-info">
+                    <a href="{% url 'seller:subcategory-products' pk=category.pk %}" class="heading-3-orange">
+                        <p class="cat-card-head">{{category.name}}</p>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>Oops, No subcategories to show</p>
+            {% endif %}
+        </div>
+    </div>
+    <!-- all category section -->
+
+{% endblock %}

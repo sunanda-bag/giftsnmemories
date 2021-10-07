@@ -1,0 +1,92 @@
+<form action="{% url 'product:filter-category' %}" id="cat-filter-form" method="GET">
+    {% csrf_token %}
+    <p class="heading-2-white text-center filter-heading">Filter</p>
+    <hr class="hr-sm">
+    <p class="heading-3-white">Sub-category</p>
+    <hr>
+    <div class="sub-category-checks mb-2">
+        {% for cat in sub_categories%}
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="sub-cat" value="{{cat}}" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                {{cat}}
+            </label>
+        </div>
+        {% endfor %}         
+          
+    </div>
+    <p class="mt-3 heading-3-white">Price</p>
+    <hr>
+    <div class="price-filter">
+        <label for="min_value">Min:</label>
+        <input class="price-box" type="text" name="min_value" id="min_value" value="0">
+        <input class="price-bar" type="range" id="minimum" name="minimum" value="0" min="0" max="5000" step="100">
+        <script>
+            $(document).ready(function(){
+                $("#minimum").change(function(){
+                    var newval=$(this).val();
+                    $("#min_value").val(newval);
+                });
+            });
+        </script>
+    </div>
+    <div>
+        <label for="max_value">Max:</label>
+        <input class="price-box" type="text" name="max_value" id="max_value" value="3000">
+        <input class="price-bar" type="range" id="maximum" name="maximum" value="3000" min="500" max="5000" step="100">
+        <p class="price-note">Note: Please input amount in multiples of 1000</p>
+        <script>
+            $(document).ready(function(){
+                $("#maximum").change(function(){
+                    var newval=$(this).val();
+                    $("#max_value").val(newval);
+                });
+            });
+        </script>
+    </div>
+    <div>
+        <p class="mt-3 heading-3-white">Color</p>
+        <hr>
+        {% for color in colors %}
+        <div class="form-check form-check-inline">
+            <input class="form-check-input color-filter" name='color' type="checkbox" value="{{color.colorCode}}" id="color{{forloop.counter}}">
+        </div>
+
+        <style>
+            #color{{forloop.counter}}, #color{{forloop.counter}}:checked{
+                background-color: {{color.colorCode}};
+            }
+        </style>
+        {% endfor %}
+    </div>
+    <div>
+        <p class="mt-3 heading-3-white">Size</p>
+        <hr>
+        
+        {% for size in sizes %}
+        <div class="form-check form-check-inline ">
+            <input class="form-check-input" type="checkbox" name="size" value="{{size.size}}" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                {{size.size}}
+            </label>
+        </div>
+        {% endfor %}
+    </div>
+    <div>
+        <p class="mt-3 heading-3-white">Offer/Deal</p>
+        <hr>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="offer-filter" value="False" id="flexRadioDefault1" checked>
+            <label class="form-check-label" for="flexRadioDefault1">
+              Default
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="offer-filter" value="True" id="flexRadioDefault2" >
+            <label class="form-check-label" for="flexRadioDefault2">
+              On Offer
+            </label>
+          </div>
+    </div>
+    <input class="simple-btn filter-btn heading-3-regular-white mt-3" type="submit" value="Apply Filter">
+</form>

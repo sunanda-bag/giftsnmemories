@@ -1,0 +1,142 @@
+{% extends 'seller-base.html' %}
+{% load static %}
+
+{% block title %} <title>All Inventory</title> {% endblock %}
+{% block dash-title %} Inventory{% endblock %}
+{% block search-bar %} 
+        <form class="dash-page-search-bar" id='inventory-form' action="{% url 'seller:inventory-search' %}" method="GET">
+            {% csrf_token %}
+                <input type="search" placeholder="Search Inventory (Name)" name="q">
+                <button>
+                    <i class="fas fa-search cat-search-icon"></i>
+                </button>
+        </form>
+{% endblock %}
+
+{% block dash-content %}
+
+    <!-- all category section -->
+    <div class="category-inv pad-2">
+        <p class="heading-3-black seller-dash-heading-sm">All Categories</p>
+        <hr class="simple-hr">
+        <div class="row">
+            {% for category in categories %}
+            <div class="cat-card">
+                <div>
+                    <a href="{% url 'seller:subcategory-list' name=category.name %}">
+                        <img src="{{category.image.url}}" alt="">
+                    </a>
+                </div>
+                <div class="text-center cat-card-info">
+                    <a href="{% url 'seller:subcategory-list' name=category.name %}" class="heading-3-orange">
+                        <p class="cat-card-head">{{category.name}}</p>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- all category section -->
+
+    <!-- min inventory section -->
+    <div class="mt-5 pad-2">
+        <p class="heading-3-black seller-dash-heading-sm">
+            Minimum Inventory
+            <a href="{%url 'seller:min-inventory'%} " class="seller-see-all body-bold-udl-orange">
+                See All
+            </a>
+        </p>
+        <hr class="simple-hr">
+        <div class="row">
+            {% for product in min_inventories %}
+            {% if forloop.counter < 5 %}
+            <div class="inventory-card">
+                <div class="inv-card-img">
+                    <a href="">
+                        {% if product.image1 %}
+                    <img src="{{product.image1.url}}" alt="">
+                        {% else %}
+                    <img src="{% static 'images/demo image.jpg' %}" alt="">
+                        {% endif %}
+                    </a>
+                    <div class="min-inv-alert">
+                        <p> <span>{{product.stock}}</span> items</p>
+                    </div>
+                </div>
+                <div class="inv-card-info text-center">
+                    <a href="">
+                        <p class="body-orange cat-card-head">{{product.product.name|truncatechars:15}}-{{product.color}}-{{product.size.size}}</p>
+                    </a>
+                    <p class="cat-card-cat">{{product.product.category.name}}</p>
+                    <div class="row justify-content-around mt-1 pb-2">
+                        <a href="{% url 'seller:product-update' pk=product.id %}" type="button" class="w-fit">
+                            Edit
+                        </a>
+                        <a href="{% url 'seller:product-delete' pk=product.id %}" type="button" class="w-fit">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div> 
+            {% endif %}
+            {% endfor %}
+            
+            
+        </div>
+    </div>
+    <!-- min inventory section -->
+
+    <!-- all inventory section -->
+    <div class="mt-5 mb-5 pad-2">
+        <p class="heading-3-black seller-dash-heading-sm">
+            All Inventory
+            <a href="{%url 'seller:all-inventory'%}" class="seller-see-all body-bold-udl-orange">
+                See All  
+            </a>
+        </p>
+        <hr class="simple-hr">
+        <div class="row">
+            {% for product in all_inventories %}
+            {% if forloop.counter < 5 %}
+            <div class="inventory-card">
+                <div class="inv-card-img">
+                    <a href="">
+                        {% if product.image1 %}
+                    <img src="{{product.image1.url}}" alt="">
+                        {% else %}
+                    <img src="{% static 'images/demo image.jpg' %}" alt="">
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="inv-card-info text-center">
+                    <a href="">
+                    <p class="body-orange cat-card-head">{{product.product.name|truncatechars:15}}-{{product.color}}-{{product.size.size}}</p>
+                    </a>
+                    <p class="cat-card-cat">{{product.product.category.name}}</p>
+                    <div class="row justify-content-around mt-1 pb-2">
+                        <a href="{% url 'seller:product-update' pk=product.id %}" type="button" class="w-fit">
+                            Edit
+                        </a>
+                        <a href="{% url 'seller:product-delete' pk=product.id %}" type="button" class="w-fit">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div> 
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- all inventory section -->
+
+
+
+
+
+
+    
+   
+
+
+{% endblock %}

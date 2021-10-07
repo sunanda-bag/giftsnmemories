@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} <title>Contact US</title>  {% endblock %}
+{% block stylesheets %} 
+    <link rel="stylesheet" href="{% static 'css/contact.css' %}">
+{% endblock %}
+
+{% block bread-page %}
+<p class="bread-page body-white">Contact Us</p>
+{% endblock %}
+
+{% block bread-head %} 
+<p class="bread-head heading-2-white">#Contact Us</p>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="content-box">
+        <div class="row pt-4">
+            <div class="col-md-6">
+                <p class="heading-2-black">About Us</p>
+                <hr class="simple-hr">
+                <p class=" justify-text" >
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate corrupti veritatis libero! Unde, harum ad! Dignissimos illum natus enim alias facere itaque. Impedit architecto quia adipisci distinctio maxime aliquid doloribus.
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi, error quibusdam. Corporis quisquam ex numquam, sint asperiores rem repellendus deserunt qui reprehenderit vel ipsa libero molestiae quas possimus veniam quis.
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p class="heading-2-black contact-heading">Our Mission</p>
+                <hr class="simple-hr">
+                <p class=" justify-text" >
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate corrupti veritatis libero! Unde, harum ad! Dignissimos illum natus enim alias facere itaque. Impedit architecto quia adipisci distinctio maxime aliquid doloribus.
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi, error quibusdam. Corporis quisquam ex numquam, sint asperiores rem repellendus deserunt qui reprehenderit vel ipsa libero molestiae quas possimus veniam quis.
+                </p>
+            </div>
+        </div>
+      <hr>
+      <div class="row mt-5">
+          <div class="col-md-6">
+              <p class="heading-2-black">Contact Info</p>
+              <hr class="simple-hr">
+              <table id="contact-info-table">
+                  <tr>
+                      <th>Phone:</th>
+                      <td>1234567890</td>
+                  </tr>
+                  <tr>
+                      <th>Email:</th>
+                      <td>support@area51.com</td>
+                  </tr>
+                  <tr>
+                      <th>Operatiions:</th>
+                      <td>Monday to Saturday (10am to 7pm)</td>
+                  </tr>
+                  <tr>
+                      <th>Address:</th>
+                      <td>123 street, abc colony, xyz city, pqr State, 123456</td>
+                  </tr>
+              </table>
+              <p class="mt-5" style="font-weight: bold;">Social media platforms:</p>
+              <div class="row mt-2">
+                <a class="contact-ibtn w-fit" href=""><i class="fab fa-facebook-f fa-3x"></i></a> 
+                <a class="contact-ibtn w-fit" href=""><i class="fab fa-twitter fa-3x"></i></a> 
+                <a class="contact-ibtn w-fit" href=""><i class="fab fa-instagram fa-3x"></i></a> 
+                <a class="contact-ibtn w-fit" href=""><i class="fab fa-youtube fa-3x"></i></a>
+              </div>
+          </div>
+          <div class="col-md-6">
+            <p class="heading-2-black contact-heading-email">Email Us</p>
+            <hr class="simple-hr">
+            <p class=" justify-text">
+                We want to hear from you. 
+                Please feel free to email us at support@area51.com or just speak your mind below. 
+                Please allow 1 business day to respond.
+            </p>
+            <form id="email-us-form" action="">
+                <div class="row mt-2">
+                    <label for="">Name:</label>
+                    <input type="text">
+                </div>
+                <div class="row mt-3">
+                    <label for="">Email:</label>
+                    <input type="text">
+                </div>
+                <div class="row mt-3">
+                    <label for="">Subject:</label>
+                    <input type="text">
+                </div>
+                <div class="row mt-3">
+                    <label for="">Message:</label>
+                    <textarea name="" id="" cols="3" rows="3"></textarea>
+                </div>
+                <input type="submit" class="simple-btn contact-btn mt-3 heading-3-regular-white" value="Send Mail">
+            </form>
+          </div>
+      </div>
+      <hr>
+      <div class="row pb-5">
+          <p class="heading-2-black contact-heading">Find A Local Shop (Store Locator)</p>
+          <hr class="simple-hr">
+          <div class="row">
+              {% for c in '12345678' %}
+                <div class="col-md-3 store-card mt-3">
+                    <p class="heading-3-black">ABC Textiles</p>
+                    <p class="body-italic-black">123 street, abc colony</p>
+                    <p class="body-italic-black">xyz city, pqr state, 800000</p>
+                </div>
+              {% endfor %}
+              
+          </div>
+      </div>
+    </section>
+</div>
+<div class="policy-bar">
+    <div class="container h-100">
+        <div class="row h-100">
+            <div class="col-md-4 my-auto policy-btn">
+                <a href="{% url 'seller:legal' %}" class="heading-3-black" type="button">
+                    Refund Policies
+                </a>
+            </div>
+            <div class="col-md-4 text-center my-auto policy-btn">
+                <a href="{% url 'seller:legal' %}" type="button" class="heading-3-black">
+                    Terms and Conditions
+                </a>
+            </div>
+            <div class="col-md-4 my-auto policy-btn" style="text-align: right;">
+                <a href="{% url 'seller:legal' %}" type="button" class="heading-3-black">
+                    Privacy Policies
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

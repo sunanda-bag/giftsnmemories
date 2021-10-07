@@ -1,0 +1,114 @@
+{% load static %}
+
+<header>
+    <!-- Header Start -->
+    <div class="header-area">
+        <div class="main-header header-sticky">
+            <div class="container-fluid">
+                <div class="row menu-wrapper align-items-center justify-content-between">
+                    <div class="header-left d-flex align-items-center">
+                        <!-- Logo -->
+                        <div class="logo">
+                            <a href="/"><img style="    width: 100px;margin-left: 20px;"
+                                    src="{% static 'assets/img/logo/G&M_logo.png' %}" alt=""></a>
+                        </div>
+                        <!-- Logo-2 -->
+                        <div class="logo2">
+                            <a href="/"><img style="    width: 100px;margin-left: -20px;margin-top: -10px;"
+                                    src="{% static 'assets/img/logo/G&M_logo.png' %}" alt=""></a>
+                        </div>
+                        <!-- Main-menu -->
+                        <div class="main-menu  d-none d-lg-block">
+                            <nav>
+                                <ul id="navigation">
+                                    <!-- <li><a href="/">Home</a></li> -->
+                                    <li><a href="/product/build-a-box">Build A Box</a></li>
+                                    <li><a href="/product/premade">Premade</a></li>
+                                    <li><a href="/product/products">Corporate Gifts</a></li>
+                                    <!-- <li><a href="#">Corporate Gifts</a>
+                                        <ul class="submenu">
+                                            <li><a href="/login">Login</a></li>
+                                            <li><a href="card.html">Card</a></li>
+                                            <li><a href="/categories">Categories</a></li>
+                                            <li><a href="/checkout">Checkout</a></li>
+                                            <li><a href="/product_details">Product Details</a></li>
+                                        </ul>
+                                    </li> -->
+                                    <!-- <li><a href="blog.html">Blog</a>
+                                        <ul class="submenu">
+                                            <li><a href="blog.html">Blog</a></li>
+                                            <li><a href="blog_details.html">Blog Details</a></li>
+                                            <li><a href="elements.html">Elements</a></li>
+                                        </ul>
+                                    </li> -->
+                                    <li><a href="/about">About Us</a></li>
+                                    <li><a href="/contact">Contact Us</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="header-right1 d-flex align-items-center main-menu">
+                        <div class="search">
+                            <nav>
+                                <ul class="d-flex align-items-center">
+                                    <li>
+                                        <!-- Search Box -->
+                                        <form action="/search" class="form-box f-right ">{% csrf_token %}
+                                            <input type="text" class="input input-select" name="q"
+                                                placeholder="Search here...">
+                                            <div class="search-icon search-btn">
+                                                <i class="ti-search"></i>
+                                            </div>
+                                        </form>
+
+
+                                    </li>
+                                    <!-- <li>
+                                    <a href="login.html" class="account-btn" target="_blank">My Account</a>
+                                </li> -->
+                                    
+                                    {% if request.user.is_authenticated %}
+                                    <li><a href="#">{{user.first_name}}'s Account</a>
+                                        <ul class="submenu">
+
+                                            {% if request.user.gnmusers.user_type == 'S' %}
+                                            <li><a href="{% url 'seller:dashboard' %}">Dashboard</a></li>
+                                            {% endif %}
+                
+                                            <li><a href="{% url 'gnm_users:cust-account' %}">My Profile</a></li>
+                                            <li><a href="#">My Orders</a></li>
+                                            <li><a href="#">Settings</a></li>
+                                            <li><a href="{% url 'gnm_users:signout' %}">Logout</a></li>
+                                            
+                                        </ul>
+                                    </li>
+                                    {% else %} 
+                                    <li><a href="#">Account Details</a>
+                                        <ul class="submenu">
+                                            <li><a href="{% url 'gnm_users:signin' %}">Login</a></li>
+                                            <li><a href="{% url 'gnm_users:signup' %}">Register</a></li>
+                                        </ul>
+                                    </li>
+                                    {% endif %}
+
+                                    <li>
+                                        <div class="card-stor">
+                                            <img src="{% static 'assets/img/icon/card.svg' %}" alt="">
+                                            <span>0</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- Mobile Menu -->
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+</header>
+<!-- header end -->

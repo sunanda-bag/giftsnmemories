@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} <title>My Orders - #1234</title>  {% endblock %}
+{% block stylesheets %} 
+<link rel="stylesheet" href="{% static 'css/cust-account.css' %}">
+{% endblock %}
+
+{% block bread-page %}
+<a class="bread-page body-white" href="{% url 'gnm_users:cust-account' %}">My Account</a>
+<i class="fas fa-chevron-right right-chev"></i>
+<a class="bread-page body-white" href="{% url 'gnm_users:cust-order-list' %}">My Orders</a>
+<i class="fas fa-chevron-right right-chev"></i>
+<p class="bread-page body-white bread-page-2 text-truncate">#{{order.id}}</p>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <section class="wishlist content-box cust-acc-content-box cust-order-single-section p-3">
+            <p class="title-semibold-italic-orange cust-acc-title">#{{order.id}}</p>
+            <div class="mt-4">
+                <p class="heading-2-black cust-acc-heading">Order Summary</p>
+                <hr class="simple-hr">
+                <table id="customer-single-order-table">
+                    <tr>
+                        <th>Order Date: </th>
+                        <td>{{order.orderDate}}</td>
+                    </tr>
+                    <tr>
+                        <th>Order Status: </th>
+                        {% if order.delivered %}
+                        <td>Delivered</td>
+                        {% else %}
+                        <td>Processing</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <th>Delivery Date: </th>
+                        {% if order.delivered %}
+                        <td>{{order.deliveryDate|date:"Y-m-d"}}</td>
+                        {% else %}
+                        <td>To Be processed</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <th>Order Items: </th>
+                        <td>{{order.items.all.count}}</td>
+                    </tr>
+                    <tr>
+                        <th>Items:</th>
+                        {% for item in order.items.all %}
+                        <td>{{item.product.name}}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>Order Amount: </th>
+                        <td>${{order.price}}</td>
+                    </tr>
+                    <tr>
+                        <th>Address: </th>
+                        <td>{{order.address}}</td>
+                    </tr>
+                    <tr>
+                        <th>Pincode: </th>
+                        <td>{{order.pincode}}</td>
+                    </tr>
+                    <tr>
+                        <th>Return/Refund: </th>
+                        <td> 
+                            <a href="" style="color: var(--dark-orange);"> 
+                                Request return/refund
+                            </a> 
+                        </td>
+                    </tr>
+                </table>
+                <div class="col-md-12 mt-4">
+                    <div class="row">
+                        <a href="{% url 'gnm_users:cust-account' %}" type="button" class="simple-btn go-to-acc-btn">
+                            Go To Account
+                        </a>
+                        <a href="{% url 'gnm_users:cust-order-list' %}" type="button" class="simple-btn go-to-acc-btn ms-3">
+                            All Orders
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}

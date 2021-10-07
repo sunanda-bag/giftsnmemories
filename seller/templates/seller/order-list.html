@@ -1,0 +1,86 @@
+{% extends 'seller-base.html' %}
+{% load static %}
+
+{% block title %} <title>Orders</title> {% endblock %}
+{% block dash-title %} Orders{% endblock %}
+{% block search-bar %} 
+        <form class="dash-page-search-bar" action="">
+            <input type="text" placeholder="Search Orders" class="">
+            <a href="" type="submit" class="">
+                <i class="fas fa-search cat-search-icon"></i>
+            </a>
+        </form>
+{% endblock %}
+
+{% block dash-content %}
+<!-- recent orders section -->
+<div class="pad-2">
+    <div class="row">
+        <p class="dash-second-heading heading-3-black">Recent Orders</p>
+        <a href="{% url 'seller:all-orders' %}" class="go-back-btn heading-3-regular-white" type="button">Go Back</a>
+    </div>
+    <hr class="simple-hr">
+    <table class="seller-orders-table">
+        <tr>
+            <th>Order No.</th>
+            <th class="table-sm">Order Date</th>
+            <th class="table-sm">Order Price</th>
+            <th class="table-sm">Destination</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        
+        {% for order in orders %}
+        <tr>
+            <td> 
+                <a href="{% url 'seller:order-detail' pk=order.id %}">#{{order.id}}</a> 
+            </td>
+            <td class="table-sm">{{order.orderDate|date:"Y-m-d"}}</td>
+            <td class="table-sm">${{order.price}}</td>
+            <td class="table-sm">{{order.pincode}}</td>
+            
+            {% if order.delivered %}
+            <td>Delivered</td>
+            {% else %}
+            <td>Processing</td>
+            {% endif %}
+
+            {% if not order.delivered %}
+            <td>
+                <a href="{% url 'seller:mark-delivered' pk=order.id %}">Mark as Delivered</a>
+            </td>
+            {% else %}
+            <td>Not Applicable</td>
+            {% endif %}
+            
+        </tr>
+        {% endfor %}
+        
+    </table>
+    <!-- pagination  -->
+    <div class="col-md-12 text-center">
+        <div class="row d-flex no-gutters justify-content-center mb-5 mt-4 w-fit mx-auto">
+            <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1" class="btn btn-sm btn-prev">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-sm btn-prev">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-sm btn-prev">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-sm btn-prev">last &raquo;</a>
+                {% endif %}
+            </span>
+            </div>
+        </div>
+    </div>      
+    <!-- pagination  -->
+</div>
+<!-- recent orders section -->
+
+{% endblock %}

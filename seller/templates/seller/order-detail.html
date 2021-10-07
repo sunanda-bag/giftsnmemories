@@ -1,0 +1,93 @@
+{% extends 'seller-base.html' %}
+{% load static %}
+
+{% block title %} <title>Order Details</title> {% endblock %}
+{% block dash-title %} Orders{% endblock %}
+{% block search-bar %} 
+        <form class="dash-page-search-bar" action="">
+            <input type="text" placeholder="Search Orders" class="">
+            <a href="" type="submit" class="">
+                <i class="fas fa-search cat-search-icon"></i>
+            </a>
+        </form>
+{% endblock %}
+
+{% block dash-content %}
+<!-- order detail -->
+<div class="pad-2">
+    <div class="row">
+        <p class="dash-second-heading heading-1-semibold-italic-orange">#{{order.id}}</p>
+        <a href="{% url 'seller:order-list' %}" class="go-back-btn heading-3-regular-white" type="button">Go Back</a>
+    </div>
+    <p class="heading-1-semibold-italic-orange"></p>
+    <p class="heading-3-black mt-3">Order Summary</p>
+    <hr class="simple-hr">
+    <table id="seller-order-detail-table">
+        <tr>
+            <th>Order Date: </th>
+            <td>{{order.orderDate}}</td>
+        </tr>
+        <tr>
+            <th>Order Status: </th>
+            {% if order.delivered %}
+            <td>Delivered</td>
+            {% else %}
+            <td>Processing</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <th>Delivery Date: </th>
+            {% if order.delivered %}
+            <td>{{order.deliveryDate|date:"Y-m-d"}}</td>
+            {% else %}
+            <td>To Be processed</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <th>Order Items: </th>
+            <td>{{order.items.all.count}}</td>
+        </tr>
+        <tr>
+            <th>Items:</th>
+            {% for item in order.items.all %}
+            <td>{{item.product.name}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Order Amount: </th>
+            <td>${{order.price}}</td>
+        </tr>
+        <tr>
+            <th>Address: </th>
+            <td>{{order.address}}</td>
+        </tr>
+        <tr>
+            <th>Pincide: </th>
+            <td>{{order.pincode}}</td>
+        </tr>
+        {% if order.delivered %}
+        <tr>
+            <th>Return/Refund:</th>
+            <td>
+                <a href="">
+                    accept refund/return
+                </a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <th>Action:</th>
+            <td>
+                <a href="{% url 'seller:mark-delivered' pk=order.id %}">
+                    Mark As Delivered
+                </a>
+            </td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+
+
+<!-- order detail -->
+
+{% endblock %}
