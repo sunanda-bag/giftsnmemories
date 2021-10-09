@@ -53,7 +53,7 @@ class GiftItem(models.Model):
     class Meta:
         verbose_name_plural='3. Selected Gift Items'
 
-    def get_item_price(self):
+    def get_gift_item_price(self):
         return self.quantity * self.product.price
 
 
@@ -74,8 +74,8 @@ class GiftBoxItem(models.Model):
 
     def total_amount(self):
         total = 0
-        for item in self.items.all():
-            total += item.get_item_price()
+        for item in self.gift_items.all():
+            total += item.get_gift_item_price()
         return total 
 
 class WishItem(models.Model):

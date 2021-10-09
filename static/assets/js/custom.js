@@ -1,12 +1,38 @@
 
-
+// first validation
+function validate3(val) {
+    v1 = document.getElementById("name");
+    v2 = document.getElementById("email");
+    flag1 = true;
+    flag2 = true;
+    if (val >= 5 || val == 0) {
+        if (v1.value == "") {
+            v1.style.borderColor = "red";
+            flag1 = false;
+        }
+        else {
+            v1.style.borderColor = "white";
+            flag1 = true;
+        }
+    }
+    if (val >= 6 || val == 0) {
+        if (v2.value == "") {
+            v2.style.borderColor = "red";
+            flag2 = false;
+        }
+        else {
+            v2.style.borderColor = "white";
+            flag2 = true;
+        }
+    }
+    flag = flag1 && flag2;
+    return flag;
+}
 function validate1(val) {
     v1 = document.getElementById("name");
     v2 = document.getElementById("email");
-
     flag1 = true;
     flag2 = true;
-
     if (val >= 1 || val == 0) {
         if (v1.value == "") {
             v1.style.borderColor = "red";
@@ -17,7 +43,6 @@ function validate1(val) {
             flag1 = true;
         }
     }
-
     if (val >= 2 || val == 0) {
         if (v2.value == "") {
             v2.style.borderColor = "red";
@@ -28,11 +53,14 @@ function validate1(val) {
             flag2 = true;
         }
     }
-
     flag = flag1 && flag2;
-
     return flag;
 }
+
+
+
+
+
 
 function validate2(val) {
     v1 = document.getElementById("web-title");

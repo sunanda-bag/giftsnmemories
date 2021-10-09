@@ -5,7 +5,11 @@
     .btn {
         border-radius: 10px;
     }
+    section{
+        font-size: 1.4rem;
+    }
 </style>
+<link rel="stylesheet" href="build-a-box.css">
 {% endblock css %}
 {% block content %}
 {% include 'header.html' %}
@@ -361,7 +365,7 @@
 
 
 
-                        <div class="card1 b-0 show">
+                        <div class="card1 b-0 ">
                             <div class="fa fa-long-arrow-left prev"> </div>
                             <div class="row justify-content-center">
 
@@ -379,8 +383,9 @@
                                                 <p class="card-text text-center text-uppercase">{{card.name}}</p>
 
 
-                                                <form action="{% url 'order:add-box' %}" method="POST" class=" ps-0">{% csrf_token %}
-                                                
+                                                <form action="{% url 'order:add-box' %}" method="POST" class=" ps-0">{%
+                                                    csrf_token %}
+
                                                     <input type="hidden" name="box-id" value="{{card.id}}">
                                                     <!-- Button trigger modal -->
                                                     <button type="submit" class="btn py-3" name="add-box"
@@ -417,39 +422,56 @@
                                                                         <div class="col-lg-6 offset-lg-1">
                                                                             <div class="s_product_text">
 
-                                                                                <form>
+                                                                                <form
+                                                                                    action="{% url 'order:add-card-to-box' %}"
+                                                                                    method="POST">{% csrf_token %}
 
                                                                                     <div class="form-group">
                                                                                         <label
                                                                                             for="recipient-name">Recipient
                                                                                             Name</label>
-                                                                                        {{card_message_form.recipient}}
-                                                                                        {{card_message_form.recipient.errors}}
+                                                                                        <input type="text"
+                                                                                            id="recipient-name"
+                                                                                            class="form-control"
+                                                                                            name="recipient"
+                                                                                            placeholder="Recipient name">
                                                                                     </div>
                                                                                     <div class="form-group">
-                                                                                        <label
-                                                                                            for="sender-name">Sender
-                                                                                            Name</label>
-                                                                                        {{card_message_form.sender}}
-                                                                                        {{card_message_form.sender.errors}}
+                                                                                        <label for="sender-name">Sender
+                                                                                            NAme</label>
+                                                                                        <input type="text"
+                                                                                            id="sender-name"
+                                                                                            class="form-control"
+                                                                                            name="sender"
+                                                                                            placeholder="Sender name">
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <label
                                                                                             for="exampleFormControlTextarea1">Card
                                                                                             Content</label>
-                                                                                        {{card_message_form.card_content_front}}
-                                                                                        {{card_message_form.card_content_front.errors}}
+                                                                                        <textarea class="form-control"
+                                                                                            name="   "
+                                                                                            id="exampleFormControlTextarea1"
+                                                                                            rows="3"></textarea>
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <label
-                                                                                            for="exampleFormControlTextarea1">Back Of Card
-                                                                                            </label>
-                                                                                        {{card_message_form.card_content_back}}
-                                                                                        {{card_message_form.card_content_back.errors}}
+                                                                                            for="exampleFormControlTextarea1">Back
+                                                                                            Of Card
+                                                                                        </label>
+                                                                                        <textarea class="form-control"
+                                                                                            name="bc_content"
+                                                                                            id="exampleFormControlTextarea1"
+                                                                                            rows="3"></textarea>
                                                                                     </div>
+                                                                                    <input type="hidden" name="card-id"
+                                                                                        value="{{card.id}}">
+                                                                                    <button type="submit"
+                                                                                        class="btn py-3"
+                                                                                        name="add-card-data"
+                                                                                        value="{{card.id}}">Add to
+                                                                                        Box</button>
                                                                                 </form>
-
-
 
 
                                                                             </div>
@@ -471,11 +493,11 @@
                                     {% endfor %}
                                 </div>
                                 <!-- Button -->
-                                <div class="row justify-content-center">
+                                <!-- <div class="row justify-content-center">
                                     <div class="room-btn">
                                         <a href="#" class="border-btn">Discover More</a>
                                     </div>
-                                </div>
+                                </div> -->
                                 <!-- select the box end -->
 
                             </div>
@@ -485,17 +507,98 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card1 b-0">
+                        <div class="card1 b-0 show">
                             <div class="row d-flex justify-content-center text-center">
-                                <div class="confirm">
-                                    <h4 class="mb-2">Thank You !</h4>
-                                    <p>An estimation will be sent on your email address.</p>
+                                <div class="col-lg-10">
+                                    <div class="order-box ">
+                                        <div class="card_z pb-5">
+                                            <div class="row">
+                                                <div class="col-md-8 cart">
+                                                    <div class="title">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <h4><b>Shopping Cart</b></h4>
+                                                            </div>
+                                                            <div class="col align-self-center text-right text-muted">{{gift_count}}
+                                                                items</div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- box selected  -->
+                                                    <div class="row border-top border-bottom pb-5 pt-3">
+                                                        <div class="row main align-items-center">
+                                                            <div class="col-2"><img class="img-fluid img-thumbnail"
+                                                                    src="{{items.box_type.gift_box.image.url}}"></div>
+                                                            <div class="col">
+                                                                <div class="row text-muted text-uppercase">
+                                                                    {{items.box_type.gift_box.boxsize.size}}</div>
+                                                                <div class="row">{{items.box_type.gift_box.name}}</div>
+                                                            </div>
+                                                            <div class="col"><a href="#"
+                                                                    class="border">{{items.box_type.gift_box.size}}</a> </div>
+                                                            <div class="col">$ {{items.box_type.gift_box.price}} <span
+                                                                    class="close">&#10005;</span></div>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    {% for gift_item in items.gift_items.all %}
+                                                    <div class="row border-top border-bottom pb-5 pt-3">
+                                                        <div class="row main align-items-center">
+                                                            <div class="col-2"><img class="img-fluid img-thumbnail"
+                                                                    src="{{gift_item.product.image1.url}}"></div>
+                                                            <div class="col">
+                                                                <div class="row text-muted text-uppercase">
+                                                                    {{gift_item.product.product.category}}</div>
+                                                                <div class="row">{{gift_item.product.name}}</div>
+                                                            </div>
+                                                            <div class="col"> <a href="#">-</a><a href="#"
+                                                                    class="border">{{gift_item.product.product.quantity}}</a><a
+                                                                    href="#">+</a> </div>
+                                                            <div class="col">$ {{gift_item.product.price}} <span
+                                                                    class="close">&#10005;</span></div>
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
+
+                                                     <!-- card selected  -->
+                                                     <div class="row border-top border-bottom pb-5 pt-3">
+                                                        <div class="row main align-items-center">
+                                                            <div class="col-2"><img class="img-fluid img-thumbnail"
+                                                                    src="{{items.card_type.card.image.url}}"></div>
+                                                            <div class="col">
+                                                                <div class="row text-muted text-uppercase">
+                                                                    {{items.card_type.card}}</div>
+                                                                <div class="row">{{items.card_type.card.name}}</div>
+                                                            </div>
+                                                            <div class="col"><a href="#"
+                                                                    class="border"></a> </div>
+                                                            <div class="col">$ 0.00 <span
+                                                                    class="close">&#10005;</span></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+
+                                            </div>
+                                            
+
+                                            <form action="" method="POST" class=" ps-0">{%  csrf_token %}
+                                              
+
+                                                <!-- <input type="hidden" name="box-id" value="{{card.id}}"> -->
+                                                <!-- Button trigger modal -->
+                                                <button type="submit" class="btn py-3" name="add-box"
+                                                    value="">Save Gift Box</button>
+                                            </form>
+
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
-                            <div class="row d-flex justify-content-center">
+                            <!-- <div class="row d-flex justify-content-center">
                                 <div class="check"> <img src="https://i.imgur.com/g6KlBWR.gif" class="check-mark">
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

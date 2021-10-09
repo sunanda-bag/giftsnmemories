@@ -56,41 +56,38 @@ def premade(request):
 
 
 def build_a_box(request):
-
     categories = Category.objects.all()
     labels = Variant.objects.all()
     products = Product.objects.all()
     boxes = GiftBox.objects.all()
     cards = Card.objects.all()
+    gift_box_items = GiftBoxItem.objects.all()
+    gift_box_items = GiftBoxItem.objects.filter(user=request.user,added2cart_status=False)
+    if gift_box_items.exists():
+
+        gift_box_items_qs=gift_box_items[0]
+        print(gift_box_items_qs.card_type)
+        gift_count=gift_box_items_qs.gift_items.all().count()
+        for i in gift_box_items_qs.gift_items.all():
+            print(i)
+            print(i)
+            print(i.product.image1)
+            print(i.product.product.name)
+            print(i.product.product.category)
+    # print(items.box_type)
+    # print(items.gift_items)
+    # print(items.card_type)
+    # print(items.card_message.recipient)
            
     data = {'products': products,
 #             'labels': labels,
             'categories': categories,
             'boxes':boxes,
             'cards':cards,
-#             'minMaxPrice': minMaxPrice,
+            'items': gift_box_items_qs,
+            'gift_count':int(gift_count)+2,
             }
-    # # data = {}
-    # print("request value ",str(request.GET.get('cart_items')))
-    # if request.GET.get('cart_items'):
-    #     prd_tot=0
-    #     itm_tot=0
-    #     cart = json.loads(request.GET.get('cart_items'))
-    #     print("value in cart", cart)
-    #     try:
-    #         for prd in cart:
-    #             itm_tot = (int(cart[prd]['quantity'])*int(cart[prd]['price']))
-    #             cart[prd]['total_item_price']=itm_tot
-    #             prd_tot=prd_tot+itm_tot
-    #     except:
-    #         pass
-
-    #     print("total price:", prd_tot)
-
-    #     request.session['cart'] = cart
-    #     request.session['product_total_price'] = prd_tot
-    #     return redirect('/')
-    # else:
+   
 
     return render(request, 'product/build-a-box.html', data)
 

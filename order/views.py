@@ -1,6 +1,8 @@
 from django.shortcuts import render, reverse, get_object_or_404, redirect
 from django.views import generic
 from .models import *
+from product.models import *
+
 from .forms import *
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -65,29 +67,18 @@ def addToGiftBox(request):
 
 
 
-class CardMessageView(generic.View):
-    def get(self, *args, **kwargs):
-        context = {
-            'card_message_form': CardMessageForm(),
-        }
-        return render(self.request, 'product/build-a-box.html', context)
+def AddCardMessage(request):
+    if request.method=='POST':
+        card_var_id = request.POST.get('card-id')
+        card_var = Card.objects.get(id=card_var_id)
 
-    def post(self, *args, **kwargs):
-        card_message_form = CardMessageForm(data=self.request.POST)
-        
-        if card_message_form.is_valid() :
-            c_message = card_message_form.save(commit=False)
-            
-            c_message.recipient = c_message.recipient
-            c_message.sender = c_message.sender
-            c_message.save()
-
-            card_form = CardMessageForm.save(commit=False)
-            card_form.save()
-
-            
-            return HttpResponseRedirect(reverse('product:build-a-box'), {'card_message_form': CardMessageForm,})
-       
+        recipient= request.POST.get('recipient')
+        sender= request.POST.get('sender')
+        front_content= request.POST.get('fc_content')
+        back_content= request.POST.get('bc_content')
+        CardMessage.objects.create(card=card_var, recipient=recipient,sender=sender,card_content_front=front_content,card_content_back=back_content)
+    return HttpResponseRedirect(reverse('product:build-a-box'), {'card_message_form': CardMessageForm,})
+    
         
 
 @login_required()
