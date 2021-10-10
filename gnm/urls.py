@@ -27,6 +27,8 @@ urlpatterns = [
 
     #path for home
     path('', views.IndexView.as_view(), name='home'),
+    path('about/', views.about, name='about'),
+    path('contact/', views.contact, name='contact'),
     
 
     #path for apps
