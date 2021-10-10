@@ -1,36 +1,8 @@
 
 // first validation
-function validate3(val) {
-    v1 = document.getElementById("name");
-    v2 = document.getElementById("email");
-    flag1 = true;
-    flag2 = true;
-    if (val >= 5 || val == 0) {
-        if (v1.value == "") {
-            v1.style.borderColor = "red";
-            flag1 = false;
-        }
-        else {
-            v1.style.borderColor = "white";
-            flag1 = true;
-        }
-    }
-    if (val >= 6 || val == 0) {
-        if (v2.value == "") {
-            v2.style.borderColor = "red";
-            flag2 = false;
-        }
-        else {
-            v2.style.borderColor = "white";
-            flag2 = true;
-        }
-    }
-    flag = flag1 && flag2;
-    return flag;
-}
 function validate1(val) {
-    v1 = document.getElementById("name");
-    v2 = document.getElementById("email");
+    v1 = document.getElementsByName("add-box");
+    // v2 = document.getElementById("email");
     flag1 = true;
     flag2 = true;
     if (val >= 1 || val == 0) {
@@ -43,24 +15,20 @@ function validate1(val) {
             flag1 = true;
         }
     }
-    if (val >= 2 || val == 0) {
-        if (v2.value == "") {
-            v2.style.borderColor = "red";
-            flag2 = false;
-        }
-        else {
-            v2.style.borderColor = "white";
-            flag2 = true;
-        }
-    }
-    flag = flag1 && flag2;
+    // if (val >= 2 || val == 0) {
+    //     if (v2.value == "") {
+    //         v2.style.borderColor = "red";
+    //         flag2 = false;
+    //     }
+    //     else {
+    //         v2.style.borderColor = "white";
+    //         flag2 = true;
+    //     }
+    // }
+    // flag = flag1 && flag2;
+    flag = flag1 ;
     return flag;
 }
-
-
-
-
-
 
 function validate2(val) {
     v1 = document.getElementById("web-title");
@@ -96,6 +64,35 @@ function validate2(val) {
     return flag;
 }
 
+function validate3(val) {
+    v1 = document.getElementById("name");
+    v2 = document.getElementById("email");
+    flag1 = true;
+    flag2 = true;
+    if (val >= 5 || val == 0) {
+        if (v1.value == "") {
+            v1.style.borderColor = "red";
+            flag1 = false;
+        }
+        else {
+            v1.style.borderColor = "white";
+            flag1 = true;
+        }
+    }
+    if (val >= 6 || val == 0) {
+        if (v2.value == "") {
+            v2.style.borderColor = "red";
+            flag2 = false;
+        }
+        else {
+            v2.style.borderColor = "white";
+            flag2 = true;
+        }
+    }
+    flag = flag1 && flag2;
+    return flag;
+}
+
 $(document).ready(function () {
 
     var current_fs, next_fs, previous_fs;
@@ -104,6 +101,7 @@ $(document).ready(function () {
 
         str1 = "next1";
         str2 = "next2";
+        str3 = "next3";
 
         if (!str1.localeCompare($(this).attr('id')) && validate1(0) == true) {
             val1 = true;
@@ -119,7 +117,14 @@ $(document).ready(function () {
             val2 = false;
         }
 
-        if ((!str1.localeCompare($(this).attr('id')) && val1 == true) || (!str2.localeCompare($(this).attr('id')) && val2 == true)) {
+        if (!str3.localeCompare($(this).attr('id')) && validate3(0) == true) {
+            val3 = true;
+        }
+        else {
+            val3 = false;
+        }
+
+        if ((!str1.localeCompare($(this).attr('id')) && val1 == true) || (!str2.localeCompare($(this).attr('id')) && val2 == true) || (!str3.localeCompare($(this).attr('id')) && val3 == true)) {
             current_fs = $(this).parent().parent().parent();
             next_fs = $(this).parent().parent().parent().next();
 

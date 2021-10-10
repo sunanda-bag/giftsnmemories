@@ -66,7 +66,6 @@ def build_a_box(request):
     if gift_box_items.exists():
 
         gift_box_items_qs=gift_box_items[0]
-        print(gift_box_items_qs.card_type)
         gift_count=gift_box_items_qs.gift_items.all().count()
         for i in gift_box_items_qs.gift_items.all():
             print(i)
@@ -79,18 +78,25 @@ def build_a_box(request):
     # print(items.card_type)
     # print(items.card_message.recipient)
            
-    data = {'products': products,
-#             'labels': labels,
-            'categories': categories,
-            'boxes':boxes,
-            'cards':cards,
-            'items': gift_box_items_qs,
-            'gift_count':int(gift_count)+2,
-            }
-   
+        data = {'products': products,
+    #             'labels': labels,
+                'categories': categories,
+                'boxes':boxes,
+                'cards':cards,
+                'items': gift_box_items_qs,
+                'gift_count':int(gift_count)+2,
+                }
+    
 
-    return render(request, 'product/build-a-box.html', data)
-
+        return render(request, 'product/build-a-box.html', data)
+    else:
+        data={'products': products,
+    #             'labels': labels,
+                'categories': categories,
+                'boxes':boxes,
+                'cards':cards,
+                }
+        return render(request, 'product/build-a-box.html', data)    
 
 
 

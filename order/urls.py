@@ -6,12 +6,13 @@ app_name = 'order'
 urlpatterns = [
     # path('wishlist/', WishlistView.as_view(), name='wishlist'),
     # path('cart/', CartView.as_view(), name='cart'),
-    # path('order-chackout/', orderCheckout, name='order-checkout'),
+    path('order-checkout/', orderCheckout, name='order-checkout'),
     # path('checkout/', CheckoutView.as_view(), name='checkout'),
     # path('Confirmation/', ConfirmationView.as_view(), name='confirmation'),
 
     path('add-box/', addBox, name='add-box'),
     path('add-card/', addCard, name='add-card'),
+    path('delete-card/', deleteCard, name='delete-card'),
     path('add-to-gift-box/', addToGiftBox, name='add-to-gift-box'),
     path('add-card-to-box/', AddCardMessage, name='add-card-to-box'),
 

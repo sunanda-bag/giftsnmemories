@@ -47,7 +47,17 @@ def addCard(request):
         finally:
             return HttpResponseRedirect(reverse('product:build-a-box'))
 
+
+
+def deleteCard(request):
+    if request.method=='POST':
+        card_id = request.POST.get('card-id')
+        card = CardType.objects.get(id=card_id)
+        card.delete()
+        return HttpResponseRedirect(reverse('product:build-a-box'))
             
+
+
 def addToGiftBox(request):
     if request.method=='POST':
         product_var_id = request.POST.get('product-id')
@@ -79,7 +89,13 @@ def AddCardMessage(request):
         CardMessage.objects.create(card=card_var, recipient=recipient,sender=sender,card_content_front=front_content,card_content_back=back_content)
     return HttpResponseRedirect(reverse('product:build-a-box'), {'card_message_form': CardMessageForm,})
     
-        
+
+def deleteFromGiftBox(request):
+    if request.method=='POST':
+        item_id = request.POST.get('item-id')
+        item = OrderItem.objects.get(id=item_id)
+        item.delete()
+        return HttpResponseRedirect(reverse('order:cart'))
 
 @login_required()
 def addToWishlist(request):
@@ -187,17 +203,18 @@ class CartView(LoginRequiredMixin,generic.View):
 
 def orderCheckout(request):
     if request.method=='POST':
-        order = Order.objects.get(user=request.user, ordered=False)
-        order.name = request.POST.get('name')
-        order.mobile = request.POST.get('mobile')
-        order.email = request.POST.get('email')
-        order.address = request.POST.get('address')
-        order.city = request.POST.get('city')
-        order.pincode = request.POST.get('pincode')
-        order.price = request.POST.get('price')
-        order.quantity = request.POST.get('quantity')
-        order.save()
-        return HttpResponseRedirect(reverse('order:checkout'))
+        # order = Order.objects.get(user=request.user, ordered=False)
+        # order.name = request.POST.get('name')
+        # order.mobile = request.POST.get('mobile')
+        # order.email = request.POST.get('email')
+        # order.address = request.POST.get('address')
+        # order.city = request.POST.get('city')
+        # order.pincode = request.POST.get('pincode')
+        # order.price = request.POST.get('price')
+        # order.quantity = request.POST.get('quantity')
+        # order.save()
+        # return HttpResponseRedirect(reverse('order:checkout'))
+        return render(request, 'order/checkout.html', {})
 
 class CheckoutView(LoginRequiredMixin,generic.View):
     def get(self, *args, **kwargs):
