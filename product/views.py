@@ -17,42 +17,42 @@ import json
 
 
 
-def premade(request):
+# def premade(request):
 
-    categories = Category.objects.all()
-    labels = Variant.objects.all()
-    products = Product.objects.all()
-    boxes = GiftBox.objects.all()
-    cards = Card.objects.all()
-#     minMaxPrice = Product.objects.aggregate(
-#         Min('discount_price'), Max('discount_price'))
-#     # products = myFilter.qs
+#     categories = Category.objects.all()
+#     labels = Variant.objects.all()
+#     products = Product.objects.all()
+#     boxes = GiftBox.objects.all()
+#     cards = Card.objects.all()
+# #     minMaxPrice = Product.objects.aggregate(
+# #         Min('discount_price'), Max('discount_price'))
+# #     # products = myFilter.qs
 
-    data = {'products': products,
-#             'labels': labels,
-            'categories': categories,
-            'boxes':boxes,
-            'cards':cards,
-#             'minMaxPrice': minMaxPrice,
-            }
-    if request.GET.get('cart_items'):
-        prd_tot=0
-        itm_tot=0
-        cart = json.loads(request.GET.get('cart_items'))
-        print("value in cart", cart)
-        try:
-            for prd in cart:
-                itm_tot = (int(cart[prd]['quantity'])*int(cart[prd]['price']))
-                cart[prd]['total_item_price']=itm_tot
-                prd_tot=prd_tot+itm_tot
-        except:
-            pass
+#     data = {'products': products,
+# #             'labels': labels,
+#             'categories': categories,
+#             'boxes':boxes,
+#             'cards':cards,
+# #             'minMaxPrice': minMaxPrice,
+#             }
+#     if request.GET.get('cart_items'):
+#         prd_tot=0
+#         itm_tot=0
+#         cart = json.loads(request.GET.get('cart_items'))
+#         print("value in cart", cart)
+#         try:
+#             for prd in cart:
+#                 itm_tot = (int(cart[prd]['quantity'])*int(cart[prd]['price']))
+#                 cart[prd]['total_item_price']=itm_tot
+#                 prd_tot=prd_tot+itm_tot
+#         except:
+#             pass
 
-        request.session['cart'] = cart
-        request.session['product_total_price'] = prd_tot
-        return redirect('/')
-    else:
-        return render(request, 'product/premade.html', data)
+#         request.session['cart'] = cart
+#         request.session['product_total_price'] = prd_tot
+#         return redirect('/')
+#     else:
+#         return render(request, 'product/premade.html', data)
 
 
 def build_a_box(request):
