@@ -1,8 +1,18 @@
-{% extends 'home_app/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
-{% load custom_filter %}
+{% block css %}
+<style>
+    .btn {
+        border-radius: 10px;
+    }
+    section{
+        font-size: 1.4rem;
+    }
+</style>
+<link rel="stylesheet" href="build-a-box.css">
+{% endblock css %}
 {% block content %}
-{% include 'home_app/header.html' %}
+{% include 'header.html' %}
 
 
 <main>
@@ -15,11 +25,11 @@
                     <div class="row">
                         <div class="col-xl-6 col-lg-8 col-md-8">
                             <div class="hero__caption hero__caption2">
-                                <h1 data-animation="fadeInUp" data-delay=".4s">Build A Box</h1>
+                                <h1 data-animation="fadeInUp" data-delay=".4s">Premade</h1>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                                        <li class="breadcrumb-item"><a href="/products">Build A Box</a></li>
+                                        <li class="breadcrumb-item"><a href="/product/premade">Premade</a></li>
                                     </ol>
                                 </nav>
                             </div>
@@ -50,556 +60,548 @@
             <!-- step wizard start-->
             <div class="container-fluid px-1 py-5 mx-auto">
                 <div class="row d-flex justify-content-center">
-                    <div class="container">
+                    <div class="col-xl-9 col-lg-11 col-md-10">
                         <ul id="progressbar" class="text-center">
-                            <li class="active step0" onclick="instep(1,0)" id="step1">Choose your Box</li>
-                            <li class="step0 " id="step2" onclick="instep(2,0)">Choose your Item</li>
-                            <li class="step0" id="step3" onclick="instep(3,0)">Choose your Card</li>
+                            <li class="active step0" id="step1">Choose your Box</li>
+                            <li class="step0" id="step2">Choose your Premade Gifts</li>
+                            <li class="step0" id="step3">Choose your Card</li>
                             <li class="step0" id="step4">Done</li>
-
                         </ul>
 
                         <div class="card1 b-0 show">
-                            <h2 class="center" style="text-align: center;"> Choose a Box</h2>
                             <div class="row justify-content-center">
+                                <div class="col-lg-10 col-md-11">
 
-                                <!-- <p>Quick, hassle-free, ready-to-ship gift boxes for you..</p>
-                                <h3>Select the box below!</h3> -->
+                                    <div class="row card-group">
+                                        {% for box in boxes %}
+                                        <div class="col-lg-3 col-md-4 col-sm-6 ">
+                                            <div class="card rounded my-5" style="width: 22rem;">
+                                                <a href="" data-target="#exampleModalCenter-{{box.id}}"
+                                                    data-toggle="modal"><img
+                                                        class="card-img-top img-fluid img-thumbnail img-rounded"
+                                                        src="{{box.image.url}}" alt="Card image cap"></a>
+                                                <div class="card-body">
+                                                    <h5 class="card-title text-center text-uppercase">{{box.boxsize}}
+                                                    </h5>
+                                                    <p class="card-text text-center text-uppercase">{{box.name}}</p>
 
-                                <!-- select the box -->
-                                <div class="row card-group mb-5" style="margin-top: 20px;">
 
-                                    {% for box in boxes %}
-                                    <div class=" col-lg-3 col-md-4 col-sm-6 ">
-                                        <div class="single-new-arrival mb-50 text-center card shadow bg-white rounded">
-                                            <div class="popular-img">
-                                                <img style="height: 185px;" class="img-thumbnail"
-                                                    src="{{box.boxattribute_set.first.imageURL}}" alt="">
-                                            </div>
-                                            <div class="popular-caption">
-                                                <h3><a href="#">{{box.title}}</a></h3>
-                                                <!-- <span>${{product.productattribute_set.first.price}}</span> -->
+                                                    <form action="{% url 'order:add-box' %}" method="POST"
+                                                        class=" ps-0">{% csrf_token %}
 
-                                                <div class="add_to_cart">
-                                                    <button type="button" onclick="step2('{{box.id}}')" class="btn"
-                                                        data-target="#boxModal-{{box.id}}">
-                                                        {{box.title}}</button>
-                                                    <!-- <a href="#" class="like_us"> <i class="ti-heart"></i> </a> -->
+
+                                                        <input type="hidden" name="box-id" value="{{box.id}}">
+                                                        <!-- Button trigger modal -->
+                                                        <button type="submit" class="btn py-3" name="add-box" onclick="validate1(1)"
+                                                            value="{{box.id}}">Add Box</button>
+                                                    </form>
+
                                                 </div>
 
-                                            </div>
-                                        </div>
-                                    </div>
+                                                <!-- modal starts -->
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="exampleModalCenter-{{box.id}}" tabindex="-1"
+                                                    role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
 
-                                    <!-- product details modal -->
+                                                            <div class="modal-body">
+                                                                <!--? Single Product Area Start-->
+                                                                <div class="product_image_area section-padding40">
+                                                                    <div class="container">
+                                                                        <h1 class="text-uppercase pb-4">{{box.name}} - {{box.boxsize}} series</h1>
+                                                                        <div class="row s_product_inner">
+                                                                            
+                                                                            <div class="col-lg-5">
+                                                                                <div class="product_slider_img">
+                                                                                    <div id="vertical">
+                                                                                        <div
+                                                                                            data-thumb="{{box.image.url}}">
+                                                                                            <img src="{{box.image.url}}"
+                                                                                                class="w-100 img-fluid img-thumbnail">
+                                                                                        </div>
 
-                                    <!-- <div class="modal fade" id="boxModal-{{box.id}}" tabindex="-1" role="dialog"
-                                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title" id="exampleModalCenterTitle">
-                                                        {{product.title}}</h3>
-                                                    <button style="font-size: 3rem;" type="button" class="close"
-                                                        data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body"> -->
-
-                                    <!--? Single Product Area Start-->
-                                    <!-- <div class="product_image_area section-padding40">
-                                                        <div class="container">
-                                                            <div class="row s_product_inner">
-                                                                <div class="col-lg-5">
-                                                                    <div class="product_slider_img">
-                                                                        <div id="vertical">
-                                                                            <div
-                                                                                data-thumb="{{box.boxattribute_set.first.imageURL}}">
-                                                                                <img src="{{box.boxattribute_set.first.imageURL}}"
-                                                                                    class="w-100 img-fluid img-thumbnail">
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
+                                                                            <div class="col-lg-6 offset-lg-1">
+                                                                                <div class="s_product_text">
+                                                                                    
+                                                                                    <hr>
+                                                                                    <h2>${{box.price}}
+                                                                                    </h2>
+                                                                                    <ul class="list">
+                                                                                        <li>
+                                                                                            <a class="active" href="#">
+                                                                                                <span>Category</span> :
+                                                                                                {{box.boxsize}}</a>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <a href="#">
+                                                                                                <span>Availibility</span>
 
+                                                                                                In Stock
+                                                                                            </a>
+                                                                                        </li>
+                                                                                    </ul>
+
+                                                                                    <p>
+                                                                                        {{box.description}}
+                                                                                    </p>
+                                                                                    <div class="card_area">
+                                                                                       
+                                                                                        <form
+                                                                                            action="{% url 'order:add-box' %}"
+                                                                                            method="POST" class=" ps-0">
+                                                                                            {% csrf_token %}
+
+
+                                                                                            <input type="hidden"
+                                                                                                name="box-id"
+                                                                                                value="{{box.id}}">
+                                                                                            <!-- Button trigger modal -->
+                                                                                            <button type="submit"
+                                                                                                class="btn py-3"
+                                                                                                name="add-box"
+                                                                                                value="{{box.id}}">Add
+                                                                                                Box</button>
+
+                                                                                        </form>
+
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-6 offset-lg-1">
-                                                                    <div class="s_product_text">
-                                                                        <button
-                                                                            style="background-color: rgb(182, 126, 54);"
-                                                                            class="btn btn-outline-dark">variation</button>
-                                                                        <hr>
-                                                                        <h2>${{box.boxattribute_set.first.price}}
-                                                                        </h2>
-                                                                        <ul class="list"> -->
-                                    <!-- <li>
-                                                                                <a class="active" href="#">
-                                                                                    <span>Category</span> :
-                                                                                    {{box.category}}</a>
-                                                                            </li> -->
-                                    <!-- <li>
-                                                                                <a href="#"> <span>Availibility</span>
-
-                                                                                    {% ifequal box.availability_status True %}
-                                                                                    : In Stock
-                                                                                    {% else %}
-                                                                                    : Out of Stock
-                                                                                    {% endifequal %}
-                                                                                </a>
-                                                                            </li>
-                                                                        </ul>
-
-                                                                        <p>
-                                                                            {{box.description}}
-                                                                        </p>
-                                                                        <div class="card_area">
-                                                                            <div class="product_count d-inline-block">
-                                                                                <span class="inumber-decrement"> <i
-                                                                                        class="ti-minus"></i></span>
-                                                                                <input class="input-number" type="text"
-                                                                                    value="1" min="0" max="10">
-                                                                                <span class="number-increment"> <i
-                                                                                        class="ti-plus"></i></span>
-                                                                            </div>
-                                                                            <div class="add_to_cart">
-                                                                                <a href="#" class="btn">Add to Box</a>
-                                                                                <a href="#" class="like_us"> <i
-                                                                                        class="ti-heart"></i> </a>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                <!-- Single Product Area End-->
                                                             </div>
-                                                        </div>
-                                                    </div> -->
-                                    <!-- Single Product Area End-->
 
-                                    <!-- </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- modal end -->
+
 
                                             </div>
                                         </div>
-                                    </div> -->
-
-                                    <!-- product details modal end -->
-
-
-                                    {% endfor %}
-
+                                        {% endfor %}
+                                    </div>
                                 </div>
-
-                                <!-- select the box end -->
-
-
                             </div>
                             <div class="row d-flex justify-content-center">
-
                                 <div class="circle">
-                                    <div id="next1" onclick="instep(2,1)">Next</div>
+                                    <div class="fa fa-long-arrow-right next" id="next1" onclick="validate1(0)">Next</div>
                                 </div>
                             </div>
+
                         </div>
 
 
-                        <div class="card1 b-0">
-                            <div class="fa fa-long-arrow-left prev"> </div>
+                        <div class="card1 b-0  ">
+                            <!-- <div class="fa fa-long-arrow-left prev">Prev </div> -->
                             <div class="row justify-content-center">
-                                <h2>Purchase Our Pre-Packed Gift Boxes</h2>
+                                <!-- <h2>Purchase Our Pre-Packed Gift Boxes</h2> -->
 
                                 <!-- select the box -->
                                 <div class="row card-group">
-
-                                    {% for product in products %}
+                                    {% for product in premade_products %}
                                     <div class="col-lg-3 col-md-4 col-sm-6 ">
-                                        <div class="single-new-arrival mb-50 text-center card shadow bg-white rounded">
-                                            <div class="popular-img">
-                                                <img style="height: 185px;" class="img-thumbnail"
-                                                    src="{{product.productattribute_set.first.imageURL}}" alt="">
+                                        <div class="card rounded my-5" style="width: 23rem;">
+                                            <a href="" data-target="#GiftItemModal-{{product.id}}"
+                                                data-toggle="modal"><img style="height: 200px;"
+                                                    class="card-img-top img-fluid img-thumbnail img-rounded"
+                                                    src="{{product.image.url}}" alt="Card image cap"></a>
+                                            <div class="card-body">
+                                                <h5 class="card-title text-center text-uppercase">{{product.category}}
+                                                </h5>
+                                                <p class="card-text text-center text-uppercase">{{product.name}}</p>
+
+                                                <form action="{% url 'order:add-box' %}" method="POST" class=" ps-0">{% csrf_token %}
+                                                   
+                                                    <input type="hidden" name="box-id" value="{{product.id}}">
+                                                    <!-- Button trigger modal -->
+                                                    <button type="submit" class="btn py-3" name="add-box"
+                                                        value="{{product.id}}">Add Box</button>
+                                                </form>
+
                                             </div>
-                                            <div class="popular-caption">
-                                                <h3><a href="product_details.html">{{product.title}}</a></h3>
-                                                <span>${{product.productattribute_set.first.price}}</span>
 
-                                                <div class="add_to_cart">
-                                                    <button type="button" data-toggle="modal" class="btn"
-                                                        data-target="#productModal-{{product.id}}">
-                                                        add to cart</button>
-                                                    <a href="#" class="like_us"> <i class="ti-heart"></i> </a>
-                                                </div>
+                                            <!-- modal starts -->
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="GiftItemModal-{{product.id}}" tabindex="-1"
+                                                role="dialog" aria-labelledby="GiftItemModalTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
 
-                                            </div>
-                                        </div>
-                                    </div>
+                                                        <div class="modal-body">
+                                                            <!--? Single Product Area Start-->
+                                                            <div class="product_image_area section-padding40">
+                                                                <div class="container">
 
-                                    <!-- product details modal -->
+                                                                    <div class="row s_product_inner">
+                                                                        <div class="col-lg-5">
+                                                                            <div class="product_slider_img">
+                                                                                <div id="vertical">
+                                                                                    <div
+                                                                                        data-thumb="{{product.image.url}}">
+                                                                                        <img src="{{product.image.url}}"
+                                                                                            class="w-100 img-fluid img-thumbnail">
+                                                                                    </div>
 
-                                    <div class="modal fade" id="productModal-{{product.id}}" tabindex="-1" role="dialog"
-                                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title" id="exampleModalCenterTitle">
-                                                        {{product.title}}</h3>
-                                                    <button style="font-size: 3rem;" type="button" class="close"
-                                                        data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-
-                                                    <!--? Single Product Area Start-->
-                                                    <div class="product_image_area section-padding40">
-                                                        <div class="container">
-                                                            <div class="row s_product_inner">
-                                                                <div class="col-lg-5">
-                                                                    <div class="product_slider_img">
-                                                                        <div id="vertical">
-                                                                            <div
-                                                                                data-thumb="{{product.productattribute_set.first.imageURL}}">
-                                                                                <img src="{{product.productattribute_set.first.imageURL}}"
-                                                                                    class="w-100 img-fluid img-thumbnail">
+                                                                                </div>
                                                                             </div>
-
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6 offset-lg-1">
-                                                                    <div class="s_product_text">
-                                                                        <button
-                                                                            style="background-color: rgb(182, 126, 54);"
-                                                                            class="btn btn-outline-dark">variation</button>
-                                                                        <hr>
-                                                                        <h2>${{product.productattribute_set.first.price}}
-                                                                        </h2>
-                                                                        <ul class="list">
-                                                                            <li>
-                                                                                <a class="active" href="#">
-                                                                                    <span>Category</span> :
-                                                                                    {{product.category}}</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="#"> <span>Availibility</span>
+                                                                        <div class="col-lg-6 offset-lg-1">
+                                                                            <div class="s_product_text">
+                                                                                <!-- <button
+                                                                                    style="background-color: rgb(182, 126, 54);"
+                                                                                    class="btn btn-outline-dark py-3">variation</button> -->
+                                                                                <hr>
+                                                                                <h2>${{product.get_item_price}}
+                                                                                </h2>
+                                                                                <ul class="list">
+                                                                                    <li>
+                                                                                        <a class="active" href="#">
+                                                                                            <span>Category</span> :
+                                                                                            {{product.category}}</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a href="#">
+                                                                                            <span>Availibility</span>
 
-                                                                                    {% ifequal product.status True %}
-                                                                                    : In Stock
-                                                                                    {% else %}
-                                                                                    : Out of Stock
-                                                                                    {% endifequal %}
-                                                                                </a>
-                                                                            </li>
-                                                                        </ul>
+                                                                                            In Stock
+                                                                                        </a>
+                                                                                    </li>
+                                                                                </ul>
 
-                                                                        <p>
-                                                                            {{product.description}}
-                                                                        </p>
-                                                                        <div class="card_area">
-                                                                            <div class="product_count d-inline-block">
-                                                                                <span class="inumber-decrement"> <i
-                                                                                        class="ti-minus"></i></span>
-                                                                                <input class="input-number"
-                                                                                    id="product-{{product.id}}"
-                                                                                    type="text" value="1" min="0"
-                                                                                    max="10">
-                                                                                <span class="number-increment"> <i
-                                                                                        class="ti-plus"></i></span>
+                                                                                <p>
+                                                                                    {{product.description}}
+                                                                                </p>
+                                                                                <div class="card_area">
+                                                                                    <div
+                                                                                        class="product_count d-inline-block">
+                                                                                        <span class="inumber-decrement">
+                                                                                            <i
+                                                                                                class="ti-minus"></i></span>
+                                                                                        <input class="input-number"
+                                                                                            id="product-{{product.id}}"
+                                                                                            type="text" value="1"
+                                                                                            min="0" max="10">
+                                                                                        <span class="number-increment">
+                                                                                            <i
+                                                                                                class="ti-plus"></i></span>
+                                                                                    </div>
+                                                                                    <form
+                                                                                        action="{% url 'order:add-box' %}"
+                                                                                        method="POST" class=" ps-0">
+                                                                                        {% csrf_token %}
+
+
+                                                                                        <input type="hidden"
+                                                                                            name="box-id"
+                                                                                            value="{{product.id}}">
+                                                                                        <!-- Button trigger modal -->
+                                                                                        <button type="submit"
+                                                                                            class="btn py-3"
+                                                                                            name="add-box"
+                                                                                            value="{{product.id}}">Add
+                                                                                            Box</button>
+
+                                                                                    </form>
+
+                                                                                </div>
                                                                             </div>
-                                                                            <div class="add_to_cart">
-
-                                                                                <a href="#" class="btn"
-                                                                                    onclick="step3('{{product.title}}','{{product.id}}',document.getElementById('product-{{product.id}}').value,
-                                                                                                    '{{product.productattribute_set.first.imageURL}}','{{product.productattribute_set.first.price}}')"
-                                                                                    data-dismiss="modal">add to
-                                                                                    cart</a>
-                                                                                <a href="#" class="like_us"> <i
-                                                                                        class="ti-heart"></i> </a>
-                                                                            </div>
-
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <!-- Single Product Area End-->
                                                         </div>
+
                                                     </div>
-                                                    <!-- Single Product Area End-->
-
                                                 </div>
-
                                             </div>
+
+
+
                                         </div>
                                     </div>
-
-                                    <!-- product details modal end -->
                                     {% endfor %}
-
                                 </div>
                                 <!-- Button -->
-                                <div class="row justify-content-center">
+                                <!-- <div class="row justify-content-center">
                                     <div class="room-btn">
                                         <a href="#" class="border-btn">Discover More</a>
                                     </div>
-                                </div>
+                                </div> -->
                                 <!-- select the box end -->
 
                             </div>
-                            <div class="row d-flex justify-content-center">
+                            <div class="row d-flex justify-content-center ">
                                 <div class="circle">
 
-                                    <div id="next2" onclick="instep(3,1)">Next</div>
+                                    <div class="fa fa-long-arrow-right next" id="next2" onclick="validate2(0)">Next</div>
                                 </div>
                             </div>
+                            <!-- <div class="row d-flex justify-content-left">
+                                <div class="circle">
+
+                                    <div class="fa fa-long-arrow-right prev" onclick="validate2(0)">Prev</div>
+                                </div>
+                            </div> -->
                         </div>
 
 
-                        <div class="card1 b-0">
-                            <div class="fa fa-long-arrow-left prev"> </div>
+                        <div class="card1 b-0 ">
+                            <!-- <div class="fa fa-long-arrow-left prev">Prev </div> -->
                             <div class="row justify-content-center">
 
                                 <!-- select the box -->
                                 <div class="row card-group">
-
                                     {% for card in cards %}
                                     <div class="col-lg-3 col-md-4 col-sm-6 ">
-                                        <div class="single-new-arrival mb-50 text-center card shadow bg-white rounded">
-                                            <div class="popular-img">
-                                                <img style="height: 185px;" class="img-thumbnail"
-                                                    src="{{card.imageURL}}" alt="">
-                                            </div>
-                                            <div class="popular-caption">
-                                                <h3><a href="#">{{product.title}}</a></h3>
-                                                <span>${{product.productattribute_set.first.price}}</span>
-
-                                                <div class="add_to_cart">
-                                                    <button type="button" data-toggle="modal" class="btn"
-                                                        data-target="#cardModal-{{card.id}}">
-                                                        add to cart</button>
-                                                    <a href="#" class="like_us"> <i class="ti-heart"></i> </a>
-                                                </div>
+                                        <div class="card rounded my-5" style="width: 23rem;">
+                                            <a href="" data-target="#giftCard-{{card.id}}" data-toggle="modal"><img
+                                                    class="card-img-top img-fluid img-thumbnail img-rounded"
+                                                    src="{{card.image.url}}" alt="Card image cap"></a>
+                                            <div class="card-body">
+                                                <h5 class="card-title text-center text-uppercase">{{card.name}}
+                                                </h5>
+                                                <p class="card-text text-center text-uppercase">{{card.name}}</p>
+                                                
+                                                    <!-- Button trigger modal -->
+                                                    <button type="submit" class="btn py-3" name="add-box" data-target="#giftCard-{{card.id}}" data-toggle="modal"   
+                                                        value="{{card.id}}">Add Box</button>
 
                                             </div>
-                                        </div>
-                                    </div>
 
-                                    <!-- product details modal -->
+                                            <!-- modal starts -->
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="giftCard-{{card.id}}" tabindex="-1"
+                                                role="dialog" aria-labelledby="giftCardTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
 
-                                    <div class="modal fade" id="cardModal-{{card.id}}" tabindex="-1" role="dialog"
-                                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title" id="exampleModalCenterTitle">
-                                                        {{card.title}}</h3>
-                                                    <button style="font-size: 3rem;" type="button" class="close"
-                                                        data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
+                                                        <div class="modal-body">
+                                                            <!--? Single Product Area Start-->
+                                                            <div class="product_image_area section-padding40">
+                                                                <div class="container">
 
-                                                    <!--? Single Product Area Start-->
-                                                    <div class="product_image_area section-padding40">
-                                                        <div class="container">
-                                                            <div class="row s_product_inner">
-                                                                <div class="col-lg-5">
-                                                                    <div class="product_slider_img">
-                                                                        <div id="vertical">
-                                                                            <div data-thumb="{{card.imageURL}}">
-                                                                                <img src="{{card.imageURL}}"
-                                                                                    class="w-100 img-fluid img-thumbnail">
+                                                                    <div class="row s_product_inner">
+                                                                        <div class="col-lg-5">
+                                                                            <div class="product_slider_img">
+                                                                                <div id="vertical">
+                                                                                    <div
+                                                                                        data-thumb="{{card.image.url}}">
+                                                                                        <img src="{{card.image.url}}"
+                                                                                            class="w-100 img-fluid img-thumbnail">
+                                                                                    </div>
+
+                                                                                </div>
                                                                             </div>
-
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6 offset-lg-1">
-                                                                    <div class="s_product_text">
-                                                                        <button
-                                                                            style="background-color: rgb(182, 126, 54);"
-                                                                            class="btn btn-outline-dark">variation</button>
-                                                                        <hr>
+                                                                        <div class="col-lg-6 offset-lg-1">
+                                                                            <div class="s_product_text">
 
-                                                                        <ul class="list">
-                                                                            <li>
-                                                                                <a class="active" href="#">
-                                                                                    <span>Category</span> :
-                                                                                    {{product.category}}</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="#"> <span>Availibility</span>
+                                                                                <form
+                                                                                    action="{% url 'order:add-card-to-box' %}"
+                                                                                    method="POST">{% csrf_token %}
 
-                                                                                    {% ifequal card.availability_status True %}
-                                                                                   
-                                                                                    : In Stock
-                                                                                    {% else %}
-                                                                                    : Out of Stock
-                                                                                    {% endifequal %}
-                                                                                </a>
-                                                                            </li>
-                                                                        </ul>
+                                                                                    <div class="form-group">
+                                                                                        <label
+                                                                                            for="recipient-name">Recipient
+                                                                                            Name</label>
+                                                                                        <input type="text"
+                                                                                            id="recipient-name"
+                                                                                            class="form-control"
+                                                                                            name="recipient"
+                                                                                            placeholder="Recipient name">
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <label for="sender-name">Sender
+                                                                                            NAme</label>
+                                                                                        <input type="text"
+                                                                                            id="sender-name"
+                                                                                            class="form-control"
+                                                                                            name="sender"
+                                                                                            placeholder="Sender name">
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <label
+                                                                                            for="exampleFormControlTextarea1">Card
+                                                                                            Content</label>
+                                                                                        <textarea class="form-control"
+                                                                                            name="   "
+                                                                                            id="exampleFormControlTextarea1"
+                                                                                            rows="3"></textarea>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <label
+                                                                                            for="exampleFormControlTextarea1">Back
+                                                                                            Of Card
+                                                                                        </label>
+                                                                                        <textarea class="form-control"
+                                                                                            name="bc_content"
+                                                                                            id="exampleFormControlTextarea1"
+                                                                                            rows="3"></textarea>
+                                                                                    </div>
+                                                                                    <input type="hidden" name="card-id"
+                                                                                        value="{{card.id}}">
+                                                                                    <button type="submit"
+                                                                                        class="btn py-3"
+                                                                                        name="add-card-data"
+                                                                                        value="{{card.id}}">Add to
+                                                                                        Box</button>
+                                                                                </form>
 
-                                                                        <p>
-                                                                            {{card.description}}
-                                                                        </p>
-                                                                        <div class="card_area">
-                                                                            <div class="product_count d-inline-block">
-                                                                                <span class="inumber-decrement"> <i
-                                                                                        class="ti-minus"></i></span>
-                                                                                <input class="input-number" type="text"
-                                                                                    value="1" min="0" max="10">
-                                                                                <span class="number-increment"> <i
-                                                                                        class="ti-plus"></i></span>
+
                                                                             </div>
-                                                                            <div class="add_to_cart">
-                                                                                <a href="#" class="btn btn-responsive" data-dismiss="modal">add to box</a>
-                                                                                <a href="#" class="like_us"> <i
-                                                                                        class="ti-heart"></i> </a>
-                                                                            </div>
-
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <!-- Single Product Area End-->
                                                         </div>
+
                                                     </div>
-                                                    <!-- Single Product Area End-->
-
                                                 </div>
-
                                             </div>
+                                            <!-- modal end -->
+
                                         </div>
                                     </div>
-
-                                    <!-- product details modal end -->
                                     {% endfor %}
-
                                 </div>
                                 <!-- Button -->
-                                <div class="row justify-content-center">
+                                <!-- <div class="row justify-content-center">
                                     <div class="room-btn">
                                         <a href="#" class="border-btn">Discover More</a>
                                     </div>
-                                </div>
+                                </div> -->
                                 <!-- select the box end -->
 
                             </div>
                             <div class="row d-flex justify-content-center">
                                 <div class="circle">
-                                    <div id="next2" onclick="instep(4,1)">Next</div>
+                                    <div class="fa fa-long-arrow-right next" id="next3" onclick="validate3(0)">Next</div>
                                 </div>
                             </div>
                         </div>
 
+                        <div class="card1 b-0 ">
+                            <div class="fa fa-long-arrow-left prev">Prev </div>
+                            <div class="row d-flex justify-content-center text-center">
+                                <div class="col-lg-10">
+                                    <div class="order-box ">
+                                        <div class="card_z pb-5">
+                                            <div class="row">
+                                                <div class="col-md-8 cart">
+                                                    <div class="title">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <h4><b>Shopping Cart</b></h4>
+                                                            </div>
+                                                            <div class="col align-self-center text-right text-muted">{{gift_count}}
+                                                                items</div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- box selected  -->
+                                                    <div class="row border-top border-bottom pb-5 pt-3">
+                                                        <div class="row main align-items-center">
+                                                            <div class="col-2"><img class="img-fluid img-thumbnail"
+                                                                    src="{{items.box_type.gift_box.image.url}}"></div>
+                                                            <div class="col">
+                                                                <div class="row text-muted text-uppercase">
+                                                                    {{items.box_type.gift_box.boxsize.size}}</div>
+                                                                <div class="row">{{items.box_type.gift_box.name}}</div>
+                                                            </div>
+                                                            <div class="col"><a href="#"
+                                                                    class="border">{{items.box_type.gift_box.size}}</a> </div>
+                                                            <div class="col">$ {{items.box_type.gift_box.price}} <span
+                                                                    class="close">&#10005;</span></div>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    {% for gift_item in items.gift_items.all %}
+                                                    <div class="row border-top border-bottom pb-5 pt-3">
+                                                        <div class="row main align-items-center">
+                                                            <div class="col-2"><img class="img-fluid img-thumbnail"
+                                                                    src="{{gift_item.product.image1.url}}"></div>
+                                                            <div class="col">
+                                                                <div class="row text-muted text-uppercase">
+                                                                    {{gift_item.product.product.category}}</div>
+                                                                <div class="row">{{gift_item.product.name}}</div>
+                                                            </div>
+                                                            <div class="col"> <a href="#">-</a><a href="#"
+                                                                    class="border">{{gift_item.product.product.quantity}}</a><a
+                                                                    href="#">+</a> </div>
+                                                            <div class="col">$ {{gift_item.product.price}} <span
+                                                                    class="close">&#10005;</span></div>
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
 
-                        <div class="card1 b-0">
-                            <div class=" justify-content-center text-center">
-                                <div class="confirm">
+                                                     <!-- card selected  -->
+                                                     <div class="row border-top border-bottom pb-5 pt-3">
+                                                        <div class="row main align-items-center">
 
+                                                            <div class="col-2"><img class="img-fluid img-thumbnail"
+                                                                    src="{{items.card_type.card.image.url}}"></div>
 
+                                                            <div class="col">
+                                                                <div class="row text-muted text-uppercase">
+                                                                    {{items.card_type.card}}</div>
+                                                                <div class="row">{{items.card_type.card.name}}</div>
+                                                            </div>
 
-                                    <!--================Cart Area =================-->
-                                    <section class="cart_area section-padding40">
-                                        <div class="container">
-                                            <div class="cart_inner">
-                                                <div class="table-responsive">
-                                                    <table id ="checkout_table" class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col"><b>Product</b> </th>
-                                                                <th scope="col"><b>Price</b></th>
-                                                                <th scope="col"><b>Quantity</b></th>
-                                                                <th scope="col"><b>Total</b></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                           
-                                                            {% if 'cart' in request.session %}
-                                                            {% for val in request.session.cart %}
-                                                          
-                                                          
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="media">
-                                                                        <div class="d-flex">
+                                                            <div class="col"><a href="#"
+                                                                    class="border"></a> </div>
 
-                                                                            <img src="{{request.session.cart|get_item:val|get_item:'image_url'}}"
-                                                                                alt="" class="img-fluid img-thumbnail"/>
-                                                                        </div>
-                                                                        <div class="media-body">
-                                                                            <p> {{request.session.cart|get_item:val|get_item:'title'}}
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <h5>${{request.session.cart|get_item:val|get_item:'price'}}</h5>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="product_count">
-                                                                       <!-- <span class="input-number-decrement"> <i
-                                                                                class="ti-minus"></i></span>
-                                                                        <input class="input-number" type="text"
-                                                                            value="1" min="0" max="10">
-                                                                        <span class="input-number-increment"> <i
-                                                                                class="ti-plus"></i></span>-->
-                                                                                {{request.session.cart|get_item:val|get_item:'quantity'}}
-
-
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <h5>${{request.session.cart|get_item:val|get_item:'total_item_price'}}</h5>
-                                                                </td>
-                                                            </tr>
-                                                            {%endfor%}
-                                                            {%endif%}
-                                                     
-                                                            <tr class="bottom_button">
-                                                                <td>
-                                                                    <a class="btn" href="#">Save Gift Box</a>
-                                                                </td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td>
-                                                                    <div class="cupon_text float-right">
-                                                                        <a class="btn" href="#">Make Changes</a>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            
-                                                            <tr>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td>
-                                                                   <h5> <b>Subtotal</b></h5>
-                                                                </td>
-                                                                <td>
-                                                                    <h5>${{request.session.product_total_price}}</h5>
-                                                                </td>
-                                                            </tr>
-                                                          
-                                                        </tbody>
-                                                    </table>
-
+                                                            <div class="col">$ 0.00 
+                                                                
+                                                        </div>
+                                                            <div class="col"><form action="{% url 'order:delete-card' %}" method="POST">{% csrf_token %}
+                                                                <input type="hidden" name="card-id" value="{{items.card_type.card.id}}">
+                                                                <button type="submit"><span class="close">&#10005;</span></button></div>
+                                                        </form>
+                                                                
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                
+
                                             </div>
+                                            
+
+                                            <form action="{% url 'order:order-checkout' %}" method="POST" class=" ps-0">{%  csrf_token %}
+                                              
+
+                                                <!-- <input type="hidden" name="box-id" value="{{card.id}}"> -->
+                                                <!-- Button trigger modal -->
+                                                <button type="submit" class="btn py-3" name="add-box"
+                                                    value="">Save Gift Box & Checkout</button>
+                                            </form>
+
                                         </div>
-                                    </section>
-                                    <!--================End Cart Area =================-->
-
-
+                                    </div>
 
                                 </div>
                             </div>
-                           
+                            <!-- <div class="row d-flex justify-content-center">
+                                <div class="check"> <img src="https://i.imgur.com/g6KlBWR.gif" class="check-mark">
+                                </div>
+                            </div> -->
                         </div>
 
                     </div>
                 </div>
+                <!-- step wizard end -->
+
+
+
             </div>
-            <!-- step wizard end -->
-
-
-
-        </div>
     </section>
     <!-- Properties End -->
 

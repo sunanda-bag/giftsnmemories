@@ -24,6 +24,14 @@ class ProductAdmin(admin.ModelAdmin):
 class ProductVariationAdmin(admin.ModelAdmin):
     list_display = ('itemNumber','name','image_tag', 'product', 'variant', 'price', 'stock')
 
+
+
+# @admin.register(PremadeProductVariation)
+# class PremadeProductVariationAdmin(admin.ModelAdmin):
+#     list_display = ('itemNumber','name','image_tag', 'products', 'price', 'stock')
+admin.site.register(PremadeProduct)
+admin.site.register(PremadeProductVariation)
+
 @admin.register(Card)
 class CardAdmin(admin.ModelAdmin):
     list_display = ('name', 'image_tag', 'active', )

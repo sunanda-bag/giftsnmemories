@@ -5,7 +5,8 @@
     .btn {
         border-radius: 10px;
     }
-    section{
+
+    section {
         font-size: 1.4rem;
     }
 </style>
@@ -29,7 +30,7 @@
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                                        <li class="breadcrumb-item"><a href="/products">Build A Box</a></li>
+                                        <li class="breadcrumb-item"><a href="/product/build-a-box">Build A Box</a></li>
                                     </ol>
                                 </nav>
                             </div>
@@ -86,14 +87,11 @@
                                                     <p class="card-text text-center text-uppercase">{{box.name}}</p>
 
 
-                                                    <form action="{% url 'order:add-box' %}" method="POST"
-                                                        class=" ps-0">{% csrf_token %}
-
-
-                                                        <input type="hidden" name="box-id" value="{{box.id}}">
+                                                    <form action="{% url 'order:add-box' %}" method="POST" class=" ps-0">{% csrf_token %}
+                                                        <input class="box-id" type="hidden" name="box-id" value="{{box.id}}">
                                                         <!-- Button trigger modal -->
-                                                        <button type="submit" class="btn py-3" name="add-box"
-                                                            value="{{box.id}}">Add Box</button>
+                                                        <button type="submit" class="btn py-3 add-box" name="add-box-btn"
+                                                            onclick="validate1(1)" value="{{box.id}}">Add Box</button>
                                                     </form>
 
                                                 </div>
@@ -110,9 +108,10 @@
                                                                 <!--? Single Product Area Start-->
                                                                 <div class="product_image_area section-padding40">
                                                                     <div class="container">
-                                                                        <h1 class="text-uppercase pb-4">{{box.name}} - {{box.boxsize}} series</h1>
+                                                                        <h1 class="text-uppercase pb-4">{{box.name}} -
+                                                                            {{box.boxsize}} series</h1>
                                                                         <div class="row s_product_inner">
-                                                                            
+
                                                                             <div class="col-lg-5">
                                                                                 <div class="product_slider_img">
                                                                                     <div id="vertical">
@@ -127,7 +126,7 @@
                                                                             </div>
                                                                             <div class="col-lg-6 offset-lg-1">
                                                                                 <div class="s_product_text">
-                                                                                    
+
                                                                                     <hr>
                                                                                     <h2>${{box.price}}
                                                                                     </h2>
@@ -150,7 +149,7 @@
                                                                                         {{box.description}}
                                                                                     </p>
                                                                                     <div class="card_area">
-                                                                                       
+
                                                                                         <form
                                                                                             action="{% url 'order:add-box' %}"
                                                                                             method="POST" class=" ps-0">
@@ -162,8 +161,8 @@
                                                                                                 value="{{box.id}}">
                                                                                             <!-- Button trigger modal -->
                                                                                             <button type="submit"
-                                                                                                class="btn py-3"
-                                                                                                name="add-box"
+                                                                                                class="btn py-3 add-box"
+                                                                                                name="add-box-btn"
                                                                                                 value="{{box.id}}">Add
                                                                                                 Box</button>
 
@@ -192,14 +191,15 @@
                             </div>
                             <div class="row d-flex justify-content-center">
                                 <div class="circle">
-                                    <div class="fa fa-long-arrow-right next" id="next1" onclick="validate1(0)">Next</div>
+                                    <div class="fa fa-long-arrow-right next" id="next1" onclick="validate1(0)">Next
+                                    </div>
                                 </div>
                             </div>
 
                         </div>
 
 
-                        <div class="card1 b-0 ">
+                        <div class="card1 b-0  ">
                             <div class="fa fa-long-arrow-left prev">Prev </div>
                             <div class="row justify-content-center">
                                 <!-- <h2>Purchase Our Pre-Packed Gift Boxes</h2> -->
@@ -219,10 +219,10 @@
                                                 <p class="card-text text-center text-uppercase">{{product.name}}</p>
 
                                                 <form action="{% url 'order:add-box' %}" method="POST" class=" ps-0">{% csrf_token %}
-                                                   
+                                                
                                                     <input type="hidden" name="box-id" value="{{product.id}}">
                                                     <!-- Button trigger modal -->
-                                                    <button type="submit" class="btn py-3" name="add-box"
+                                                    <button type="submit" class="btn py-3 add-product" name="add-product"
                                                         value="{{product.id}}">Add Box</button>
                                                 </form>
 
@@ -304,8 +304,8 @@
                                                                                             value="{{product.id}}">
                                                                                         <!-- Button trigger modal -->
                                                                                         <button type="submit"
-                                                                                            class="btn py-3"
-                                                                                            name="add-box"
+                                                                                            class="btn py-3 add-product"
+                                                                                            name="add-product"
                                                                                             value="{{product.id}}">Add
                                                                                             Box</button>
 
@@ -339,17 +339,24 @@
                                 <!-- select the box end -->
 
                             </div>
-                            <div class="row d-flex justify-content-center">
+                            <div class="row d-flex justify-content-center ">
                                 <div class="circle">
 
-                                    <div class="fa fa-long-arrow-right next" id="next2" onclick="validate2(0)">Next</div>
+                                    <div class="fa fa-long-arrow-right next" id="next2" onclick="validate2(0)">Next
+                                    </div>
                                 </div>
                             </div>
+                            <!-- <div class="row d-flex justify-content-left">
+                                <div class="circle">
+
+                                    <div class="fa fa-long-arrow-right prev" onclick="validate2(0)">Prev</div>
+                                </div>
+                            </div> -->
                         </div>
 
 
                         <div class="card1 b-0 ">
-                            <div class="fa fa-long-arrow-left prev">Prev </div>
+                            <!-- <div class="fa fa-long-arrow-left prev">Prev </div> -->
                             <div class="row justify-content-center">
 
                                 <!-- select the box -->
@@ -364,10 +371,11 @@
                                                 <h5 class="card-title text-center text-uppercase">{{card.name}}
                                                 </h5>
                                                 <p class="card-text text-center text-uppercase">{{card.name}}</p>
-                                                
-                                                    <!-- Button trigger modal -->
-                                                    <button type="submit" class="btn py-3" name="add-box" data-target="#giftCard-{{card.id}}" data-toggle="modal"
-                                                        value="{{card.id}}">Add Box</button>
+
+                                                <!-- Button trigger modal -->
+                                                <button type="submit" class="btn py-3" name="add-card"
+                                                    data-target="#giftCard-{{card.id}}" data-toggle="modal"
+                                                    value="{{card.id}}">Add Card</button>
 
                                             </div>
 
@@ -479,13 +487,16 @@
                             </div>
                             <div class="row d-flex justify-content-center">
                                 <div class="circle">
-                                    <div class="fa fa-long-arrow-right next" id="next3" onclick="validate3(0)">Next</div>
+                                    <div class="fa fa-long-arrow-right next" id="next3" onclick="validate3(0)">Next
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
+
+
                         <div class="card1 b-0 ">
-                            <div class="fa fa-long-arrow-left prev">Prev </div>
+                            <!-- <div class="fa fa-long-arrow-left prev">Prev </div> -->
                             <div class="row d-flex justify-content-center text-center">
                                 <div class="col-lg-10">
                                     <div class="order-box ">
@@ -497,7 +508,8 @@
                                                             <div class="col">
                                                                 <h4><b>Shopping Cart</b></h4>
                                                             </div>
-                                                            <div class="col align-self-center text-right text-muted">{{gift_count}}
+                                                            <div class="col align-self-center text-right text-muted">
+                                                                {{gift_count}}
                                                                 items</div>
                                                         </div>
                                                     </div>
@@ -512,12 +524,13 @@
                                                                 <div class="row">{{items.box_type.gift_box.name}}</div>
                                                             </div>
                                                             <div class="col"><a href="#"
-                                                                    class="border">{{items.box_type.gift_box.size}}</a> </div>
+                                                                    class="border">{{items.box_type.gift_box.size}}</a>
+                                                            </div>
                                                             <div class="col">$ {{items.box_type.gift_box.price}} <span
                                                                     class="close">&#10005;</span></div>
                                                         </div>
                                                     </div>
-                                                   
+
                                                     {% for gift_item in items.gift_items.all %}
                                                     <div class="row border-top border-bottom pb-5 pt-3">
                                                         <div class="row main align-items-center">
@@ -531,14 +544,19 @@
                                                             <div class="col"> <a href="#">-</a><a href="#"
                                                                     class="border">{{gift_item.product.product.quantity}}</a><a
                                                                     href="#">+</a> </div>
-                                                            <div class="col">$ {{gift_item.product.price}} <span
-                                                                    class="close">&#10005;</span></div>
+                                                            <div class="col">$ {{gift_item.product.price}}
+                                                                <form action="" method="post">{% csrf_token %}
+                                                                    
+                                                                    <span class="close">&#10005; </span>
+                                                                   
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     {% endfor %}
 
-                                                     <!-- card selected  -->
-                                                     <div class="row border-top border-bottom pb-5 pt-3">
+                                                    <!-- card selected  -->
+                                                    <div class="row border-top border-bottom pb-5 pt-3">
                                                         <div class="row main align-items-center">
 
                                                             <div class="col-2"><img class="img-fluid img-thumbnail"
@@ -550,32 +568,36 @@
                                                                 <div class="row">{{items.card_type.card.name}}</div>
                                                             </div>
 
-                                                            <div class="col"><a href="#"
-                                                                    class="border"></a> </div>
+                                                            <div class="col"><a href="#" class="border"></a> </div>
 
-                                                            <div class="col">$ 0.00 
-                                                                
-                                                        </div>
-                                                            <div class="col"><form action="{% url 'order:delete-card' %}" method="POST">{% csrf_token %}
-                                                                <input type="hidden" name="card-id" value="{{items.card_type.card.id}}">
-                                                                <button type="submit"><span class="close">&#10005;</span></button></div>
-                                                        </form>
-                                                                
+                                                            <div class="col">$ 0.00
+
+                                                            </div>
+                                                            <div class="col">
+                                                                <form action="{% url 'order:delete-card' %}"
+                                                                    method="POST">{% csrf_token %}
+                                                                    <input type="hidden" name="card-id"
+                                                                        value="{{items.card_type.card.id}}">
+                                                                    <span class="close">&#10005;</span>
+                                                            </div>
+                                                            </form>
+
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
 
                                             </div>
-                                            
 
-                                            <form action="{% url 'order:order-checkout' %}" method="POST" class=" ps-0">{%  csrf_token %}
-                                              
+
+                                            <form action="{% url 'order:order-checkout' %}" method="POST" class=" ps-0">
+                                                {% csrf_token %}
+
 
                                                 <!-- <input type="hidden" name="box-id" value="{{card.id}}"> -->
                                                 <!-- Button trigger modal -->
-                                                <button type="submit" class="btn py-3" name="add-box"
-                                                    value="">Save Gift Box & Checkout</button>
+                                                <button type="submit" class="btn py-3" name="add-box" value="">Save Gift
+                                                    Box & Checkout</button>
                                             </form>
 
                                         </div>

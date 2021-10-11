@@ -10,37 +10,44 @@ from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+@login_required()
 def addBox(request):
     if request.method=='POST':
         box_id = request.POST.get('box-id')
         box_var = GiftBox.objects.get(id=box_id)
-
+        print('box_var',box_var)
         #check if any box item already present, if present remove and create new
         try:
-            box_type = BoxType.objects.get(user=request.user)
-            print(box_type)
-            if box_type:
+            box_type = BoxType.objects.get(user=request.user,gift_box=box_var)
+            print('box_type',box_type)
+            if box_type.exists():
+                print('exists')
                 box_type.delete()
+                print('deleted')
                 BoxType.objects.create(user=request.user, gift_box=box_var)
-                box_type.save()
+                print('created')
+                
         except:
+            print('except block')
             BoxType.objects.create(user=request.user, gift_box=box_var)
+            
+            # BoxType.objects.create(user=request.user, gift_box=box_var)
         finally:
             return HttpResponseRedirect(reverse('product:build-a-box'))
 
-
+@login_required()
 def addCard(request):
     if request.method=='POST':
         card_id = request.POST.get('card-id')
-        card_var = GiftBox.objects.get(id=card_id)
+        card_var = Card.objects.get(id=card_id)
 
         #check if any card item already present, if present remove and create new
         try:
-            card_type = BoxType.objects.get(user=request.user)
+            card_type = CardType.objects.get(user=request.user)
             print(card_type)
             if card_type:
                 card_type.delete()
-                card_type = BoxType.objects.get(user=request.user, card=card_var)
+                card_type = CardType.objects.get(user=request.user, card=card_var)
                 card_type.save()
         except:
             CardType.objects.create(user=request.user, card=card_var)
@@ -48,7 +55,7 @@ def addCard(request):
             return HttpResponseRedirect(reverse('product:build-a-box'))
 
 
-
+@login_required()
 def deleteCard(request):
     if request.method=='POST':
         card_id = request.POST.get('card-id')
@@ -57,7 +64,7 @@ def deleteCard(request):
         return HttpResponseRedirect(reverse('product:build-a-box'))
             
 
-
+@login_required()
 def addToGiftBox(request):
     if request.method=='POST':
         product_var_id = request.POST.get('product-id')
@@ -76,7 +83,7 @@ def addToGiftBox(request):
             return HttpResponseRedirect(reverse('product:build-a-box'))
 
 
-
+@login_required()
 def AddCardMessage(request):
     if request.method=='POST':
         card_var_id = request.POST.get('card-id')
@@ -89,7 +96,7 @@ def AddCardMessage(request):
         CardMessage.objects.create(card=card_var, recipient=recipient,sender=sender,card_content_front=front_content,card_content_back=back_content)
     return HttpResponseRedirect(reverse('product:build-a-box'), {'card_message_form': CardMessageForm,})
     
-
+@login_required()
 def deleteFromGiftBox(request):
     if request.method=='POST':
         item_id = request.POST.get('item-id')
@@ -203,6 +210,12 @@ class CartView(LoginRequiredMixin,generic.View):
 
 def orderCheckout(request):
     if request.method=='POST':
+        user=request.user
+        if user.is_authenticated:
+            gift_box_items = GiftBoxItem.objects.all()
+            gift_box_items = GiftBoxItem.objects.filter(user=request.user,added2cart_status=False)
+            if gift_box_items.exists():
+                gift_box_items_qs=gift_box_items[0]
         # order = Order.objects.get(user=request.user, ordered=False)
         # order.name = request.POST.get('name')
         # order.mobile = request.POST.get('mobile')
@@ -214,7 +227,7 @@ def orderCheckout(request):
         # order.quantity = request.POST.get('quantity')
         # order.save()
         # return HttpResponseRedirect(reverse('order:checkout'))
-        return render(request, 'order/checkout.html', {})
+        return render(request, 'order/checkout.html', {'items':gift_box_items_qs})
 
 class CheckoutView(LoginRequiredMixin,generic.View):
     def get(self, *args, **kwargs):

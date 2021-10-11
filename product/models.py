@@ -8,18 +8,8 @@ from django.utils.html import mark_safe
 
 # Create your models here.
 
-
-# def category_image(instance, filename):
-#     upload_to = '{}_files/'.format(instance.name)
-#     ext = filename.split('.')[-1]
-#     # get filename
-#     if instance.name:
-#         filename = '{}_image.{}'.format(instance.name,ext)
-#     return os.path.join(upload_to, filename)
-
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    # image = models.ImageField(upload_to=category_image)
 
     def __str__(self):
         return self.name
@@ -81,7 +71,7 @@ class GiftBox(models.Model):
     image = models.ImageField(upload_to=gift_box_image)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} of {self.boxsize.size}"
 
     def image_tag(self):
         return mark_safe('<img src="%s" width="50" height="50" />' % (self.image.url))
@@ -152,9 +142,6 @@ class Product(models.Model):
     def image_tag(self):
         return mark_safe('<img src="%s" width="50" height="50" />' % (self.image.url))
 
-    def getGender(self):
-        return self.get_gender_display()
-
     def save(self, *args, **kwargs):
         super(Product, self).save(*args, **kwargs)
         product_variations = ProductVariation.objects.filter(
@@ -195,8 +182,7 @@ class ProductVariation(models.Model):
     name = models.CharField(max_length=500, null=True, blank=True)
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
 
-    image1 = models.ImageField(
-        upload_to=product_variation_image, null=True, blank=True)
+    image1 = models.ImageField( upload_to=product_variation_image)
     image2 = models.ImageField(
         upload_to=product_variation_image, null=True, blank=True)
 
@@ -205,7 +191,7 @@ class ProductVariation(models.Model):
     stock = models.PositiveIntegerField(default=10)
 
     def __str__(self):
-        return self.name
+        return f"{self.product.name} of {self.variant}"
 
     class Meta:
         verbose_name_plural='8. Product Variants'
@@ -269,3 +255,122 @@ class ProductVariation(models.Model):
         # else:
         #     rating = ratings
         # return rating
+
+
+def premadeproduct_image(instance, filename):
+    upload_to = 'premadeproducts_files/'.format(instance.category.name)
+    ext = filename.split('.')[-1]
+    # get filename
+    if instance.name:
+        filename = '{}.{}'.format(instance.name, ext)
+    return os.path.join(upload_to, filename)
+
+
+class PremadeProduct(models.Model):
+
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE)
+    brand = models.ForeignKey(
+        Brand, on_delete=models.CASCADE)
+    name = models.CharField(max_length=250, unique=True)
+    description = models.CharField(max_length=350, null=True, blank=True,
+                                   default='lorem ipsum lorem ipsum lorem ipsum lorem ipsum')
+    feature1 = models.CharField(max_length=250, null=True, blank=True,
+                                default='lorem ipsum lorem ipsum lorem ipsum lorem ipsum')
+    feature2 = models.CharField(max_length=250, null=True, blank=True,
+                                default='lorem ipsum lorem ipsum lorem ipsum lorem ipsum')
+    feature3 = models.CharField(max_length=250, null=True, blank=True,
+                                default='lorem ipsum lorem ipsum lorem ipsum lorem ipsum')
+    price = models.PositiveIntegerField(null=True, blank=True)
+    active = models.BooleanField(default=True)
+    image = models.ImageField(upload_to=premadeproduct_image)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural='9. Premade Products'
+
+    def image_tag(self):
+        return mark_safe('<img src="%s" width="50" height="50" />' % (self.image.url))
+
+
+    # def save(self, *args, **kwargs):
+    #     super(Product, self).save(*args, **kwargs)
+    #     premadeproduct_variations = PremadeProductVariation.objects.filter(
+    #         product__name=self.name)
+    #     if premadeproduct_variations.count() > 0:
+    #         for product in premadeproduct_variations:
+    #             if product.product.onSale:
+    #                 discount_price = product.get_discount_price()
+    #                 if isinstance(discount_price, float):
+    #                     dec = modf(discount_price)[0]
+    #                     if dec < 0.5:
+    #                         price = floor(discount_price)
+    #                     else:
+    #                         price = ceil(discount_price)
+    #                 else:
+    #                     price = discount_price
+    #                 product.discountPrice = price
+    #             else:
+    #                 product.discountPrice = product.price
+    #             product.save()
+
+def premade_productvariation_image(instance, filename):
+    upload_to = 'premade_productvariation_files/'
+    ext = filename.split('.')[-1]
+    # get filename
+    if instance.name:
+        filename = '{}.{}'.format(instance.name, ext)
+    return os.path.join(upload_to, filename)
+
+
+class PremadeProductVariation(models.Model):
+    products = models.ManyToManyField(PremadeProduct)
+    slug = models.CharField(max_length=350, null=True, blank=True)
+    itemNumber = models.PositiveIntegerField(
+        unique=True, null=True, blank=True)
+    name = models.CharField(max_length=500)
+
+    image1 = models.ImageField( upload_to=premade_productvariation_image)
+    image2 = models.ImageField(
+        upload_to=premade_productvariation_image, null=True, blank=True)
+
+    price = models.PositiveIntegerField(null=True, blank=True)
+    discountPrice = models.PositiveIntegerField(null=True, blank=True)
+    stock = models.PositiveIntegerField(default=10)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural='9. Premade Products Variation'
+
+    def get_item_price(self):
+        for i in self.products.count():
+            self.price = self.price+ self.products[i].price
+        return self.price
+
+    def image_tag(self):
+        return mark_safe('<img src="%s" width="50" height="50" />' % (self.image1.url))
+
+    def number(self):
+        count = PremadeProductVariation.objects.count()
+        if count == 0:
+            return 1
+        else:
+            last_object = PremadeProductVariation.objects.order_by('-id')[0]
+            return last_object.id + 1
+
+   
+
+    def save(self, *args, **kwargs):
+        if not self.itemNumber:
+            self.itemNumber = self.number()
+        # if not self.name:
+        #     self.name = self.product.name + '-' + self.variant.name
+        if not self.slug:
+            self.slug = slugify(self.name)
+        # self.discountPrice = self.get_discount_price()
+        super(PremadeProductVariation, self).save(*args, **kwargs)
+

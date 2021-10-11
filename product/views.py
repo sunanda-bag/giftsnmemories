@@ -61,42 +61,78 @@ def build_a_box(request):
     products = Product.objects.all()
     boxes = GiftBox.objects.all()
     cards = Card.objects.all()
-    gift_box_items = GiftBoxItem.objects.all()
-    gift_box_items = GiftBoxItem.objects.filter(user=request.user,added2cart_status=False)
-    if gift_box_items.exists():
-
-        gift_box_items_qs=gift_box_items[0]
-        gift_count=gift_box_items_qs.gift_items.all().count()
-        for i in gift_box_items_qs.gift_items.all():
-            print(i)
-            print(i)
-            print(i.product.image1)
-            print(i.product.product.name)
-            print(i.product.product.category)
-    # print(items.box_type)
-    # print(items.gift_items)
-    # print(items.card_type)
-    # print(items.card_message.recipient)
-           
-        data = {'products': products,
-    #             'labels': labels,
-                'categories': categories,
-                'boxes':boxes,
-                'cards':cards,
-                'items': gift_box_items_qs,
-                'gift_count':int(gift_count)+2,
-                }
     
+    user=request.user
+    if user.is_authenticated:
+        gift_box_items = GiftBoxItem.objects.all()
+        gift_box_items = GiftBoxItem.objects.filter(user=request.user,added2cart_status=False)
 
-        return render(request, 'product/build-a-box.html', data)
+        if gift_box_items.exists():
+            gift_box_items_qs=gift_box_items[0]
+            gift_count=gift_box_items_qs.gift_items.all().count()
+            for i in gift_box_items_qs.gift_items.all():
+                print(i)
+
+            data = {'products': products,
+        #             'labels': labels,
+                    'categories': categories,
+                    'boxes':boxes,
+                    'cards':cards,
+                    'items': gift_box_items_qs,
+                    'gift_count':int(gift_count)+2,
+                    }
+            return render(request, 'product/build-a-box.html', data)
+        else:
+            data={'products': products,
+        #             'labels': labels,
+                    'categories': categories,
+                    'boxes':boxes,
+                    'cards':cards,
+                    }
+            return render(request, 'product/build-a-box.html', data)    
+
     else:
-        data={'products': products,
-    #             'labels': labels,
-                'categories': categories,
-                'boxes':boxes,
-                'cards':cards,
-                }
-        return render(request, 'product/build-a-box.html', data)    
+        return HttpResponseRedirect(reverse('gnm_users:signin'))
+
+
+def premade(request):
+    categories = Category.objects.all()
+    labels = Variant.objects.all()
+    premade_products = PremadeProduct.objects.all()
+    boxes = GiftBox.objects.all()
+    cards = Card.objects.all()
+    
+    user=request.user
+    if user.is_authenticated:
+        gift_box_items = GiftBoxItem.objects.all()
+        gift_box_items = GiftBoxItem.objects.filter(user=request.user,added2cart_status=False)
+
+        if gift_box_items.exists():
+            gift_box_items_qs=gift_box_items[0]
+            gift_count=gift_box_items_qs.gift_items.all().count()
+            for i in gift_box_items_qs.gift_items.all():
+                print(i)
+
+            data = {'premade_products': premade_products,
+        #             'labels': labels,
+                    'categories': categories,
+                    'boxes':boxes,
+                    'cards':cards,
+                    'items': gift_box_items_qs,
+                    'gift_count':int(gift_count)+2,
+                    }
+            return render(request, 'product/premade.html', data)
+        else:
+            data={'premade_products': premade_products,
+        #             'labels': labels,
+                    'categories': categories,
+                    'boxes':boxes,
+                    'cards':cards,
+                    }
+            return render(request, 'product/premade.html', data)    
+
+    else:
+        return HttpResponseRedirect(reverse('gnm_users:signin'))
 
 
 
