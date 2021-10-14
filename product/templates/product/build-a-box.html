@@ -63,9 +63,9 @@
                 <div class="row d-flex justify-content-center">
                     <div class="col-xl-9 col-lg-11 col-md-10">
                         <ul id="progressbar" class="text-center">
-                            <li class="active step0" id="step1">Choose your Box</li>
-                            <li class="step0" id="step2">Choose your Item</li>
-                            <li class="step0" id="step3">Choose your Card</li>
+                            <li class="active step0" onclick="instep(1,0)" id="step1">Choose your Box</li>
+                            <li class="step0" onclick="instep(2,0)" id="step2">Choose your Item</li>
+                            <li class="step0" onclick="instep(3,0)" id="step3">Choose your Card</li>
                             <li class="step0" id="step4">Done</li>
                         </ul>
 
@@ -91,7 +91,7 @@
                                                         <input class="box-id" type="hidden" name="box-id" value="{{box.id}}">
                                                         <!-- Button trigger modal -->
                                                         <button type="submit" class="btn py-3 add-box" name="add-box-btn"
-                                                            onclick="validate1(1)" value="{{box.id}}">Add Box</button>
+                                                        onclick="step2('{{box.id}}')" value="{{box.id}}">Add Box</button>
                                                     </form>
 
                                                 </div>
@@ -191,7 +191,7 @@
                             </div>
                             <div class="row d-flex justify-content-center">
                                 <div class="circle">
-                                    <div class="fa fa-long-arrow-right next" id="next1" onclick="validate1(0)">Next
+                                    <div class="fa fa-long-arrow-right next" id="next1" onclick="instep(2,1)">Next
                                     </div>
                                 </div>
                             </div>
@@ -342,7 +342,7 @@
                             <div class="row d-flex justify-content-center ">
                                 <div class="circle">
 
-                                    <div class="fa fa-long-arrow-right next" id="next2" onclick="validate2(0)">Next
+                                    <div class="fa fa-long-arrow-right next" id="next2" onclick="instep(3,1)">Next
                                     </div>
                                 </div>
                             </div>
@@ -487,7 +487,7 @@
                             </div>
                             <div class="row d-flex justify-content-center">
                                 <div class="circle">
-                                    <div class="fa fa-long-arrow-right next" id="next3" onclick="validate3(0)">Next
+                                    <div class="fa fa-long-arrow-right next" id="next3" onclick="instep(4,1)">Next
                                     </div>
                                 </div>
                             </div>
