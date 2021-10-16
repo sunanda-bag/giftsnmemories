@@ -1,3 +1,4 @@
+from os import stat_result
 from django.db import models
 from product.models import *
 from django.contrib.auth.models import User
@@ -7,39 +8,54 @@ from django.contrib.auth.models import User
 class BoxType(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     gift_box = models.ForeignKey(GiftBox,on_delete=models.CASCADE)
-
+    status = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.gift_box} of {self.gift_box.boxsize}"
 
     class Meta:
-        verbose_name_plural='1. Selected Box Type'
-
-
-class CardType(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    card = models.ForeignKey(Card,on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.card}"
-
-    class Meta:
-        verbose_name_plural='2. Selected Card Type'
+        verbose_name_plural='1. Box Type Selected'
+    
+    def get_box_price(self):
+        return self.gift_box.price
 
 
 
 class CardMessage(models.Model):
     
-    card = models.OneToOneField(Card, on_delete=models.CASCADE, related_name='giftcard')
-    recipient = models.CharField(max_length=50,null=True, blank=True)
-    sender = models.CharField(max_length=50,null=True, blank=True)
-    card_content_front = models.TextField(max_length=500, null=True, blank=True)
-    card_content_back = models.TextField(max_length=500, null=True, blank=True)
+    card = models.OneToOneField(Card, on_delete=models.CASCADE, related_name='giftcardmsg')
+    recipient = models.CharField(max_length=50, blank=True)
+    sender = models.CharField(max_length=50, blank=True)
+    card_content_front = models.TextField(max_length=500, blank=True)
+    card_content_back = models.TextField(max_length=500,  blank=True)
     
     def __str__(self):
         return self.card.name
 
     class Meta:
-        verbose_name_plural='Card Messages'
+        verbose_name_plural='2. Entered Card Messages'
+
+
+
+class CardType(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    card = models.OneToOneField(Card, on_delete=models.CASCADE,default=None)
+    status = models.BooleanField(default=False)
+    recipient = models.CharField(max_length=50, blank=True,null=True)
+    sender = models.CharField(max_length=50, blank=True,null=True)
+    card_content_front = models.TextField(max_length=500, blank=True,null=True)
+    card_content_back = models.TextField(max_length=500,  blank=True,null=True)
+    # card = models.ForeignKey(Card,on_delete=models.CASCADE)
+    # card_message = models.ForeignKey(CardMessage,on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.card}"
+
+    class Meta:
+        verbose_name_plural='3. Card Type Selected'
+    
+    def get_card_price(self):
+        return self.card.price
+
 
 
 class GiftItem(models.Model):
@@ -51,7 +67,7 @@ class GiftItem(models.Model):
         return f"{self.quantity} of {self.product}"
 
     class Meta:
-        verbose_name_plural='3. Selected Gift Items'
+        verbose_name_plural='4. Gift Items Selected'
 
     def get_gift_item_price(self):
         return self.quantity * self.product.price
@@ -59,10 +75,10 @@ class GiftItem(models.Model):
 
 class GiftBoxItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    box_type = models.ForeignKey(BoxType,on_delete=models.CASCADE)
-    gift_items = models.ManyToManyField(GiftItem)
-    card_type = models.ForeignKey(CardType,on_delete=models.CASCADE)
-    card_message = models.ForeignKey(CardMessage,on_delete=models.CASCADE, blank=True,null=True)
+    box_type = models.ForeignKey(BoxType,on_delete=models.CASCADE, blank=True,null=True)
+    gift_items = models.ManyToManyField(GiftItem, blank=True)
+    card_type = models.ForeignKey(CardType,on_delete=models.CASCADE, blank=True,null=True)
+    # card_message = models.ForeignKey(CardMessage,on_delete=models.CASCADE, blank=True,null=True)
     added2cart_status = models.BooleanField(default=False)
     price = models.PositiveIntegerField(null=True, blank=True)
 
@@ -70,12 +86,15 @@ class GiftBoxItem(models.Model):
         return self.user.username
 
     class Meta:
-        verbose_name_plural='4. Gift Box Items'
+        verbose_name_plural='5. Gift Box Items'
 
     def total_amount(self):
         total = 0
         for item in self.gift_items.all():
             total += item.get_gift_item_price()
+        total += self.card_type.get_card_price()
+        total += self.box_type.get_box_price()
+
         return total 
 
 class WishItem(models.Model):
@@ -87,7 +106,7 @@ class WishItem(models.Model):
         return f"{self.quantity} of {self.product}"
 
     class Meta:
-        verbose_name_plural='5. Wishlist Items'
+        verbose_name_plural='6. Wishlist Items'
 
     def get_item_price(self):
         return self.quantity * self.product.discountPrice
@@ -101,14 +120,14 @@ class OrderItem(models.Model):
         return f"{self.quantity} of {self.product}"
 
     class Meta:
-        verbose_name_plural='6. Order Items'
+        verbose_name_plural='7. Order Items'
 
     def get_item_price(self):
         return self.quantity * self.product.discountPrice
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    items = models.ManyToManyField(OrderItem)
+    giftboxitems = models.CharField(max_length=2000,default=None)
     ordered = models.BooleanField(default=False)
     delivered = models.BooleanField(default=False)
     orderDate = models.DateTimeField(blank=True, null=True)
@@ -126,7 +145,7 @@ class Order(models.Model):
         return self.user.username
 
     class Meta:
-        verbose_name_plural='7. Orders'
+        verbose_name_plural='8. Orders'
 
     def total_amount(self):
         total = 0

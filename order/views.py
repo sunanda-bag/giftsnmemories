@@ -12,28 +12,32 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required()
 def addBox(request):
+    
     if request.method=='POST':
         box_id = request.POST.get('box-id')
-        box_var = GiftBox.objects.get(id=box_id)
+        box_var = GiftBox.objects.filter(id=box_id)[0]
         print('box_var',box_var)
         #check if any box item already present, if present remove and create new
-        try:
-            box_type = BoxType.objects.get(user=request.user,gift_box=box_var)
-            print('box_type',box_type)
-            if box_type.exists():
-                print('exists')
-                box_type.delete()
-                print('deleted')
-                BoxType.objects.create(user=request.user, gift_box=box_var)
-                print('created')
-                
-        except:
-            print('except block')
-            BoxType.objects.create(user=request.user, gift_box=box_var)
-            
-            # BoxType.objects.create(user=request.user, gift_box=box_var)
-        finally:
-            return HttpResponseRedirect(reverse('product:build-a-box'))
+        giftbox_qs = GiftBoxItem.objects.filter(user=request.user, added2cart_status=False)
+        # if giftbox_qs.exists():
+        #     giftbox= giftbox_qs[0]
+        #     if giftbox.box_type.filter(user=request.user, gift_box=box_var).exists():
+        #         box_item = giftbox.box_type.filter(user=request.user)[0]
+        #         box_item.delete()
+        #         box_item = BoxType.objects.create(user=request.user, gift_box=box_var)
+        #         giftbox.box_type.add(box_item)
+        #         # box_item.save()  
+        #         # print(box_item)
+        #     else:
+        #         box_item = BoxType.objects.create(user=request.user, gift_box=box_var)
+        #         giftbox.box_type.add(box_item)
+        # else:
+        #     giftbox = GiftBoxItem.objects.create(user=request.user)
+        #     box_item = BoxType.objects.create(user=request.user, gift_box=box_var)
+        #     giftbox.box_type.add(box_item)
+       
+        #     return HttpResponseRedirect(reverse('product:build-a-box'))
+        return HttpResponseRedirect(reverse('product:build-a-box'))
 
 @login_required()
 def addCard(request):
@@ -43,12 +47,13 @@ def addCard(request):
 
         #check if any card item already present, if present remove and create new
         try:
-            card_type = CardType.objects.get(user=request.user)
-            print(card_type)
+            card_type = CardType.objects.get(user=request.user,card=card_var)
+            
             if card_type:
-                card_type.delete()
-                card_type = CardType.objects.get(user=request.user, card=card_var)
-                card_type.save()
+                print(card_type)
+            #     card_type.delete()
+            #     card_type = CardType.objects.get(user=request.user, card=card_var)
+            #     card_type.save()
         except:
             CardType.objects.create(user=request.user, card=card_var)
         finally:
@@ -65,11 +70,11 @@ def deleteCard(request):
             
 
 @login_required()
-def addToGiftBox(request):
+def addGiftToBox(request):
     if request.method=='POST':
         product_var_id = request.POST.get('product-id')
         product_var = ProductVariation.objects.get(id=product_var_id)
-
+        print(product_var)
         #check if the gift product item already present, if present add one quantity else create new
         try:
             gift_item = GiftItem.objects.get(user=request.user, product=product_var)
@@ -95,7 +100,9 @@ def AddCardMessage(request):
         back_content= request.POST.get('bc_content')
         CardMessage.objects.create(card=card_var, recipient=recipient,sender=sender,card_content_front=front_content,card_content_back=back_content)
     return HttpResponseRedirect(reverse('product:build-a-box'), {'card_message_form': CardMessageForm,})
+    # return HttpResponseRedirect(reverse('product:build-a-box'))
     
+
 @login_required()
 def deleteFromGiftBox(request):
     if request.method=='POST':

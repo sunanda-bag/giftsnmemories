@@ -92,6 +92,7 @@ def card_image(instance, filename):
 class Card(models.Model):
 
     name = models.CharField(max_length=250, unique=True)
+    price = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=True)
     image = models.ImageField(upload_to=card_image)
 

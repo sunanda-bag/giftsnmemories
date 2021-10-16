@@ -87,12 +87,12 @@
                                                     <p class="card-text text-center text-uppercase">{{box.name}}</p>
 
 
-                                                    <form action="{% url 'order:add-box' %}" method="POST" class=" ps-0">{% csrf_token %}
-                                                        <input class="box-id" type="hidden" name="box-id" value="{{box.id}}">
+                                                    <!-- <form action="{% url 'order:add-box' %}" method="POST" class=" ps-0">{% csrf_token %}
+                                                        <input class="box-id" type="hidden" name="box-id" value="{{box.id}}"> -->
                                                         <!-- Button trigger modal -->
-                                                        <button type="submit" class="btn py-3 add-box" name="add-box-btn"
+                                                        <button type="button" class="btn py-3 add-box" name="add-box-btn"
                                                         onclick="step2('{{box.id}}')" value="{{box.id}}">Add Box</button>
-                                                    </form>
+                                                    <!-- </form> -->
 
                                                 </div>
 
@@ -162,7 +162,7 @@
                                                                                             <!-- Button trigger modal -->
                                                                                             <button type="submit"
                                                                                                 class="btn py-3 add-box"
-                                                                                                name="add-box-btn"
+                                                                                                name="add-box-btn" onclick="step2('{{box.id}}')"
                                                                                                 value="{{box.id}}">Add
                                                                                                 Box</button>
 
@@ -206,31 +206,31 @@
 
                                 <!-- select the box -->
                                 <div class="row card-group">
-                                    {% for product in products %}
+                                    {% for product_var in product_variation %}
                                     <div class="col-lg-3 col-md-4 col-sm-6 ">
                                         <div class="card rounded my-5" style="width: 23rem;">
-                                            <a href="" data-target="#GiftItemModal-{{product.id}}"
+                                            <a href="" data-target="#GiftItemModal-{{product_var.id}}"
                                                 data-toggle="modal"><img style="height: 200px;"
                                                     class="card-img-top img-fluid img-thumbnail img-rounded"
-                                                    src="{{product.image.url}}" alt="Card image cap"></a>
+                                                    src="{{product_var.product.image.url}}" alt="Card image cap"></a>
                                             <div class="card-body">
-                                                <h5 class="card-title text-center text-uppercase">{{product.category}}
+                                                <h5 class="card-title text-center text-uppercase">{{product_var.product.category}}
                                                 </h5>
-                                                <p class="card-text text-center text-uppercase">{{product.name}}</p>
+                                                <p class="card-text text-center text-uppercase">{{product_var.product.name}}</p>
 
-                                                <form action="{% url 'order:add-box' %}" method="POST" class=" ps-0">{% csrf_token %}
+                                                <!-- <form action="{% url 'order:add-gift-to-box' %}" method="POST" class=" ps-0">{% csrf_token %}
                                                 
-                                                    <input type="hidden" name="box-id" value="{{product.id}}">
+                                                    <input type="hidden" name="product-id" value="{{product_var.id}}"> -->
                                                     <!-- Button trigger modal -->
-                                                    <button type="submit" class="btn py-3 add-product" name="add-product"
-                                                        value="{{product.id}}">Add Box</button>
-                                                </form>
+                                                    <button type="button" class="btn py-3 add-product" name="add-product"
+                                                        value="{{product_var.id}}" data-target="#GiftItemModal-{{product_var.id}}" data-toggle="modal">Add Item</button>
+                                                <!-- </form> -->
 
                                             </div>
 
                                             <!-- modal starts -->
                                             <!-- Modal -->
-                                            <div class="modal fade" id="GiftItemModal-{{product.id}}" tabindex="-1"
+                                            <div class="modal fade" id="GiftItemModal-{{product_var.id}}" tabindex="-1"
                                                 role="dialog" aria-labelledby="GiftItemModalTitle" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
@@ -245,8 +245,8 @@
                                                                             <div class="product_slider_img">
                                                                                 <div id="vertical">
                                                                                     <div
-                                                                                        data-thumb="{{product.image.url}}">
-                                                                                        <img src="{{product.image.url}}"
+                                                                                        data-thumb="{{product_var.product.image.url}}">
+                                                                                        <img src="{{product_var.product.image.url}}"
                                                                                             class="w-100 img-fluid img-thumbnail">
                                                                                     </div>
 
@@ -259,13 +259,13 @@
                                                                                     style="background-color: rgb(182, 126, 54);"
                                                                                     class="btn btn-outline-dark py-3">variation</button> -->
                                                                                 <hr>
-                                                                                <h2>${{product.price}}
+                                                                                <h2>${{product_var.price}}
                                                                                 </h2>
                                                                                 <ul class="list">
                                                                                     <li>
                                                                                         <a class="active" href="#">
                                                                                             <span>Category</span> :
-                                                                                            {{product.category}}</a>
+                                                                                            {{product_var.product.category}}</a>
                                                                                     </li>
                                                                                     <li>
                                                                                         <a href="#">
@@ -277,7 +277,7 @@
                                                                                 </ul>
 
                                                                                 <p>
-                                                                                    {{product.description}}
+                                                                                    {{product_var.product.description}}
                                                                                 </p>
                                                                                 <div class="card_area">
                                                                                     <div
@@ -286,30 +286,31 @@
                                                                                             <i
                                                                                                 class="ti-minus"></i></span>
                                                                                         <input class="input-number"
-                                                                                            id="product-{{product.id}}"
+                                                                                            id="product-{{product_var.id}}"
                                                                                             type="text" value="1"
                                                                                             min="0" max="10">
                                                                                         <span class="number-increment">
                                                                                             <i
                                                                                                 class="ti-plus"></i></span>
                                                                                     </div>
-                                                                                    <form
-                                                                                        action="{% url 'order:add-box' %}"
+                                                                                    <!-- <form
+                                                                                        action="{% url 'order:add-gift-to-box' %}"
                                                                                         method="POST" class=" ps-0">
                                                                                         {% csrf_token %}
 
 
                                                                                         <input type="hidden"
-                                                                                            name="box-id"
-                                                                                            value="{{product.id}}">
+                                                                                            name="product-id"
+                                                                                            value="{{product_var.id}}"> -->
                                                                                         <!-- Button trigger modal -->
-                                                                                        <button type="submit"
+                                                                                        <button type="button"
                                                                                             class="btn py-3 add-product"
                                                                                             name="add-product"
-                                                                                            value="{{product.id}}">Add
-                                                                                            Box</button>
+                                                                                            value="{{product_var.id}}" onclick="step3('{{product_var.product.name}}','{{product_var.id}}',document.getElementById('product-{{product_var.id}}').value,
+                                                                                            '{{product_var.image.url}}','{{product_var.price}}')" data-dismiss="modal">Add
+                                                                                            Item</button>
 
-                                                                                    </form>
+                                                                                    <!-- </form> -->
 
                                                                                 </div>
                                                                             </div>
@@ -373,9 +374,9 @@
                                                 <p class="card-text text-center text-uppercase">{{card.name}}</p>
 
                                                 <!-- Button trigger modal -->
-                                                <button type="submit" class="btn py-3" name="add-card"
-                                                    data-target="#giftCard-{{card.id}}" data-toggle="modal"
-                                                    value="{{card.id}}">Add Card</button>
+                                                <button type="submit" class="btn py-3" 
+                                                    data-target="#giftCard-{{card.id}}" data-toggle="modal" 
+                                                    value="{{card.id}}">Select Card</button>
 
                                             </div>
 
@@ -407,56 +408,56 @@
                                                                         <div class="col-lg-6 offset-lg-1">
                                                                             <div class="s_product_text">
 
-                                                                                <form
+                                                                                <!-- <form
                                                                                     action="{% url 'order:add-card-to-box' %}"
-                                                                                    method="POST">{% csrf_token %}
+                                                                                    method="POST">{% csrf_token %} -->
 
                                                                                     <div class="form-group">
                                                                                         <label
-                                                                                            for="recipient-name">Recipient
+                                                                                            for="recipient-{{card.id}}">Recipient
                                                                                             Name</label>
                                                                                         <input type="text"
-                                                                                            id="recipient-name"
+                                                                                            id="recipient-{{card.id}}"
                                                                                             class="form-control"
                                                                                             name="recipient"
-                                                                                            placeholder="Recipient name">
+                                                                                            placeholder="Recipient name" >
                                                                                     </div>
                                                                                     <div class="form-group">
-                                                                                        <label for="sender-name">Sender
-                                                                                            NAme</label>
+                                                                                        <label for="sender-{{card.id}}">Sender
+                                                                                            Name</label>
                                                                                         <input type="text"
-                                                                                            id="sender-name"
+                                                                                            id="sender-{{card.id}}"
                                                                                             class="form-control"
                                                                                             name="sender"
-                                                                                            placeholder="Sender name">
+                                                                                            placeholder="Sender name" >
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <label
-                                                                                            for="exampleFormControlTextarea1">Card
+                                                                                            for="card-front-{{card.id}}">Card
                                                                                             Content</label>
                                                                                         <textarea class="form-control"
                                                                                             name="   "
-                                                                                            id="exampleFormControlTextarea1"
-                                                                                            rows="3"></textarea>
+                                                                                            id="card-front-{{card.id}}"
+                                                                                            rows="3"></textarea >
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <label
-                                                                                            for="exampleFormControlTextarea1">Back
+                                                                                            for="card-back-{{card.id}}">Back
                                                                                             Of Card
                                                                                         </label>
                                                                                         <textarea class="form-control"
                                                                                             name="bc_content"
-                                                                                            id="exampleFormControlTextarea1"
-                                                                                            rows="3"></textarea>
+                                                                                            id="card-back-{{card.id}}"
+                                                                                            rows="3"></textarea >
                                                                                     </div>
                                                                                     <input type="hidden" name="card-id"
                                                                                         value="{{card.id}}">
-                                                                                    <button type="submit"
+                                                                                    <button type="button"
                                                                                         class="btn py-3"
                                                                                         name="add-card-data"
-                                                                                        value="{{card.id}}">Add to
+                                                                                        value="{{card.id}}" onclick="step4('{{card.id}}')" data-dismiss="modal">Add to
                                                                                         Box</button>
-                                                                                </form>
+                                                                                <!-- </form> -->
 
 
                                                                             </div>
@@ -495,7 +496,7 @@
 
 
 
-                        <div class="card1 b-0 ">
+                        <div  class="card1 b-0 ">
                             <!-- <div class="fa fa-long-arrow-left prev">Prev </div> -->
                             <div class="row d-flex justify-content-center text-center">
                                 <div class="col-lg-10">
@@ -508,30 +509,36 @@
                                                             <div class="col">
                                                                 <h4><b>Shopping Cart</b></h4>
                                                             </div>
+                                                            <hr size='30'>
                                                             <div class="col align-self-center text-right text-muted">
                                                                 {{gift_count}}
                                                                 items</div>
                                                         </div>
                                                     </div>
                                                     <!-- box selected  -->
-                                                    <div class="row border-top border-bottom pb-5 pt-3">
+                                                    {%for item in gift_box_items %}
+                                                   
+                                                    <div id='cart_page' class="row border-top border-bottom pb-5 pt-3">
                                                         <div class="row main align-items-center">
+                                                            
+                                                           <!-- <p id='newdata'> {{item.box_type.gift_box.boxsize.size}}</p> -->
+                                                           
                                                             <div class="col-2"><img class="img-fluid img-thumbnail"
-                                                                    src="{{items.box_type.gift_box.image.url}}"></div>
+                                                                    src="{{item.box_type.gift_box.image.url}}"></div>
                                                             <div class="col">
                                                                 <div class="row text-muted text-uppercase">
-                                                                    {{items.box_type.gift_box.boxsize.size}}</div>
-                                                                <div class="row">{{items.box_type.gift_box.name}}</div>
+                                                                    {{item.box_type.gift_box.boxsize.size}}</div>
+                                                                <div class="row">{{item.box_type.gift_box.name}}</div>
                                                             </div>
                                                             <div class="col"><a href="#"
-                                                                    class="border">{{items.box_type.gift_box.size}}</a>
+                                                                    class="border"></a>
                                                             </div>
-                                                            <div class="col">$ {{items.box_type.gift_box.price}} <span
+                                                            <div class="col">$ {{item.box_type.gift_box.price}} <span
                                                                     class="close">&#10005;</span></div>
                                                         </div>
                                                     </div>
-
-                                                    {% for gift_item in items.gift_items.all %}
+                                                   
+                                                    {% for gift_item in item.gift_items.all %}
                                                     <div class="row border-top border-bottom pb-5 pt-3">
                                                         <div class="row main align-items-center">
                                                             <div class="col-2"><img class="img-fluid img-thumbnail"
@@ -539,10 +546,10 @@
                                                             <div class="col">
                                                                 <div class="row text-muted text-uppercase">
                                                                     {{gift_item.product.product.category}}</div>
-                                                                <div class="row">{{gift_item.product.name}}</div>
+                                                                <div class="row">{{gift_item.product.product.name}}</div>
                                                             </div>
                                                             <div class="col"> <a href="#">-</a><a href="#"
-                                                                    class="border">{{gift_item.product.product.quantity}}</a><a
+                                                                    class="border">{{gift_item.quantity}}</a><a
                                                                     href="#">+</a> </div>
                                                             <div class="col">$ {{gift_item.product.price}}
                                                                 <form action="" method="post">{% csrf_token %}
@@ -556,39 +563,37 @@
                                                     {% endfor %}
 
                                                     <!-- card selected  -->
+                                                    
                                                     <div class="row border-top border-bottom pb-5 pt-3">
                                                         <div class="row main align-items-center">
-
                                                             <div class="col-2"><img class="img-fluid img-thumbnail"
-                                                                    src="{{items.card_type.card.image.url}}"></div>
-
+                                                                    src="{{item.card_type.card.image.url}}"></div>
                                                             <div class="col">
                                                                 <div class="row text-muted text-uppercase">
-                                                                    {{items.card_type.card}}</div>
-                                                                <div class="row">{{items.card_type.card.name}}</div>
+                                                                    {{item.card_type.card.name}}</div>
+                                                                <div class="row">{{item.card_type.card.name}}</div>
                                                             </div>
-
-                                                            <div class="col"><a href="#" class="border"></a> </div>
-
-                                                            <div class="col">$ 0.00
-
-                                                            </div>
-                                                            <div class="col">
+                                                            <div class="col"> <a href="#"> </a> <a href="#"
+                                                                class="border"></a><a
+                                                                href="#"></a> </div>
+                                                            <div class="col">${{item.card_type.card.price}}
                                                                 <form action="{% url 'order:delete-card' %}"
                                                                     method="POST">{% csrf_token %}
                                                                     <input type="hidden" name="card-id"
                                                                         value="{{items.card_type.card.id}}">
                                                                     <span class="close">&#10005;</span>
+                                                                </form>
                                                             </div>
-                                                            </form>
+                                                            
 
                                                         </div>
                                                     </div>
+                                                    {%endfor%}
                                                 </div>
-
+                                                {{request.session.total_cartprice}}
 
                                             </div>
-
+                                            
 
                                             <form action="{% url 'order:order-checkout' %}" method="POST" class=" ps-0">
                                                 {% csrf_token %}

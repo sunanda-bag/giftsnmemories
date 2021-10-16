@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from product.views import calculate_total
 # from order.views import CreateCheckoutSessionView, stripe_webhook
 
 urlpatterns = [
@@ -29,6 +30,7 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='home'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
+    path('calculate_total/', calculate_total, name='calculate_total'),
     
 
     #path for apps

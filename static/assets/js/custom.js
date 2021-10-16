@@ -1,438 +1,282 @@
 
-$(window).load(function() {
-    if(sessionStorage.getItem("slide") === null)
-    {
-    sessionStorage.setItem("slide",1);
-    sessionStorage.setItem("max_val",1);
-    var a=sessionStorage.getItem("slide");
-    var b=sessionStorage.getItem("max_val");
-    console.log("else part slide value: ",a);
-    console.log("else part max_val value: ",b);
+$(window).load(function () {
+    if (sessionStorage.getItem("slide") === null) {
+        sessionStorage.setItem("slide", 1);
+        sessionStorage.setItem("max_val", 1);
+        var a = sessionStorage.getItem("slide");
+        var b = sessionStorage.getItem("max_val");
+        console.log("else part slide value: ", a);
+        console.log("else part max_val value: ", b);
     }
-    else
-    {
-    var c = sessionStorage.getItem("slide");
-    console.log("else part slide value: ",c);
-    restore_status();
+    else {
+        var c = sessionStorage.getItem("slide");
+        console.log("else part slide value: ", c);
+        restore_status();
     }
-    
-    if(sessionStorage.getItem("product_list") === null)
-    {
-    var prod_list = {};
-    var p_key = 0;
-    }
-    else
-    {
-    var prod_list = JSON.parse(sessionStorage.getItem("product_list"));
-    var p_key = parseInt(sessionStorage.getItem("key_val"));
-    }
+
+    // calculate_total();
+});
+
+function calculate_total() {
+    console.log("inside total calulate")
+    $.ajax({
+        url: "/calculate_total/",
+        data: { 'calculate': 'dummy' },
+        dataType: false,
+        success: function (res) {
+            console.log("successfully called calculate");
+            // $("#checkout_table").load(location.href + " #checkout_table");
+        },
     });
-    
-    function step2(box_id) {
-         var sld=2;
-         console.log("inside box selection process function, sld valie: ",sld);
-         sessionStorage.setItem("box_id", box_id);
-         sessionStorage.setItem("slide",sld);
-         var max_val = parseInt(sessionStorage.getItem("max_val"));
-         console.log("max value in step2 :", max_val);
-         if (max_val < sld)
-         {
-            sessionStorage.setItem("max_val", sld);
-         }
-         var max_val = parseInt(sessionStorage.getItem("max_val"));
-         var sld_val = parseInt(sessionStorage.getItem("slide"));
-         console.log("slide value in step2: ",sld_val);
-         console.log("max value in step2: ",max_val);
-    
-    
-    
-        var current = document.getElementById("step1");
-        var new_step = document.getElementById("step2");
-        current.className = "step0";
-        new_step.className = "active step0";
-    
-        var cards = document.getElementsByClassName("card1");
-        cards[0].className = "card1 b-0";
-        cards[1].className = "card1 b-0 show";
-    
-        console.log("end of step2 func");
+
+}
+
+function step2(box_id) {
+    var sld = 2;
+    console.log("inside box selection process function, sld valie: ", sld);
+
+    //  saving box /////////////////////////////////////////////////////////////////////////////
+    sessionStorage.setItem("box_id", box_id);
+
+    var box_type = {}
+    if (sessionStorage.getItem("box_list") === null) {
+        var box_list = {};
     }
-    
-    function step3(prod_title,prod_id,qty,img_url, price) {
-    
-        var p_list = {}
-        if(sessionStorage.getItem("product_list") === null)
-        {
-            var prod_list = {};
-            var p_key = 0;
-        }
-        else
-        {
-            var prod_list = JSON.parse(sessionStorage.getItem("product_list"));
-            var p_key = parseInt(sessionStorage.getItem("key_val"));
-        }
-    
-        p_list['title'] = prod_title;
-        p_list['product_id'] = prod_id;
-        p_list['quantity'] = qty;
-        p_list['image_url'] = img_url;
-        p_list['price'] = price;
-    
-        prod_list[p_key] = p_list;
-        p_key = p_key + 1;
-        sessionStorage.setItem("key_val", p_key);
-    
-        if (typeof (Storage) !== "undefined") {
-            // Store
-            sessionStorage.setItem("product_list", JSON.stringify(prod_list));
-            console.log(JSON.stringify(prod_list));
-            sessionStorage.setItem("slide", 2);
-            sessionStorage.setItem("max_val", 2);
-        }
-        else {
-            alert("Sorry, your browser does not support Session Storage...");
-        }
-    
-    
-        $('#closemodal').click(function () {
-            $('#modalwindow').modal('hide');
-        });
-        $('.modal-backdrop').remove();
-    
-        
+    else {
+        var box_list = JSON.parse(sessionStorage.getItem("box_list"));
     }
-    
-    function instep(val, flag) {
-    // flag =1, val = 1
-        var max_val = parseInt(sessionStorage.getItem("max_val"));
-        var slide = parseInt(sessionStorage.getItem("slide"));
-        console.log("type of val: ", typeof (val), val);
-        console.log("type of maxval: ", typeof (max_val), max_val);
-        if (flag == 1 && val>max_val) {
-            sessionStorage.setItem("max_val", val);
-        }
-        
-        if (val <= max_val || flag == 1) {
-            console.log("before restore status");
-            sessionStorage.setItem("slide", val);
-    
-            restore_status();
-        }
-    
+
+    // saving products 
+    box_type['box_id'] = box_id;
+
+    box_list = box_type;
+
+    if (typeof (Storage) !== "undefined") {
+        // Store
+        sessionStorage.setItem("box_list", JSON.stringify(box_type));
+        console.log(JSON.stringify(box_list),'/////////////////////////////////////////////');
+
     }
-    
-    function send_data(data_list){
-        console.log("inside send data", data_list)
-        $.ajax({
-            url: "/build-a-box/",
-            data: {'cart_items':data_list },
-            dataType: false,
-            success: function (res) {
-                console.log("successfully sent to view")
-                $("#checkout_table").load(location.href + " #checkout_table");
-            },
-        });
-    
+    else {
+        alert("Sorry, your browser does not support Session Storage...");
     }
-    
-    
-    function restore_status() {
-    
-        var mem = sessionStorage.getItem("slide");
-        console.log("restore status slide value: ", mem);
-        if (mem === null) {
-            console.log("restore slide value is null");
-        }
-        else {
-    
-            console.log("restore slide mem: ", mem);
-            var new_step = document.getElementById("step" + (parseInt(mem)));
-            //current.className = "step0";
-            console.log("restoring status");
-    
-    
-    
-            var cards = document.getElementsByClassName("card1");
-            for (var k = 0; k < cards.length; k++) {
-                $("#progressbar").children()[k].className = "step0";
-                cards[k].className = "card1 b-0";
-            }
-    
-            new_step.className = "active step0";
-            cards[parseInt(mem-1)].className = "card1 b-0 show";
-    
-    
-    
-            if(sessionStorage.product_list)
-            {
-                var data = sessionStorage.product_list;
-    
-                var card_count = document.getElementsByClassName("card1").length;
-                console.log("befor send data",card_count,(parseInt(mem)+1));
-                if(card_count==(parseInt(mem)+1))
-                {
-                    console.log("calling send data");
-                    send_data(data);
-                }
-            }
-        }
+
+    sessionStorage.setItem("slide", sld);
+    var max_val = parseInt(sessionStorage.getItem("max_val"));
+    console.log("max value in step2 :", max_val);
+    if (max_val < sld) {
+        sessionStorage.setItem("max_val", sld);
     }
-    
-    
-    function step4(box_id) {
+    var max_val = parseInt(sessionStorage.getItem("max_val"));
+    var sld_val = parseInt(sessionStorage.getItem("slide"));
+    console.log("slide value in step2: ", sld_val);
+    console.log("max value in step2: ", max_val);
+
+
+
+    var current = document.getElementById("step1");
+    var new_step = document.getElementById("step2");
+    current.className = "step0";
+    new_step.className = "active step0";
+
+    var cards = document.getElementsByClassName("card1");
+    cards[0].className = "card1 b-0";
+    cards[1].className = "card1 b-0 show";
+
+    console.log("end of step2 func");
+}
+
+
+
+function step3(prod_title, prod_id, qty, img_url, price) {
+
+    // saving products /////////////////////////////////////////////////////////////////////////////////////
+    var p_list = {}
+    if (sessionStorage.getItem("product_list") === null) {
+        var prod_list = {};
+        var p_key = 0;
+    }
+    else {
+        var prod_list = JSON.parse(sessionStorage.getItem("product_list"));
+        var p_key = parseInt(sessionStorage.getItem("key_val"));
+    }
+    // saving products 
+    p_list['title'] = prod_title;
+    p_list['product_id'] = prod_id;
+    p_list['quantity'] = qty;
+    p_list['image_url'] = img_url;
+    p_list['price'] = price;
+
+    prod_list[p_key] = p_list;
+    p_key = p_key + 1;
+    sessionStorage.setItem("key_val", p_key);
+
+    if (typeof (Storage) !== "undefined") {
+        // Store
+        sessionStorage.setItem("product_list", JSON.stringify(prod_list));
+        console.log('prod_list:', JSON.stringify(prod_list));
+        sessionStorage.setItem("slide", 2);
         sessionStorage.setItem("max_val", 2);
-        sessionStorage.setItem("slide", 3);
-        var current = document.getElementById("step3");
-        var new_step = document.getElementById("step4");
-        current.className = "step0";
-        console.log("insie step 4");
-        new_step.className = "active step0";
-        console.log("insie step 5");
-    
-        var cards = document.getElementsByClassName("card1");
-        cards[2].className = "card1 b-0";
-        cards[3].className = "card1 b-0 show";
+    }
+    else {
+        alert("Sorry, your browser does not support Session Storage...");
+    }
+
+
+    $('#closemodal').click(function () {
+        $('#modalwindow').modal('hide');
+    });
+    $('.modal-backdrop').remove();
+
+
+}
+
+
+
+function step4(card_id) {
+    // sessionStorage.setItem("max_val", 2);
+    // sessionStorage.setItem("slide", 3);
+    // //  saving card /////////////////////////////////////////////////////////////////////////////
+    // sessionStorage.setItem("card_id", card_id);
+
+
+    var card_type = {}
+    if (sessionStorage.getItem("card_list") === null) {
+        var card_list = {};
+    }
+    else {
+        var card_list = JSON.parse(sessionStorage.getItem("card_list"));
     }
     
+    var sender = document.getElementById("sender-"+card_id).value;
+    var receip = document.getElementById("recipient-"+card_id).value;
+    var card_frnt = document.getElementById("card-front-"+card_id).value;
+    var card_bck = document.getElementById("card-back-"+card_id).value;
+    
+   console.log("valkueee: ",sender);
+    card_list['card_id'] = card_id;
+    card_list['sender'] = sender;
+    card_list['recipient'] = receip;
+    card_list['card_front'] = card_frnt;
+    card_list['card_back'] = card_bck;
 
-// console.log('inside custom js')
-// // first validation
-// function validate1(val) {
-//     // flag1 = true
-//     var box_Id = $(".box-id").val();
-//     if (val >= 1 || val == 0) {
-//         if (box_Id == "") {
-//             flag1 = false;
-//         }
-//         else {
-//             flag1 = true;
-//         }
-//     }
-    // v1 = document.getElementsByName("add-box");
-    // console.log(v1);
-    // // v2 = document.getElementById("email");
-    // flag1 = true;
-    // flag2 = true;
-    // if (val >= 1 || val == 0) {
-    //     if (v1.value == "") {
-    //         v1.style.borderColor = "red";
-    //         flag1 = false;
-    //     }
-    //     else {
-    //         v1.style.borderColor = "white";
-    //         flag1 = true;
-    //     }
-    // }
-    // if (val >= 2 || val == 0) {
-    //     if (v2.value == "") {
-    //         v2.style.borderColor = "red";
-    //         flag2 = false;
-    //     }
-    //     else {
-    //         v2.style.borderColor = "white";
-    //         flag2 = true;
-    //     }
-    // }
-    // flag = flag1 && flag2;
-//     flag = flag1;
-//     return flag1;
-// }
+     
+    sessionStorage.setItem("card_list",JSON.stringify(card_list));
 
-// function validate2(val) {
-//     // flag2 = true
-//     var product_Id = $(".product-id").val();
-//     if (val >= 1 || val == 0) {
-//         if (product_Id == "") {
-//             flag2 = false;
-//         }
-//         else {
-//             flag2 = true;
-//         }
-    // }
-    // v1 = document.getElementById("web-title");
-    // v2 = document.getElementById("desc");
+   
 
-    // flag1 = true;
-    // flag2 = true;
+    if (typeof (Storage) !== "undefined") {
+        // Store
+        
+        console.log(JSON.stringify(card_list),'/////////////////////////////////////////////');
 
-    // if (val >= 1 || val == 0) {
-    //     if (v1.value == "") {
-    //         v1.style.borderColor = "red";
-    //         flag1 = false;
-    //     }
-    //     else {
-    //         v1.style.borderColor = "white";
-    //         flag1 = true;
-    //     }
-    // }
+    }
+    else {
+        alert("Sorry, your browser does not support Session Storage...");
+    }
 
-    // if (val >= 2 || val == 0) {
-    //     if (v2.value == "") {
-    //         v2.style.borderColor = "red";
-    //         flag2 = false;
-    //     }
-    //     else {
-    //         v2.style.borderColor = "white";
-    //         flag2 = true;
-    //     }
-    // }
 
-    // flag = flag1 && flag2;
-//     flag = flag2
-//     return flag;
-// }
 
-// function validate3(val) {
-//     var card_Id = $(".card-id").val();
-//     if (val >= 1 || val == 0) {
-//         if (card_Id == "") {
-//             flag3 = false;
-//         }
-//         else {
-//             flag3 = true;
-//         }
-//     }
-//     flag =flag3;
-//     return flag;
-// }
+    // var current = document.getElementById("step3");
+    // var new_step = document.getElementById("step4");
+    // current.className = "step0";
+    // console.log("insie step 4");
+    // new_step.className = "active step0";
+    // console.log("insie step 5");
 
-// $(document).on('click', ".next", function () {
-//     str1 = "next1";
-//     str2 = "next2";
-//     str3 = "next3";
-//     console.log('next clicked')
-//     if (!str1.localeCompare($(this).attr('id')) && validate1(0) == true) {
-//         val1 = true;
-//     }
-//     else {
-//         val1 = false;
-//     }
+    // var cards = document.getElementsByClassName("card1");
+    // cards[2].className = "card1 b-0";
+    // cards[3].className = "card1 b-0 show";
 
-//     if (!str2.localeCompare($(this).attr('id')) && validate2(0) == true) {
-//         val2 = true;
-//     }
-//     else {
-//         val2 = false;
-//     }
-
-//     if (!str3.localeCompare($(this).attr('id')) && validate3(0) == true) {
-//         val3 = true;
-//     }
-//     else {
-//         val3 = false;
-//     }
-
-//     if ((!str1.localeCompare($(this).attr('id')) && val1 == true) || (!str2.localeCompare($(this).attr('id')) && val2 == true) || (!str3.localeCompare($(this).attr('id')) && val3 == true)) {
-//         current_fs = $(this).parent().parent().parent();
-//         next_fs = $(this).parent().parent().parent().next();
-
-//         $(current_fs).removeClass("show");
-//         console.log(current_fs)
-//         console.log(next_fs)
-//         $(next_fs).addClass("show");
-
-//         $("#progressbar li").eq($(".card1").index(next_fs)).addClass("active");
-
-//         current_fs.animate({}, {
-//             step: function () {
-
-//                 current_fs.css({
-//                     'display': 'none',
-//                     'position': 'relative'
-//                 });
-
-//                 next_fs.css({
-//                     'display': 'block'
-//                 });
-//             }
-//         });
-//     }
-// });
+    
+   
+    $('.modal-backdrop').remove();
+    instep(4,1);
+}
 
 
 
 
-// $(document).ready(function () {
+function instep(val, flag) {
+    // flag =1, val = 1
+    var max_val = parseInt(sessionStorage.getItem("max_val"));
+    var slide = parseInt(sessionStorage.getItem("slide"));
+    console.log("type of val: ", typeof (val), val);
+    console.log("type of maxval: ", typeof (max_val), max_val);
+    if (flag == 1 && val > max_val) {
+        sessionStorage.setItem("max_val", val);
+    }
 
-//     var current_fs, next_fs, previous_fs;
+    if (val <= max_val || flag == 1) {
+        console.log("before restore status");
+        sessionStorage.setItem("slide", val);
 
-//     $(".next").click(function () {
-//         console.log($(this).attr('id'))
-//         str1 = "next1";
-//         str2 = "next2";
-//         str3 = "next3";
+        restore_status();
+    }
 
-//         if (!str1.localeCompare($(this).attr('id')) && validate1(0) == true) {
-//             val1 = true;
-//         }
-//         else {
-//             val1 = false;
-//         }
+}
+function load_cart(){
+    $("#cart_page").load(location.href + " #cart_page");
+}
 
-//         if (!str2.localeCompare($(this).attr('id')) && validate2(0) == true) {
-//             val2 = true;
-//         }
-//         else {
-//             val2 = false;
-//         }
+function send_data(data_list) {
+    console.log("inside send data", data_list)
+    $.ajax({
+        url: "/product/build-a-box/",
+        data: { 'cart_items': data_list },
+        dataType: false,
+        success: function (res) {
+            console.log("successfully sent to view")
+            sessionStorage.removeItem('product_list');
+            sessionStorage.removeItem('card_list');
+            sessionStorage.removeItem('box_list');
+            $("#checkout_table").load(location.href + " #checkout_table");
+            load_cart();
+          
+        },
+    });
 
-//         if (!str3.localeCompare($(this).attr('id')) && validate3(0) == true) {
-//             val3 = true;
-//         }
-//         else {
-//             val3 = false;
-//         }
+}
 
-//         if ((!str1.localeCompare($(this).attr('id')) && val1 == true) || (!str2.localeCompare($(this).attr('id')) && val2 == true) || (!str3.localeCompare($(this).attr('id')) && val3 == true)) {
-//             current_fs = $(this).parent().parent().parent();
-//             next_fs = $(this).parent().parent().parent().next();
 
-//             $(current_fs).removeClass("show");
-//             console.log(current_fs)
-//             console.log(next_fs)
-//             $(next_fs).addClass("show");
+function restore_status() {
 
-//             $("#progressbar li").eq($(".card1").index(next_fs)).addClass("active");
+    var mem = sessionStorage.getItem("slide");
+    console.log("restore status slide value: ", mem);
+    if (mem === null) {
+        console.log("restore slide value is null");
+    }
+    else {
 
-//             current_fs.animate({}, {
-//                 step: function () {
+        console.log("restore slide mem: ", mem);
+        var new_step = document.getElementById("step" + (parseInt(mem)));
+        //current.className = "step0";
+        console.log("restoring status");
 
-//                     current_fs.css({
-//                         'display': 'none',
-//                         'position': 'relative'
-//                     });
 
-//                     next_fs.css({
-//                         'display': 'block'
-//                     });
-//                 }
-//             });
-//         }
-//     });
 
-//     $(".prev").click(function () {
+        var cards = document.getElementsByClassName("card1");
+        for (var k = 0; k < cards.length; k++) {
+            $("#progressbar").children()[k].className = "step0";
+            cards[k].className = "card1 b-0";
+        }
 
-//         current_fs = $(this).parent();
-//         previous_fs = $(this).parent().prev();
+        new_step.className = "active step0";
+        cards[parseInt(mem - 1)].className = "card1 b-0 show";
 
-//         $(current_fs).removeClass("show");
-//         $(previous_fs).addClass("show");
+        if (sessionStorage.product_list || sessionStorage.card_list || sessionStorage.box_list) {
+            var data_list= {};
+            data_list['product_list'] = sessionStorage.product_list;
+            data_list['card_list'] = sessionStorage.card_list;
+            data_list['box_list'] = sessionStorage.box_list;
 
-//         $("#progressbar li").eq($(".card1").index(next_fs)).removeClass("active");
-
-//         current_fs.animate({}, {
-//             step: function () {
-
-//                 current_fs.css({
-//                     'display': 'none',
-//                     'position': 'relative'
-//                 });
-
-//                 previous_fs.css({
-//                     'display': 'block'
-//                 });
-//             }
-//         });
-//     });
-
-// });
+            var card_count = document.getElementsByClassName("card1").length;
+            console.log("befor send data", card_count, (parseInt(mem)));
+            if (card_count == (parseInt(mem))) {
+                console.log("calling send data-- datalist:",data_list);
+                send_data(JSON.stringify(data_list));
+            }
+        }
+        
+    }
+}

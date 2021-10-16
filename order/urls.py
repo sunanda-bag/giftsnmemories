@@ -13,7 +13,7 @@ urlpatterns = [
     path('add-box/', addBox, name='add-box'),
     path('add-card/', addCard, name='add-card'),
     path('delete-card/', deleteCard, name='delete-card'),
-    path('add-to-gift-box/', addToGiftBox, name='add-to-gift-box'),
+    path('add-gift-to-box/', addGiftToBox, name='add-gift-to-box'),
     path('add-card-to-box/', AddCardMessage, name='add-card-to-box'),
 
     # path('add-to-wishlist/', addToWishlist, name='add-to-wishlist'),

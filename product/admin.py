@@ -10,7 +10,7 @@ admin.site.register(BoxSize)
 
 @admin.register(GiftBox)
 class GiftBoxAdmin(admin.ModelAdmin):
-    list_display = ('name', 'image_tag', 'boxsize', 'active', 'price')
+    list_display = ('id','name', 'image_tag', 'boxsize', 'active', 'price')
     list_editable=('active',)
 
 
@@ -22,7 +22,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductVariation)
 class ProductVariationAdmin(admin.ModelAdmin):
-    list_display = ('itemNumber','name','image_tag', 'product', 'variant', 'price', 'stock')
+    list_display = ('id','itemNumber','name','image_tag', 'product', 'variant', 'price', 'stock')
 
 
 
