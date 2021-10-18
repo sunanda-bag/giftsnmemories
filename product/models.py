@@ -59,8 +59,7 @@ def gift_box_image(instance, filename):
 
 class GiftBox(models.Model):
 
-    boxsize = models.ForeignKey(
-        BoxSize, on_delete=models.CASCADE, related_name='boxSize')
+    boxsize = models.ForeignKey(BoxSize, on_delete=models.CASCADE, related_name='boxSize')
     name = models.CharField(max_length=250, unique=True)
     price = models.PositiveIntegerField()
     description = models.CharField(max_length=350, null=True, blank=True,
@@ -145,8 +144,7 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         super(Product, self).save(*args, **kwargs)
-        product_variations = ProductVariation.objects.filter(
-            product__name=self.name)
+        product_variations = ProductVariation.objects.filter(product__name=self.name)
         if product_variations.count() > 0:
             for product in product_variations:
                 if product.product.onSale:
@@ -178,14 +176,12 @@ class ProductVariation(models.Model):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name='productVariations')
     slug = models.CharField(max_length=350, null=True, blank=True)
-    itemNumber = models.PositiveIntegerField(
-        unique=True, null=True, blank=True)
+    itemNumber = models.PositiveIntegerField(unique=True, null=True, blank=True)
     name = models.CharField(max_length=500, null=True, blank=True)
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
 
     image1 = models.ImageField( upload_to=product_variation_image)
-    image2 = models.ImageField(
-        upload_to=product_variation_image, null=True, blank=True)
+    image2 = models.ImageField(upload_to=product_variation_image, null=True, blank=True)
 
     price = models.PositiveIntegerField()
     discountPrice = models.PositiveIntegerField(null=True, blank=True)
@@ -269,10 +265,8 @@ def premadeproduct_image(instance, filename):
 
 class PremadeProduct(models.Model):
 
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE)
-    brand = models.ForeignKey(
-        Brand, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     name = models.CharField(max_length=250, unique=True)
     description = models.CharField(max_length=350, null=True, blank=True,
                                    default='lorem ipsum lorem ipsum lorem ipsum lorem ipsum')
@@ -327,7 +321,7 @@ def premade_productvariation_image(instance, filename):
 
 
 class PremadeProductVariation(models.Model):
-    products = models.ManyToManyField(PremadeProduct)
+    products = models.ForeignKey(PremadeProduct, on_delete=models.CASCADE, related_name='premadeproductVariations')
     slug = models.CharField(max_length=350, null=True, blank=True)
     itemNumber = models.PositiveIntegerField(
         unique=True, null=True, blank=True)

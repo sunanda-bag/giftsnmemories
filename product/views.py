@@ -12,6 +12,7 @@ from order.models import *
 from .models import *
 
 import json
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -108,7 +109,7 @@ def calculate_total(request):
         # return HttpResponseRedirect(reverse('calculate_total'))
 
 
-
+@login_required()
 def build_a_box(request):
 
     categories = Category.objects.all()
@@ -125,8 +126,6 @@ def build_a_box(request):
         if not new_giftboxitem:
             GiftBoxItem.objects.create(user=request.user)
             new_giftboxitem = GiftBoxItem.objects.filter(user=request.user, added2cart_status=False)
-
-
 
         cart = json.loads(request.GET.get('cart_items'))
         print("value in cart", cart)
@@ -156,9 +155,8 @@ def build_a_box(request):
 
                 if exist_box_type:
                     exist_box_type[0].delete()
-                    
-
-
+                
+        # card_list
         if 'card_list' in cart:
             print("inside if condition for cardlist")
             card_list = json.loads(cart['card_list'])
@@ -187,8 +185,7 @@ def build_a_box(request):
                 new_giftboxitem[0].card_type=new_card
                 new_giftboxitem[0].save()
 
-
-
+        # product_list
         if 'product_list' in cart:
             product_list = json.loads(cart['product_list'])
             print('product list', product_list)
@@ -239,45 +236,171 @@ def build_a_box(request):
         return render(request, 'product/build-a-box.html', data)
 
 
+@login_required()
 def premade(request):
+
     categories = Category.objects.all()
     labels = Variant.objects.all()
-    premade_products = PremadeProduct.objects.all()
+    product_variation = ProductVariation.objects.all()
     boxes = GiftBox.objects.all()
     cards = Card.objects.all()
 
-    user = request.user
-    if user.is_authenticated:
+    if request.GET.get('cart_items'):
+        prd_tot = 0
+        itm_tot = 0
+
+        new_giftboxitem = GiftBoxItem.objects.filter(user=request.user, added2cart_status=False)
+        if not new_giftboxitem:
+            GiftBoxItem.objects.create(user=request.user)
+            new_giftboxitem = GiftBoxItem.objects.filter(user=request.user, added2cart_status=False)
+
+        cart = json.loads(request.GET.get('cart_items'))
+        print("value in cart", cart)
+
+        # box_list
+        if 'box_list' in cart:
+            box_list = json.loads(cart['box_list'])
+            print('box list', box_list['box_id'])
+
+            if box_list['box_id']:
+                box_id = box_list['box_id']
+                box_qs = GiftBox.objects.all().filter(id=box_id)
+
+                check_box_type = BoxType.objects.all().filter(user=request.user,gift_box=box_qs[0], status=False)
+                exist_box_type =  BoxType.objects.all().filter(user=request.user, status= False).exclude(gift_box=box_qs[0])
+                print("check box:",check_box_type)
+                print("exist box:",exist_box_type)
+                if check_box_type:
+                    pass
+                else:
+                    box_item = BoxType.objects.create(user=request.user, gift_box=box_qs[0])
+                    new_giftboxitem[0].box_type=box_item
+                    new_giftboxitem[0].save()
+                        
+                    print('box_qs', box_qs)
+                    print('box_item', box_item)
+
+                if exist_box_type:
+                    exist_box_type[0].delete()
+                
+        # card_list
+        if 'card_list' in cart:
+            print("inside if condition for cardlist")
+            card_list = json.loads(cart['card_list'])
+            print('card list', card_list)
+            card_id=card_list['card_id']
+            rmsg = card_list['sender']
+            smsg = card_list['recipient']
+            fmsg = card_list['card_front']
+            bmsg = card_list['card_back']
+
+            card = Card.objects.all().filter(id=card_id)
+            exist_card= CardType.objects.all().filter(user=request.user,status=False)
+            print("existing card:",exist_card)
+            if exist_card:
+                print("inside update card")
+                exist_card[0].card=card[0]
+                exist_card[0].recipient=rmsg
+                exist_card[0].sender=smsg
+                exist_card[0].card_content_front=fmsg
+                exist_card[0].card_content_back=bmsg
+                exist_card[0].save()
+                new_giftboxitem[0].card_type=exist_card[0]
+                new_giftboxitem[0].save()
+            else:
+                new_card = CardType.objects.create(user=request.user,card=card[0],recipient=rmsg,sender=smsg,card_content_front=fmsg,card_content_back=bmsg)
+                new_giftboxitem[0].card_type=new_card
+                new_giftboxitem[0].save()
+
+        # product_list
+        if 'product_list' in cart:
+            product_list = json.loads(cart['product_list'])
+            print('product list', product_list)
+
+            if product_list['0']:
+                for i in product_list:
+                    product_qs =ProductVariation.objects.all().filter(id=product_list[str(i)]['product_id'])
+                    giftitemcheck = GiftItem.objects.all().filter(user=request.user, product=product_qs[0])
+                    if giftitemcheck:
+                        print("inside if block of giftitem")
+                        giftitemcheck[0].quantity += int(product_list[str(i)]['quantity'])
+                        gift_item_obj = giftitemcheck[0].save()
+                    else:
+                        print("inside else block of giftitem")
+                        gift_item_obj = GiftItem.objects.create(user=request.user, product=product_qs[0], quantity=int(product_list[str(i)]['quantity']))
+                        new_giftboxitem[0].gift_items.add(gift_item_obj)
+                        new_giftboxitem[0].save()
+
+       
+        calculate_total(request)
+        request.session['cart'] = cart
+        request.session['product_total_price'] = prd_tot
+        # return redirect('/')
         gift_box_items = GiftBoxItem.objects.all()
-        gift_box_items = GiftBoxItem.objects.filter(
-            user=request.user, added2cart_status=False)
-
-        if gift_box_items.exists():
-            gift_box_items_qs = gift_box_items[0]
-            gift_count = gift_box_items_qs.gift_items.all().count()
-            for i in gift_box_items_qs.gift_items.all():
-                print(i)
-
-            data = {'premade_products': premade_products,
-                    #             'labels': labels,
-                    'categories': categories,
-                    'boxes': boxes,
-                    'cards': cards,
-                    'items': gift_box_items_qs,
-                    'gift_count': int(gift_count)+2,
-                    }
-            return render(request, 'product/premade.html', data)
-        else:
-            data = {'premade_products': premade_products,
-                    #             'labels': labels,
-                    'categories': categories,
-                    'boxes': boxes,
-                    'cards': cards,
-                    }
-            return render(request, 'product/premade.html', data)
-
+        box_data='hellooooooooo'
+        data = {'product_variation': product_variation,
+            'categories': categories,
+            'boxes': boxes,
+            'cards': cards,
+            'gift_box_items':gift_box_items,
+          
+            }
+       
+        data['box']= 'othervalue'
+        # return TemplateResponse(request, 'product/build-a-box.html', {'box':'i am hereeeee'})
+        return render(request, 'product/premade.html', data)
+        # return HttpResponseRedirect(reverse('product:build-a-box'),data)
     else:
-        return HttpResponseRedirect(reverse('gnm_users:signin'))
+        gift_box_items = GiftBoxItem.objects.all()
+        data = {'product_variation': product_variation,
+            'categories': categories,
+            'boxes': boxes,
+            'cards': cards,
+            'gift_box_items':gift_box_items,
+            'box':'i am heree',
+            }
+
+        return render(request, 'product/premade.html', data)
+
+# def premade(request):
+#     categories = Category.objects.all()
+#     labels = Variant.objects.all()
+#     premade_products = PremadeProduct.objects.all()
+#     boxes = GiftBox.objects.all()
+#     cards = Card.objects.all()
+
+#     user = request.user
+#     if user.is_authenticated:
+#         gift_box_items = GiftBoxItem.objects.all()
+#         gift_box_items = GiftBoxItem.objects.filter(user=request.user, added2cart_status=False)
+            
+
+#         if gift_box_items.exists():
+#             gift_box_items_qs = gift_box_items[0]
+#             gift_count = gift_box_items_qs.gift_items.all().count()
+#             for i in gift_box_items_qs.gift_items.all():
+#                 print(i)
+
+#             data = {'premade_products': premade_products,
+#                     #             'labels': labels,
+#                     'categories': categories,
+#                     'boxes': boxes,
+#                     'cards': cards,
+#                     'items': gift_box_items_qs,
+#                     'gift_count': int(gift_count)+2,
+#                     }
+#             return render(request, 'product/premade.html', data)
+#         else:
+#             data = {'premade_products': premade_products,
+#                     #             'labels': labels,
+#                     'categories': categories,
+#                     'boxes': boxes,
+#                     'cards': cards,
+#                     }
+#             return render(request, 'product/premade.html', data)
+
+#     else:
+#         return HttpResponseRedirect(reverse('gnm_users:signin'))
 
 
 class SearchCategoryView(View):

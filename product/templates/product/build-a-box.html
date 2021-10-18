@@ -89,9 +89,10 @@
 
                                                     <!-- <form action="{% url 'order:add-box' %}" method="POST" class=" ps-0">{% csrf_token %}
                                                         <input class="box-id" type="hidden" name="box-id" value="{{box.id}}"> -->
-                                                        <!-- Button trigger modal -->
-                                                        <button type="button" class="btn py-3 add-box" name="add-box-btn"
-                                                        onclick="step2('{{box.id}}')" value="{{box.id}}">Add Box</button>
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn py-3 add-box" name="add-box-btn"
+                                                        onclick="step2('{{box.id}}')" value="{{box.id}}">Add
+                                                        Box</button>
                                                     <!-- </form> -->
 
                                                 </div>
@@ -162,7 +163,8 @@
                                                                                             <!-- Button trigger modal -->
                                                                                             <button type="submit"
                                                                                                 class="btn py-3 add-box"
-                                                                                                name="add-box-btn" onclick="step2('{{box.id}}')"
+                                                                                                name="add-box-btn"
+                                                                                                onclick="step2('{{box.id}}')"
                                                                                                 value="{{box.id}}">Add
                                                                                                 Box</button>
 
@@ -189,17 +191,17 @@
                                     </div>
                                 </div>
                             </div>
+                            <p class="justify-content-center text-center">Add a box to continue</p>
                             <div class="row d-flex justify-content-center">
-                                <div class="btn" id="next1" onclick="instep(2,1)">Next
-                                    
-                                </div>
+                                <button style="width: 100px;padding: 10px;" class="btn" id="next1"
+                                    onclick="instep(2,1)">Next
+                                </button>
                             </div>
-
                         </div>
 
 
                         <div class="card1 b-0  ">
-                            <div class="fa fa-long-arrow-left prev">Prev </div>
+                            <!-- <div class="fa fa-long-arrow-left prev">Prev </div> -->
                             <div class="row justify-content-center">
                                 <!-- <h2>Purchase Our Pre-Packed Gift Boxes</h2> -->
 
@@ -213,16 +215,20 @@
                                                     class="card-img-top img-fluid img-thumbnail img-rounded"
                                                     src="{{product_var.product.image.url}}" alt="Card image cap"></a>
                                             <div class="card-body">
-                                                <h5 class="card-title text-center text-uppercase">{{product_var.product.category}}
+                                                <h5 class="card-title text-center text-uppercase">
+                                                    {{product_var.product.category}}
                                                 </h5>
-                                                <p class="card-text text-center text-uppercase">{{product_var.product.name}}</p>
+                                                <p class="card-text text-center text-uppercase">
+                                                    {{product_var.product.name}}</p>
 
                                                 <!-- <form action="{% url 'order:add-gift-to-box' %}" method="POST" class=" ps-0">{% csrf_token %}
                                                 
                                                     <input type="hidden" name="product-id" value="{{product_var.id}}"> -->
-                                                    <!-- Button trigger modal -->
-                                                    <button type="button" class="btn py-3 add-product" name="add-product"
-                                                        value="{{product_var.id}}" data-target="#GiftItemModal-{{product_var.id}}" data-toggle="modal">Add Item</button>
+                                                <!-- Button trigger modal -->
+                                                <button type="button" class="btn py-3 add-product" name="add-product"
+                                                    value="{{product_var.id}}"
+                                                    data-target="#GiftItemModal-{{product_var.id}}"
+                                                    data-toggle="modal">Add Item</button>
                                                 <!-- </form> -->
 
                                             </div>
@@ -301,13 +307,15 @@
                                                                                         <input type="hidden"
                                                                                             name="product-id"
                                                                                             value="{{product_var.id}}"> -->
-                                                                                        <!-- Button trigger modal -->
-                                                                                        <button type="button"
-                                                                                            class="btn py-3 add-product"
-                                                                                            name="add-product"
-                                                                                            value="{{product_var.id}}" onclick="step3('{{product_var.product.name}}','{{product_var.id}}',document.getElementById('product-{{product_var.id}}').value,
-                                                                                            '{{product_var.image.url}}','{{product_var.price}}')" data-dismiss="modal">Add
-                                                                                            Item</button>
+                                                                                    <!-- Button trigger modal -->
+                                                                                    <button type="button"
+                                                                                        class="btn py-3 add-product"
+                                                                                        name="add-product"
+                                                                                        value="{{product_var.id}}"
+                                                                                        onclick="step3('{{product_var.product.name}}','{{product_var.id}}',document.getElementById('product-{{product_var.id}}').value,
+                                                                                            '{{product_var.image.url}}','{{product_var.price}}')"
+                                                                                        data-dismiss="modal">Add
+                                                                                        Item</button>
 
                                                                                     <!-- </form> -->
 
@@ -339,24 +347,19 @@
                                 <!-- select the box end -->
 
                             </div>
+                            <p class="justify-content-center text-center">Add atleast one gift to continue</p>
                             <div class="row d-flex justify-content-center ">
-                                <div class="circle">
 
-                                    <div class="fa fa-long-arrow-right next" id="next2" onclick="instep(3,1)">Next
-                                    </div>
+                                <div class="row d-flex justify-content-center">
+                                    <button style="width: 100px;padding: 10px;" class="btn" id="next2"
+                                        onclick="instep(3,1)">Next
+                                    </button>
                                 </div>
                             </div>
-                            <!-- <div class="row d-flex justify-content-left">
-                                <div class="circle">
-
-                                    <div class="fa fa-long-arrow-right prev" onclick="validate2(0)">Prev</div>
-                                </div>
-                            </div> -->
                         </div>
 
 
                         <div class="card1 b-0 ">
-                            <!-- <div class="fa fa-long-arrow-left prev">Prev </div> -->
                             <div class="row justify-content-center">
 
                                 <!-- select the box -->
@@ -373,8 +376,8 @@
                                                 <p class="card-text text-center text-uppercase">{{card.name}}</p>
 
                                                 <!-- Button trigger modal -->
-                                                <button type="submit" class="btn py-3" 
-                                                    data-target="#giftCard-{{card.id}}" data-toggle="modal" 
+                                                <button type="submit" class="btn py-3"
+                                                    data-target="#giftCard-{{card.id}}" data-toggle="modal"
                                                     value="{{card.id}}">Select Card</button>
 
                                             </div>
@@ -411,51 +414,53 @@
                                                                                     action="{% url 'order:add-card-to-box' %}"
                                                                                     method="POST">{% csrf_token %} -->
 
-                                                                                    <div class="form-group">
-                                                                                        <label
-                                                                                            for="recipient-{{card.id}}">Recipient
-                                                                                            Name</label>
-                                                                                        <input type="text"
-                                                                                            id="recipient-{{card.id}}"
-                                                                                            class="form-control"
-                                                                                            name="recipient"
-                                                                                            placeholder="Recipient name" >
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <label for="sender-{{card.id}}">Sender
-                                                                                            Name</label>
-                                                                                        <input type="text"
-                                                                                            id="sender-{{card.id}}"
-                                                                                            class="form-control"
-                                                                                            name="sender"
-                                                                                            placeholder="Sender name" >
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <label
-                                                                                            for="card-front-{{card.id}}">Card
-                                                                                            Content</label>
-                                                                                        <textarea class="form-control"
-                                                                                            name="   "
-                                                                                            id="card-front-{{card.id}}"
-                                                                                            rows="3"></textarea >
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <label
-                                                                                            for="card-back-{{card.id}}">Back
-                                                                                            Of Card
-                                                                                        </label>
-                                                                                        <textarea class="form-control"
-                                                                                            name="bc_content"
-                                                                                            id="card-back-{{card.id}}"
-                                                                                            rows="3"></textarea >
-                                                                                    </div>
-                                                                                    <input type="hidden" name="card-id"
-                                                                                        value="{{card.id}}">
-                                                                                    <button type="button"
-                                                                                        class="btn py-3"
-                                                                                        name="add-card-data"
-                                                                                        value="{{card.id}}" onclick="step4('{{card.id}}')" data-dismiss="modal">Add to
-                                                                                        Box</button>
+                                                                                <div class="form-group">
+                                                                                    <label
+                                                                                        for="recipient-{{card.id}}">Recipient
+                                                                                        Name</label>
+                                                                                    <input type="text"
+                                                                                        id="recipient-{{card.id}}"
+                                                                                        class="form-control"
+                                                                                        name="recipient"
+                                                                                        placeholder="Recipient name">
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label
+                                                                                        for="sender-{{card.id}}">Sender
+                                                                                        Name</label>
+                                                                                    <input type="text"
+                                                                                        id="sender-{{card.id}}"
+                                                                                        class="form-control"
+                                                                                        name="sender"
+                                                                                        placeholder="Sender name">
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label
+                                                                                        for="card-front-{{card.id}}">Card
+                                                                                        Content</label>
+                                                                                    <textarea class="form-control"
+                                                                                        name="   "
+                                                                                        id="card-front-{{card.id}}"
+                                                                                        rows="3"></textarea>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label
+                                                                                        for="card-back-{{card.id}}">Back
+                                                                                        Of Card
+                                                                                    </label>
+                                                                                    <textarea class="form-control"
+                                                                                        name="bc_content"
+                                                                                        id="card-back-{{card.id}}"
+                                                                                        rows="3"></textarea>
+                                                                                </div>
+                                                                                <input type="hidden" name="card-id"
+                                                                                    value="{{card.id}}">
+                                                                                <button type="button" class="btn py-3"
+                                                                                    name="add-card-data"
+                                                                                    value="{{card.id}}"
+                                                                                    onclick="step4('{{card.id}}')"
+                                                                                    data-dismiss="modal">Add to
+                                                                                    Box</button>
                                                                                 <!-- </form> -->
 
 
@@ -485,17 +490,20 @@
                                 <!-- select the box end -->
 
                             </div>
-                            <div class="row d-flex justify-content-center">
+                            <p class="justify-content-center text-center">Select a card to continue</p>
+                            <div class="row d-flex justify-content-center text-center">
                                 <div class="circle">
-                                    <div class="fa fa-long-arrow-right next" id="next3" onclick="instep(4,1)">Next
+                                    <div style="width: 100px;padding: 10px;" class=" btn next"
+                                        id="next3" onclick="instep(4,1)">Next
                                     </div>
                                 </div>
                             </div>
                         </div>
+                  
 
 
 
-                        <div  class="card1 b-0 ">
+                        <div class="card1 b-0 ">
                             <!-- <div class="fa fa-long-arrow-left prev">Prev </div> -->
                             <div class="row d-flex justify-content-center text-center">
                                 <div class="col-lg-10">
@@ -516,12 +524,12 @@
                                                     </div>
                                                     <!-- box selected  -->
                                                     {%for item in gift_box_items %}
-                                                   
+
                                                     <div id='cart_page' class="row border-top border-bottom pb-5 pt-3">
                                                         <div class="row main align-items-center">
-                                                            
-                                                           <!-- <p id='newdata'> {{item.box_type.gift_box.boxsize.size}}</p> -->
-                                                           
+
+                                                            <!-- <p id='newdata'> {{item.box_type.gift_box.boxsize.size}}</p> -->
+
                                                             <div class="col-2"><img class="img-fluid img-thumbnail"
                                                                     src="{{item.box_type.gift_box.image.url}}"></div>
                                                             <div class="col">
@@ -529,14 +537,13 @@
                                                                     {{item.box_type.gift_box.boxsize.size}}</div>
                                                                 <div class="row">{{item.box_type.gift_box.name}}</div>
                                                             </div>
-                                                            <div class="col"><a href="#"
-                                                                    class="border"></a>
+                                                            <div class="col"><a href="#" class="border"></a>
                                                             </div>
                                                             <div class="col">$ {{item.box_type.gift_box.price}} <span
                                                                     class="close">&#10005;</span></div>
                                                         </div>
                                                     </div>
-                                                   
+
                                                     {% for gift_item in item.gift_items.all %}
                                                     <div class="row border-top border-bottom pb-5 pt-3">
                                                         <div class="row main align-items-center">
@@ -545,16 +552,17 @@
                                                             <div class="col">
                                                                 <div class="row text-muted text-uppercase">
                                                                     {{gift_item.product.product.category}}</div>
-                                                                <div class="row">{{gift_item.product.product.name}}</div>
+                                                                <div class="row">{{gift_item.product.product.name}}
+                                                                </div>
                                                             </div>
                                                             <div class="col"> <a href="#">-</a><a href="#"
                                                                     class="border">{{gift_item.quantity}}</a><a
                                                                     href="#">+</a> </div>
                                                             <div class="col">$ {{gift_item.product.price}}
                                                                 <form action="" method="post">{% csrf_token %}
-                                                                    
+
                                                                     <span class="close">&#10005; </span>
-                                                                   
+
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -562,7 +570,7 @@
                                                     {% endfor %}
 
                                                     <!-- card selected  -->
-                                                    
+
                                                     <div class="row border-top border-bottom pb-5 pt-3">
                                                         <div class="row main align-items-center">
                                                             <div class="col-2"><img class="img-fluid img-thumbnail"
@@ -573,8 +581,7 @@
                                                                 <div class="row">{{item.card_type.card.name}}</div>
                                                             </div>
                                                             <div class="col"> <a href="#"> </a> <a href="#"
-                                                                class="border"></a><a
-                                                                href="#"></a> </div>
+                                                                    class="border"></a><a href="#"></a> </div>
                                                             <div class="col">${{item.card_type.card.price}}
                                                                 <form action="{% url 'order:delete-card' %}"
                                                                     method="POST">{% csrf_token %}
@@ -583,7 +590,7 @@
                                                                     <span class="close">&#10005;</span>
                                                                 </form>
                                                             </div>
-                                                            
+
 
                                                         </div>
                                                     </div>
@@ -592,7 +599,7 @@
                                                 {{request.session.total_cartprice}}
 
                                             </div>
-                                            
+
 
                                             <form action="{% url 'order:order-checkout' %}" method="POST" class=" ps-0">
                                                 {% csrf_token %}
@@ -628,7 +635,7 @@
     <!--? New Arrival End -->
     <!-- Popular Locations End -->
 
-   
+
 </main>
 
 {% endblock content %}
