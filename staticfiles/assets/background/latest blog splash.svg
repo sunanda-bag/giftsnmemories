@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="419.29" height="975.933" viewBox="0 0 419.29 975.933">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ffd202"/>
+      <stop offset="1" stop-color="#fe8d01"/>
+    </linearGradient>
+  </defs>
+  <path id="latest_blog_splash" data-name="latest blog splash" d="M194.166-23.639c93.513,0,154.879-70.349,185.252-11.186,60.9,118.626,17.932,323.943,14.73,555.261-2.53,182.765,38.566,297.485,0,352.65-34.5,49.345-155.308-40.176-199.982-40.176-37.685,0-158.328,116.618-186.5,75.887-42-60.72,16.872-156.964,16.872-357.114,0-148.558-44.627-432.141,0-575.322C45.557-91.076,100.653-23.639,194.166-23.639Z" transform="translate(7.446 58.503)" fill="url(#linear-gradient)"/>
+</svg>

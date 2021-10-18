@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="399.545" height="1155.899" viewBox="0 0 399.545 1155.899">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ffd202"/>
+      <stop offset="1" stop-color="#fe8d01"/>
+    </linearGradient>
+  </defs>
+  <path id="filter_splash" data-name="filter splash" d="M194.166-23.639c93.513,0,154.879-70.349,185.252-11.186,60.9,118.626,3.2,303.369,0,534.687-2.53,182.765,38.566,524.281,0,579.447-34.5,49.345-127.186-17.913-171.86-17.913-37.685,0-141.456,40.731-169.628,0-42-60.72,0-233.863,0-434.014,0-148.558-58.019-507.84-13.392-651.02C45.557-91.076,100.653-23.639,194.166-23.639Z" transform="translate(-7.666 58.503)" fill="url(#linear-gradient)"/>
+</svg>
