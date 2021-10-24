@@ -4,29 +4,29 @@
 {% include 'header.html' %}
 
 <main>
-     <!--? slider Area Start-->
-<div class="slider-area ">
-    <div class="slider-active">
-        <div class="single-slider hero-overly2  slider-height2 d-flex align-items-center slider-bg2">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-6 col-lg-8 col-md-8">
-                        <div class="hero__caption hero__caption2">
-                            <h1 data-animation="fadeInUp" data-delay=".4s" >Checkout</h1>
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                                    <li class="breadcrumb-item"><a href="#">Checkout</a></li> 
-                                </ol>
-                            </nav>
+    <!--? slider Area Start-->
+    <div class="slider-area ">
+        <div class="slider-active">
+            <div class="single-slider hero-overly2  slider-height2 d-flex align-items-center slider-bg2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-8 col-md-8">
+                            <div class="hero__caption hero__caption2">
+                                <h1 data-animation="fadeInUp" data-delay=".4s">Checkout</h1>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                        <li class="breadcrumb-item"><a href="#">Checkout</a></li>
+                                    </ol>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- slider Area End-->
+    <!-- slider Area End-->
 
     <!--? Checkout Area Start-->
     <section class="checkout_area section-padding40">
@@ -77,32 +77,39 @@
                         <h3>Billing Details</h3>
                         <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="first" name="name" value="{{request.user.first_name}}" placeholder="First Name" />
+                                <input type="text" class="form-control" id="first" name="name"
+                                    value="{{request.user.first_name}}" placeholder="First Name" />
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="last" name="name" value="{{request.user.last_name}}" placeholder="Last Name"/>
+                                <input type="text" class="form-control" id="last" name="name"
+                                    value="{{request.user.last_name}}" placeholder="Last Name" />
                             </div>
-                           
+
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="number" name="number" value="{{request.user.gnmusers.mobile}}" placeholder="Phone Number"/>
+                                <input type="text" class="form-control" id="number" name="number"
+                                    value="{{request.user.gnmusers.mobile}}" placeholder="Phone Number" />
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="email" name="compemailany" value="{{request.user.email}}" placeholder="Email"/>
+                                <input type="text" class="form-control" id="email" name="compemailany"
+                                    value="{{request.user.email}}" placeholder="Email" />
                             </div>
-                           
+
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="add1" name="add1" value="{{request.user.gnmusers.address}}" placeholder="Address 1"/>
+                                <input type="text" class="form-control" id="add1" name="add1"
+                                    value="{{request.user.gnmusers.address}}" placeholder="Address 1" />
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="add2" name="add2" value="" placeholder="Address 2"/>
+                                <input type="text" class="form-control" id="add2" name="add2" value=""
+                                    placeholder="Address 2" />
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="city" name="city" value="{{request.user.gnmusers.city}}" placeholder="City"/>
+                                <input type="text" class="form-control" id="city" name="city"
+                                    value="{{request.user.gnmusers.city}}" placeholder="City" />
                             </div>
-                           
+
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="zip" name="zip"
-                                    placeholder="Postcode/ZIP" value="{{request.user.gnmusers.pincode}}"/>
+                                <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP"
+                                    value="{{request.user.gnmusers.pincode}}" />
                             </div>
                             <div class="col-md-12 form-group">
                                 <div class="checkout-cap">
@@ -140,7 +147,7 @@
                                 {% for gift_item in items.gift_items.all %}
                                 <li>
                                     <a href="#">{{gift_item.product.name}}
-                                        <span class="middle">x {{gift_item.product.product.quantity}}</span>
+                                        <span class="middle">x {{gift_item.quantity}}</span>
                                         <span class="last">$ {{gift_item.product.price}}</span>
                                     </a>
                                 </li>
@@ -148,15 +155,15 @@
                                 <li>
                                     <a href="#">{{items.card_type.card.name}}
                                         <span class="middle">x 01</span>
-                                        <span class="last">$ 0.00</span>
+                                        <span class="last">$ {{items.card_type.card.price}}</span>
                                     </a>
                                 </li>
                             </ul>
                             <ul class="list list_2">
                                 <li>
-                                    <a href="#">Subtotal <span>$2160.00</span></a>
+                                    <a href="#">Subtotal <span>${{request.session.total_cartprice}}</span></a>
                                 </li>
-                                <li>
+                                <!-- <li>
                                     <a href="#">Shipping
                                         <span>Flat rate: $50.00</span>
                                     </a>
@@ -164,7 +171,7 @@
                                 <li>
                                     <a href="#">Total<span>$2210.00</span>
                                     </a>
-                                </li>
+                                </li> -->
                             </ul>
                             <div class="payment_item">
                                 <div class="radion_btn">
@@ -199,7 +206,7 @@
     </section>
     <!--End Checkout Area -->
 
-   
+
 </main>
 
 {% endblock content %}

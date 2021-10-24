@@ -234,6 +234,7 @@ def orderCheckout(request):
         # order.quantity = request.POST.get('quantity')
         # order.save()
         # return HttpResponseRedirect(reverse('order:checkout'))
+        
         return render(request, 'order/checkout.html', {'items':gift_box_items_qs})
 
 class CheckoutView(LoginRequiredMixin,generic.View):
