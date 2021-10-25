@@ -74,7 +74,7 @@
             <div class="billing_details">
                 <div class="row">
                     <div class="col-lg-8">
-                        <h3>Billing Details</h3>
+                        <h3>Shipping Details</h3>
                         <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                             <div class="col-md-6 form-group p_star">
                                 <input type="text" class="form-control" id="first" name="name"
@@ -111,13 +111,13 @@
                                 <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP"
                                     value="{{request.user.gnmusers.pincode}}" />
                             </div>
-                            <div class="col-md-12 form-group">
+                            <!-- <div class="col-md-12 form-group">
                                 <div class="checkout-cap">
                                     <input type="checkbox" id="fruit1" name="keep-log">
                                     <label for="fruit1">Create an account?</label>
                                 </div>
-                            </div>
-                            <div class="col-md-12 form-group">
+                            </div> -->
+                            <!-- <div class="col-md-12 form-group">
                                 <div class="creat_account">
                                     <h3>Shipping Details</h3>
                                     <div class="checkout-cap">
@@ -127,7 +127,7 @@
                                 </div>
                                 <textarea class="form-control" name="message" id="message" rows="1"
                                     placeholder="Order Notes"></textarea>
-                            </div>
+                            </div> -->
                         </form>
                     </div>
                     <div class="col-lg-4">
@@ -153,7 +153,7 @@
                                 </li>
                                 {% endfor %}
                                 <li>
-                                    <a href="#">{{items.card_type.card.name}}
+                                    <a href="#">Card - {{items.card_type.card.name}}
                                         <span class="middle">x 01</span>
                                         <span class="last">$ {{items.card_type.card.price}}</span>
                                     </a>
